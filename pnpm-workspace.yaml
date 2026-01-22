@@ -1,0 +1,5 @@
+packages:
+  # Website
+  - 'apps/*'
+  # Shared logic (e.g., API services, Types, UI components)
+  - 'packages/*'

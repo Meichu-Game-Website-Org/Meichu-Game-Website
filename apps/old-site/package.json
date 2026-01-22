@@ -1,0 +1,58 @@
+{
+  "name": "old-site",
+  "description": "The old website from 2019 to 2025.",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --port=3030 --host=0.0.0.0",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@meichu/services": "workspace:^",
+    "autoprefixer": "^9.8.8",
+    "axios": "^0.18.1",
+    "bootstrap": "^4.6.2",
+    "moment": "^2.30.1",
+    "postcss": "^7.0.39",
+    "sass": "^1.83.1",
+    "serve": "^13.0.4",
+    "vue": "^2.7.16",
+    "vue-meta": "^2.4.0",
+    "vue-router": "^3.6.5"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "sass-loader": "^7.1.0",
+    "vue-template-compiler": "^2.7.16"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}

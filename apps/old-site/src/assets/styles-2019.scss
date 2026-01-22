@@ -1,0 +1,965 @@
+
+$red: #d5101a;
+$blue: #1c2e6e;
+$lightblue: #00a5ea;
+$orange: #e83310;
+$gray: #afb0b4;
+$brown: #956b26;
+$black: #060405;
+
+
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: "KozGo", "Noto Sans CJK TC", "Noto Sans TC", Roboto, 微軟正黑體, 繁黑體, "Microsoft JhengHei", "Microsoft YaHei", "Heiti TC", "LiHei Pro", sans-serif, 新細明體, PMingLiU;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  background: #f5f3f0;
+  letter-spacing: 0.02rem;
+  transition: 0.07s linear;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
+.meichu2019 {
+
+  .background {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+      overflow: hidden;
+      z-index: 0;
+  }
+  a:hover {
+    color: $lightblue;
+    transition: 0.07s linear;
+  }
+
+  .nthu {
+      position: fixed;
+      top: 90px;
+      z-index: 15;
+      left: 0;
+      width: 160px;
+      transform: scale(0);
+      transition: transform 0.7s cubic-bezier(0.48, 0.29, 0.13, 1.53);
+      &:hover {
+        width: 170px;
+      }
+  }
+
+  .nctu-blood {
+      position: fixed;
+      right: 10px;
+      z-index: 20;
+      width: 150px;
+      height: 5px;
+      top: 430px;
+  }
+
+  .nthu-blood {
+      position: fixed;
+      left: 10px;
+      z-index: 20;
+      width: 150px;
+      height: 5px;
+      top: 430px;
+  }
+
+  .blood {
+    position: relative;
+    content: " ";
+    display: block;
+    height: 5px;
+    background: red;
+  }
+
+  .nthu:active, .nctu:active {
+    transform: translateY(15px);
+  }
+
+  .nctu {
+      position: fixed;
+      right: 0;
+      z-index: 15;
+      width: 160px;
+      top: 90px;
+      transform: scale(0);
+      transition: transform 0.7s cubic-bezier(0.48, 0.29, 0.13, 1.53);
+      &:hover {
+        width: 170px;
+      }
+  }
+
+  @media (max-width: 1400px) {
+    .nctu, .nthu {
+      position: absolute;
+      width: 120px;
+      top: 80px;
+      &:hover {
+        width: 130px;
+      }
+    }
+
+    .nctu-blood {
+      position: absolute;
+      top: 330px;
+    }
+
+    .nthu-blood {
+      top: 330px;
+    }
+  }
+
+
+  @media (max-width: 1024px) {
+    .nctu, .nthu {
+      position: absolute;
+      width: 120px;
+      top: 80px;
+      &:hover {
+        width: 130px;
+      }
+    }
+
+    .nctu-blood {
+      position: absolute;
+      top: 330px;
+    }
+
+    .nthu-blood {
+      top: 330px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nctu, .nthu {
+      position: absolute;
+      width: 60px;
+      top: 70px;
+      &:hover {
+        width: 80px;
+      }
+    }
+
+
+    .nctu-blood {
+      position: absolute;
+      width: 100px;
+      top: 200px;
+    }
+
+    .nthu-blood {
+      width: 100px;
+      top: 200px;
+    }
+  }
+
+
+  .in {
+    -moz-transform: scale(1);
+      -webkit-transform: scale(1);
+      transform: scale(1);
+  }
+
+  .bg {
+      width: 100%;
+      object-fit: fill;
+      height: 100%;
+  }
+
+  h2 {
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: $blue;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid $blue;
+    padding-bottom: .25rem;
+  }
+
+  @font-face {
+    font-family: "KozGo";
+    src: url("./KozGoPr6N-Medium.otf") format("otf");
+  }
+
+
+  .mask {
+        width: 100%;
+      height: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin: 0;
+      background: rgba(255, 255, 255, 0.95);
+      position: fixed;
+      z-index: 2;
+      top: 0;
+      left: 0;
+  }
+
+  .main {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    padding: 0 15px;
+  }
+
+
+  @media (max-width: 768px) {
+    .main {
+      padding: 0;
+    }
+  }
+
+  .pre-text {
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          word-break: break-all;
+  }
+
+  .footer {
+    padding: 6rem 4rem 4rem 4rem;
+    text-align: center;
+    font-size: .8rem;
+    color: $gray;
+  }
+
+  .footer__copyright {
+    margin: 2rem 0 0 0;
+  }
+
+
+  .org-item {
+    margin-bottom: .75rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    @media (max-width: 600px) {
+      flex-wrap: wrap;
+    }
+    .org-title {
+      width: 35%;
+      min-width: 35%;
+      text-align: right;
+      @media (max-width: 600px) {
+        min-width: auto;
+        width: 100%;
+        text-align: left;
+      }
+      h4 {
+        font-size: 1.25rem;
+        margin-bottom: 0rem;
+      }
+    }
+    .org-content {
+      padding: 0.5rem;
+      margin-left: 0.5rem;
+      border-left: 1.5px solid rgba(34, 34, 34, 0.4);
+      .org-link {
+        display: inline-block;
+        color: $blue;
+        margin-right: .5rem;
+        &:hover {
+          color: $orange;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+
+
+
+  .title {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    z-index: 3;
+    width: 120px;
+    margin-left: -60px;
+  }
+
+  .game-day {
+    text-align: center;
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: .75rem;
+    color: $orange;
+  }
+
+
+
+  $red: #d5101a;
+  $blue: #1c2e6e;
+  $lightblue: #00a5ea;
+  $orange: #e83310;
+  $gray: #afb0b4;
+  $brown: #956b26;
+  $black: #060405;
+
+  $nthu: #7c0e72;
+  $nctu: #0056ad;
+
+  h2 i {
+    width: 1.65rem;
+    text-align: center;
+  }
+
+  .scoreboard-status.game-status-nctu {
+    color: lighten($nctu, 0)
+  }
+
+  .scoreboard-status.game-status-nthu {
+    color: lighten($nthu, 0)
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: center;
+    span {
+      display: block;
+    }
+    .number-nctu {
+      font-size: 2.5rem;
+      font-weight: 300;
+    }
+    .number-nthu {
+      font-size: 2.5rem;
+      font-weight: 300;
+    }
+    .stat-nctu {
+      margin: 0 1.5rem;
+      color: $nctu;
+    }
+    .stat-nthu {
+      margin: 0 1.5rem;
+      color: $nthu;
+    }
+    .stat-bar {
+      flex-grow: 2;
+      .bar-desc {
+        margin-top: .5rem;
+        font-size: .8rem;
+      }
+      .bar-first {
+        font-size: 1.25rem;
+
+      }
+      .bar-item {
+        display: inline-block;
+        &.bar-nctu {
+          height: 10px;
+          background: $nctu;
+          border-radius: .25rem 0 0 .25rem;
+        }
+        &.bar-nthu {
+          height: 10px;
+          background: $nthu;
+          border-radius: 0 .25rem .25rem 0;
+        }
+        &.bar-draw {
+          height: 10px;
+          background: $brown;
+        }
+      }
+    }
+  }
+
+  .news {
+    padding: 1rem;
+    border-radius: .25rem;
+    border: 1px solid $blue;
+    .news-title {
+      font-size: 1.25rem;
+      a {
+        text-decoration: none;
+        color: $blue;
+        &:hover {
+          color: $lightblue;
+        }
+      }
+    }
+    .news-meta {
+      font-size: .9rem;
+    }
+  }
+
+
+  .team {
+    border: 1px solid $blue;
+    border-radius: .25rem;
+    margin-bottom: 1rem;
+  }
+
+  .team-photo {
+    width: 100%;
+    height: auto;
+  }
+
+  .team-name {
+      font-size: 1.25rem;
+      margin-bottom: .75rem;
+  }
+
+  .team-content {
+    padding: 1.5rem;
+  }
+
+  .team-link {
+    padding: .75rem 1.5rem;
+    position: relative;
+    right: 0;
+    text-align: right;
+    margin-bottom: -1.5rem;
+    margin: .25rem -1.5rem -1.5rem;
+    .team-link-item {
+      margin-left: .5rem;
+      color: $blue;
+      &:hover {
+        text-decoration: none;
+        color: $orange;
+      }
+    }
+  }
+
+  .game-name {
+    color: $blue;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .scoreboard {
+      position: relative;
+      overflow: hidden;
+      height: 330px;
+  }
+
+  .game-photo {
+      height: 330px;
+      object-fit: cover;
+      position: absolute;
+      width: 100%;
+      z-index: 5;
+      filter: saturate(40%) opacity(50%);
+  }
+
+  .game-location-url {
+    color: $blue;
+    &:hover {
+      color: $orange;
+      text-decoration: none;
+    }
+  }
+
+  .game-mask {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 6;
+    background: rgba(255,255,255,0.7);
+  }
+
+  .nctu-logo {
+    position: absolute;
+    left: 3rem;
+    z-index: 7;
+    margin-top: 120px;
+    @media (max-width: 600px) {
+      left: 2rem;
+    }
+  }
+
+  .nthu-logo {
+    position: absolute;
+    right: 3rem;
+    z-index: 7;
+    margin-top: 120px;
+    @media (max-width: 600px) {
+      right: 2rem;
+    }
+  }
+
+  .scoreboard-status {
+    position: absolute;
+    z-index: 8;
+    width: 100%;
+    text-align: center;
+    margin-top: 150px;
+    font-weight: 700;
+    font-size: 2rem;
+    color: $black;
+  }
+
+  .scoreboard-nctu-score {
+    color: $black;
+    font-size: 2rem;
+    position: absolute;
+    z-index: 10;
+    left: 30%;
+    margin-top: 150px;
+    @media (max-width: 600px) {
+      left: 20%;
+    }
+  }
+
+  .scoreboard-nthu-score {
+    color: $black;
+    font-size: 2rem;
+    position: absolute;
+    z-index: 10;
+    right: 30%;
+    margin-top: 150px;
+    @media (max-width: 600px) {
+      right: 20%;
+    }
+  }
+
+
+  .scoreboard-info {
+    font-family: "KozGo";
+    position: absolute;
+    width: 100%;
+    text-align:center;
+    top: 0;
+    left: 0;
+    padding: .75rem;
+    z-index: 6;
+    color:$black;
+    font-weight: 700;
+    letter-spacing: .05rem;
+  }
+
+  .info-item {
+    margin-right: .5rem;
+  }
+
+  @media (max-width: 600px) {
+    .info-item {
+      display: block;
+    }
+  }
+
+
+  .to-game-list {
+    display: inline-block;
+    padding: .75rem 1rem;
+    text-align: center;
+    border-radius: .25rem;
+    background: $blue;
+    color: #fff;
+    text-decoration: none;
+    &:hover {
+      background: $orange;
+    }
+  }
+
+  .record-team-nctu {
+    .normal {
+      display: block;
+    }
+    .short {
+      display: none;
+    }
+  }
+
+  .record-team-nthu {
+    .normal {
+      display: block;
+    }
+    .short {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .record-team-nctu {
+      .normal {
+        display: none;
+      }
+      .short {
+        display: block;
+      }
+    }
+
+    .record-team-nthu {
+      .normal {
+        display: none;
+      }
+      .short {
+        display: block;
+      }
+    }
+  }
+
+  .record-row {
+    margin: 2rem 0 1rem 0;
+    text-align:center;
+  }
+
+  .record {
+    display: inline-block;
+
+    td, th {
+      padding: .5rem;
+    }
+    .head {
+      color: #fff;
+      background: $blue;
+    }
+
+    td {
+      background: #fff;
+      &:last-child {
+        font-weight: bold;
+        color: $orange;
+      }
+      &:first-child {
+        font-weight: 400;
+        color: $black;
+      }
+    }
+  }
+
+  .align-center {
+    text-align: center;
+  }
+
+
+
+  $red: #d5101a;
+  $blue: #1c2e6e;
+  $lightblue: #00a5ea;
+  $orange: #e83310;
+  $gray: #afb0b4;
+  $brown: #956b26;
+  $black: #060405;
+
+  .meta {
+    color: $black;
+    margin-bottom: 2.5rem;
+    .meta-time {
+      margin-right: 1rem;
+    }
+    .meta-org {
+
+    }
+  }
+
+  .content {
+    font-size: 1.1rem;
+  }
+
+  .team {
+    border: 1px solid $blue;
+    border-radius: .25rem;
+  }
+
+  .team-photo {
+    width: 100%;
+    height: auto;
+  }
+
+  .team-content {
+    padding: 1.5rem;
+  }
+
+  .related-link {
+    background: #1c2e6e;
+    padding: .5rem 1rem;
+    color: #fff;
+    text-decoration: none;
+    margin-top: 2rem;
+    display: inline-block;
+    border-radius: .25rem;
+    text-decoration: none;
+    &:hover {
+      background: $lightblue;
+      text-decoration: none;
+      color: #fff;
+    }
+  }
+
+  .file-list-title {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .file-item {
+    width: 33%;
+    padding: 0 .25rem .25rem 0;
+    float: left;
+    .photo {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .file-item {
+    width: 50%;
+      .photo {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  @media (max-width: 600px) {
+    .file-item {
+    width: 100%;
+      .photo {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .game-link {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 15;
+  }
+
+  .game-item {
+    width: 100%;
+    height: 200px;
+    margin-bottom: .4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .game-mask {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 3;
+  }
+
+
+  .game-bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+    z-index: 2;
+  }
+
+  .game-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .game-time {
+    font-family: "KozGo";
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: .75rem;
+    z-index: 6;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: .05rem;
+  }
+
+  .game-location {
+    font-family: "KozGo";
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: .75rem;
+    z-index: 6;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .game-content {
+    color: #fff;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: .75rem;
+    position: absolute;
+    z-index: 5;
+  }
+
+  .game-photo {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+  }
+
+  .game-score {
+    font-size: .9rem;
+    margin-bottom: .25rem;
+  }
+
+  .status-nthu {
+    border: 6px solid #7c0e72;
+  }
+
+  .status-nctu {
+    border: 6px solid #0056ad;
+  }
+
+  .status-draw {
+    border: 6px solid $brown;
+  }
+
+  .see-all-news {
+    float: right;
+    margin-top: .75rem;
+    text-align: right;
+    a {
+      color: #1c2e6e;
+    }
+  }
+
+  .game-row {
+    padding: 0 11px;
+  }
+
+  .game-col {
+    width: 50%;
+    margin: 0;
+    padding: .2rem;
+  }
+
+
+  .header {
+    padding: 7rem 0 7rem 0;
+    text-align: center;
+    position: relative;
+  }
+
+  .nav {
+    margin-top: 3rem;
+    justify-content: center;
+    .nav-link {
+      color: $black;
+      font-size: 1.2rem;
+      letter-spacing: .1rem;
+      padding: 0 1.5rem;
+      &:hover {
+        color: $lightblue;
+        transition: 0.07s linear;
+      }
+    }
+    .nav-item {
+      position: relative;
+      text-align: center;
+      &:after {
+        content: "|";
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      &:last-child:after {
+        content: "";
+      }
+    }
+  }
+
+  .logo {
+    width: 450px;
+  }
+
+  @media (max-width: 768px) {
+    .logo {
+      width: 200px;
+    }
+
+    .header {
+      padding-bottom: 3rem;
+    }
+  }
+
+  .banner {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+  }
+
+
+  .news-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  .news-item {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1.1rem;
+    color: #000;
+    padding: .125rem 0;
+    border-bottom: 1px solid #eee;
+    margin-bottom: .25rem;
+    a {
+      color: $blue;
+      &:hover {
+        color: $lightblue;
+        text-decoration: none;
+      }
+    }
+    .news-type {
+      background: $orange;
+      color: #fff;
+      padding: .125rem .25rem;
+      margin-right: .5rem;
+      border-radius: .25rem;
+      font-size: 1rem;
+      border: none;
+      &.link {
+        background: $lightblue;
+      }
+      &.game {
+        background: $black;
+      }
+      &.activity {
+        background: $brown;
+      }
+      &.news {
+        background: $red;
+      }
+    }
+
+    .news-org {
+      float: right;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .news-org {
+      display: none;
+    }
+  }
+}
