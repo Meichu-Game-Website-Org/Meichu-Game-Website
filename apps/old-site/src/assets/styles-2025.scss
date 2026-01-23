@@ -115,19 +115,19 @@ h3 {
 
 @font-face {
   font-family: "Geologica";
-  src: url("./Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("truetype");
+  src: url("~@meichu/assets/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("truetype");
 }
 @font-face {
   font-family: "Gentium Book Plus";
-  src: url("./GentiumBookPlus-Regular.ttf") format("truetype");
+  src: url("~@meichu/assets/fonts/GentiumBookPlus-Regular.ttf") format("truetype");
 }
 @font-face {
   font-family: "Dela Suko Gothic One";
-  src: url("./DelaSukoGothicOne-R.otf") format("opentype");
+  src: url("~@meichu/assets/fonts/DelaSukoGothicOne-R.otf") format("opentype");
 }
 @font-face {
   font-family: "Press Start 2P";
-  src: url("./PressStart2P-Regular.ttf") format("truetype");
+  src: url("~@meichu/assets/fonts/PressStart2P-Regular.ttf") format("truetype");
 }
 @font-face {
   font-family: "CustomFont";
@@ -136,7 +136,7 @@ h3 {
 }
 @font-face {
   font-family: "CustomFont";
-  src: url("./Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("truetype");
+  src: url("~@meichu/assets/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("truetype");
   unicode-range: U+00-024F;
 }
 
