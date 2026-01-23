@@ -4,10 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"pnpm --filter old-site serve\" \"pnpm --filter \"site-*\" --parallel dev\" \"node dev-proxy.js\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.28.1"
+  "packageManager": "pnpm@10.28.1",
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "http-proxy": "^1.18.1"
+  }
 }
