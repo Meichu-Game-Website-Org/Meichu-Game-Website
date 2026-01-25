@@ -1148,10 +1148,10 @@ img {
         padding: 1rem;
       }
       &.game-status-nctu {
-        color: lighten($nctu, 0)
+        color: $nctu
       }
       &.game-status-nthu {
-        color: lighten($nthu, 0)
+        color: $nthu
       }
     }
   }

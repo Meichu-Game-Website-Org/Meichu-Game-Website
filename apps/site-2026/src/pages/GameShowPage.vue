@@ -51,22 +51,26 @@
         <div class="title_bar"/>
         <div class="record-row" v-if="game.is_record">
           <table class="record">
-            <tr>
-              <th class="head">＃</th>
-              <th class="head record-team-nctu">
-                <span class="normal">{{ game.team_nctu.name }}</span>
-                <div class="short">陽明交大</div>
-              </th>
-              <th class="head record-team-nthu">
-                <span class="normal">{{ game.team_nthu.name }}</span>
-                <div class="short">清大</div>
-              </th>
-            </tr>
-            <tr :key="record.id" v-for="record in game.records">
-              <td class="head">{{ record.name }}</td>
-              <td>{{ record.score_nctu }}</td>
-              <td>{{ record.score_nthu }}</td>
-            </tr>
+            <thead>
+              <tr>
+                <th class="head">＃</th>
+                <th class="head record-team-nctu">
+                  <span class="normal">{{ game.team_nctu.name }}</span>
+                  <div class="short">陽明交大</div>
+                </th>
+                <th class="head record-team-nthu">
+                  <span class="normal">{{ game.team_nthu.name }}</span>
+                  <div class="short">清大</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr :key="record.id" v-for="record in game.records">
+                <td class="head">{{ record.name }}</td>
+                <td>{{ record.score_nctu }}</td>
+                <td>{{ record.score_nthu }}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
