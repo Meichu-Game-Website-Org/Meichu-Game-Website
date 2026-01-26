@@ -1,164 +1,10 @@
+@use "sass:meta";
+@use "sass:map";
+@use "scss/base";
+
 @import '~bootstrap/dist/css/bootstrap-grid.css';
 
-$light: #b63339;
-$primary: #724E7D;
-$dark: #4c3b22;
-$gray: #8e8d8e;
-
-$nthu: #BE5D9FCC;
-$nctu: #66BCD7CC;;
-$stop: #c1c1c1;
-$equal: #ffc861;
-
-$white: #ffffff;
-$red: #d5101a;
-$blue: #1c2e6e;
-$lightblue: #00a5ea;
-$orange: #e83310;
-$brown: #956b26;
-$teal: #58BCB0;
-$link: #2296ff;
-$activity: #f887ba;
-$news: #00c7d5;
-$other: #ffd128; 
-$black: #000000;
-$yellow: #F0E631;
-$games: #b27f71;
-$light-bg: #f3e29e;
-$background: #1A1A1A;
-$text: $white;
-$linked_text: #58BCB0;
-$background-lighter: rgba(34, 34, 34, 0.4);
-
-$screen-sm: 576px;
-$screen-md: 768px;
-$screen-lg: 992px;
-$screen-xl: 1200px;
-$screen-2xl: 1400px;
-
-$outline: 3px;
-$outline-margin: 25px;
-$outline-margin-sm: 10px;
-
-html {
-  font-size: 16px;
-}
-body {
-  font-family: "CustomFont" !important;
-  margin: 0;
-  padding: 0;
-  font-size: 16px;
-  background: $background;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  color: rgba(0,0,0,.8);
-  letter-spacing: 0.02rem;
-}
-a {
-  color: $text;
-  &:hover {
-    text-decoration: none;
-    color: $linked_text;
-  }
-}
-
-h1 {
-  font-weight: 700;
-  margin: 2rem 0;
-  font-size: 2.5rem;
-  color: $text;
-  letter-spacing: .1rem;
-  position: relative;
-  text-align: center;
-  i {
-    width: 3rem;
-    text-align: center;
-  }
-  @media (max-width: $screen-md) {
-    font-size: 1.5rem;
-    margin: 1rem 0;
-  }
-}
-h2 {
-  font-weight: 700;
-  margin: 2rem 0;
-  font-size: 2rem;
-  color: $text;
-  letter-spacing: .1rem;
-  position: relative;
-  text-align: center;
-  i {
-    width: 3rem;
-    text-align: center;
-  }
-  @media (max-width: $screen-md) {
-    font-size: 1.5rem;
-    margin: 1rem 0;
-  }
-}
-h3 {
-  font-weight: 700;
-  margin: 1rem 0;
-  font-size: 1.5rem;
-  color: $text;
-  letter-spacing: .1rem;
-  @media (max-width: $screen-md) {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  html, body {
-    font-size: 14px;
-  }
-}
-
-@font-face {
-  font-family: "Geologica";
-  src: url("@meichu/assets/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Gentium Book Plus";
-  src: url("@meichu/assets/fonts/GentiumBookPlus-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Dela Suko Gothic One";
-  src: url("@meichu/assets/fonts/DelaSukoGothicOne-R.otf") format("opentype");
-}
-@font-face {
-  font-family: "Press Start 2P";
-  src: url("@meichu/assets/fonts/PressStart2P-Regular.ttf") format("truetype");
-}
-@font-face {
-  font-family: "CustomFont";
-  src: local("微軟正黑體"), local("Microsoft JhengHei"), local("Heiti TC");
-  unicode-range: U+4E00-9FFF;
-}
-@font-face {
-  font-family: "CustomFont";
-  src: url("@meichu/assets/fonts/Geologica-VariableFont_CRSV,SHRP,slnt,wght.ttf") format("truetype");
-  unicode-range: U+00-024F;
-}
-
-::-webkit-scrollbar {
-  width: 2px;               /* width of the entire scrollbar */
-  height: 2px;
-}
-::-webkit-scrollbar-track {
-  background: #fff;        /* color of the tracking area */
-}
-::-webkit-scrollbar-thumb {
-  background-color: #000;    /* color of the scroll thumb */
-  border-radius: 1px;       /* roundness of the scroll thumb */
-  // border: 3px solid #888;  /* creates padding around scroll thumb */
-}
-
-img {
-  max-width: 100%;
-}
-
-
-#meichu2025 {
+#meichu2026 {
   background: $background;
   color: $text;
   overflow-x: hidden;
@@ -174,7 +20,7 @@ img {
   
   .home{
     margin-top: -80px;
-    background-image: url('2025/index-bg.svg');
+    background-image: url('index-bg.svg');
     background-repeat: repeat-y;
     background-size: 100vw auto;
     background-position: center;
@@ -253,163 +99,6 @@ img {
     }
   }
   /* Common End */
-
-  /*  Desktop Nav */
-  .desktop-nav {
-    display: block;
-    width: 100%;
-    height: max-content;
-    transition: transform 2s ease-in;
-
-    @media (max-width: $screen-md) {
-      display: none;
-    }
-  }
-  .nav {
-    z-index: 30;
-    position: fixed;
-    width: 100%;
-    padding: .75vw 3vw;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: 0.5s;
-    
-    .nav-icon {
-      display: block;
-    }
-    .nav-logo{
-      position: relative;
-      width: 15vw;
-      max-width: 150px;
-    }
-    .nav-content {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 2.5vw;
-    }
-    .nav-item {
-      position: relative;
-      text-align: center;
-      justify-content: center;
-      a {
-        text-decoration: none;
-      }
-    }
-    .nav-link, .nav-link__bg {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: $white;
-      font-size: 1.5rem;
-      padding: .5rem 0;
-      font-weight: 700;
-      border-bottom: 3px solid transparent;
-      @media (max-width: $screen-lg) {
-        font-size: 1.25rem;
-      }
-      @media (max-width: $screen-md) {
-        font-size: 1.5rem;
-      }
-      &.router-link-exact-active {
-        color: $linked_text;
-      }
-    }
-    .nav-link {
-      position: relative;
-      width: max-content;
-      z-index: 10;
-      &:hover {
-        text-shadow: 3px 3px $nthu, -3px -3px $nctu;
-        color: $white;
-        animation: glitch 1s infinite;
-      }
-      --clip-one: polygon(0 2%, 100% 2%, 100% 95%, 95% 95%, 95% 90%, 85% 90%, 85% 95%, 8% 95%, 0 70%);
-      --clip-two: polygon(0 78%, 100% 78%, 100% 100%, 95% 100%, 95% 90%, 85% 90%, 85% 100%, 8% 100%, 0 78%);
-      --clip-three: polygon(0 44%, 100% 44%, 100% 54%, 95% 54%, 95% 54%, 85% 54%, 85% 54%, 8% 54%, 0 54%);
-      --clip-four: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
-      --clip-five: polygon(0 0, 100% 0, 100% 0, 95% 0, 95% 0, 85% 0, 85% 0, 8% 0, 0 0);
-      --clip-six: polygon(0 40%, 100% 40%, 100% 85%, 95% 85%, 95% 85%, 85% 85%, 85% 85%, 8% 85%, 0 70%);
-      --clip-seven: polygon(0 63%, 100% 63%, 100% 80%, 95% 80%, 95% 80%, 85% 80%, 85% 80%, 8% 80%, 0 70%);
-      --shimmy-distance: 8;
-    }
-    .transparent-button {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    .schoolteam{
-      font-size: 1rem;
-    }
-    .nav-link__bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: max-content;
-    }
-    @keyframes glitch {
-      0% {
-        clip-path: var(--clip-one);
-      }
-      2%, 8% {
-        clip-path: var(--clip-two);
-        transform: translate(calc(var(--shimmy-distance) * -1%), 0);
-      }
-      6% {
-        clip-path: var(--clip-two);
-        transform: translate(calc(var(--shimmy-distance) * 1%), 0);
-      }
-      9% {
-        clip-path: var(--clip-two);
-        transform: translate(0, 0);
-      }
-      10% {
-        clip-path: var(--clip-three);
-        transform: translate(calc(var(--shimmy-distance) * 1%), 0);
-      }
-      13% {
-        clip-path: var(--clip-three);
-        transform: translate(0, 0);
-      }
-      14%, 21% {
-        clip-path: var(--clip-four);
-        transform: translate(calc(var(--shimmy-distance) * 1%), 0);
-      }
-      25% {
-        clip-path: var(--clip-five);
-        transform: translate(calc(var(--shimmy-distance) * 1%), 0);
-      }
-      30% {
-        clip-path: var(--clip-five);
-        transform: translate(calc(var(--shimmy-distance) * -1%), 0);
-      }
-      35%, 45% {
-        clip-path: var(--clip-six);
-        transform: translate(calc(var(--shimmy-distance) * -1%));
-      }
-      40% {
-        clip-path: var(--clip-six);
-        transform: translate(calc(var(--shimmy-distance) * 1%));
-      }
-      50% {
-        clip-path: var(--clip-six);
-        transform: translate(0, 0);
-      }
-      55% {
-        clip-path: var(--clip-seven);
-        transform: translate(calc(var(--shimmy-distance) * 1%), 0);
-      }
-      60% {
-        clip-path: var(--clip-seven);
-        transform: translate(0, 0);
-      }
-      31%, 61%, 100% {
-        clip-path: var(--clip-four);
-      }
-    }
-  }
-  /* Desktop Nav End */
 
   /* Mobile Nav */
   .mobile-index-background{
@@ -501,187 +190,6 @@ img {
   }
   /* Mobile Nav End */
 
-  /* Index - Animation (no used) */
-  .index-anime {
-    --grid-color: #35a4f7;
-    position: relative;
-    height: calc(100vh - 80px);
-    width: 100vw;
-    background: radial-gradient(ellipse at center, #0b1f59 0%,#0f3c77 27%,#8b008b 95%);
-    @media (max-width: $screen-md) {
-      height: calc(100vh - 60px);
-      margin-top: 60px;
-    }
-    .horizon {
-      width: 104%;
-      height: 70%;
-      background-color: black;
-      z-index: 10;
-      border-bottom: solid 2px var(--grid-color);
-      box-shadow: inset 0 0 15px 2px var(--grid-color);
-      transform: translate(-2%,-10px);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-    .sun-shadow {
-      height: 20vh;
-      width: 20vh;
-      min-height: 160px;
-      min-width: 160px;
-      border-radius: 50%;
-      position: absolute;
-      top: 38%;
-      box-shadow: 0 0 300px 50px #4c4c77;
-      animation: dawn 3s ease-out 1 forwards;
-      @media (max-width: $screen-md) {
-        top: 25.7vh;
-      }
-    }
-    .sun {
-      height: 22vh;
-      width: 22vh;
-      min-height: 180px;
-      min-width: 180px;
-      background: url('./index-circle.png') center / 100% no-repeat;
-      position: absolute;
-      top: 36%;
-      animation: dawn 3s ease-out 1 forwards;
-      @media (max-width: $screen-md) {
-        top: 24.6vh;
-      }
-    }
-    .horizon > .inner {
-      position: relative;
-      animation: zoom-in 3s ease-out 1 forwards;  
-      padding-top: 5vh; 
-    }
-    .horizon > .inner > .index-anime__title {
-      font-family: 'Dela Suko Gothic One';
-      font-size: 6rem;
-      font-weight: normal;
-      color: #4c4c77;
-      filter: drop-shadow(0 0 3px white);
-      margin: 0;
-      position: relative;
-      -webkit-text-stroke: 2px #ddd;
-      @media (max-width: $screen-md) {
-        font-size: 4rem;
-      }
-    }
-    .horizon > .inner > .index-anime__subtitle {
-      font-size: 3.5rem;
-      font-family: var(--subtitle-font);
-      color: #fe05cb;
-      font-weight: normal;
-      margin: 0;
-      padding: 0;
-      position: absolute;
-      bottom: -3.53vh;
-      right: -3.53vh;
-      transform: rotate(-3deg);
-      filter: drop-shadow(4px 3px 0px #0f3c77);
-      animation: pulse 1.25s linear infinite forwards;
-      @media (max-width: $screen-md) {
-        font-size: 2.5rem;
-        bottom: -2.79vh;
-        right: -2.79vh;
-      }
-    }
-    .grid-container {
-      margin-top: -10px;
-      width: 100vw;
-      height: 31.5%;
-      overflow: hidden;
-      @media (max-width: $screen-md) {
-        height: 31.2%;
-      }
-    }
-    .anime-container {
-      width: 300%;
-      position: relative;
-      top: -1650px;
-      left: -100%;
-      transform-style: preserve-3d;
-      perspective-origin: bottom;
-      backface-visibility: visible;
-      display: none;
-      transform: scale(1);
-    }
-    .grid:nth-of-type(1) {
-      display: grid;
-      grid-template-rows: repeat(9, 1fr);
-      grid-template-columns: repeat(10, 1fr);
-      margin: 0 auto;
-      transform-origin: bottom;
-      transform: translate3d(0px,-12px,-340px) rotateX(15deg);
-    }
-    .grid:nth-of-type(2) {
-      display: grid;
-      grid-template-rows: repeat(9, 1fr);
-      grid-template-columns: repeat(10, 1fr);
-      margin: 0 auto;
-      transform-origin: bottom;
-      transform: translate3d(0,-5px,-170px) rotateX(15deg);
-    }
-    .grid:nth-of-type(3) {
-      display: grid;
-      grid-template-rows: repeat(9, 1fr);
-      grid-template-columns: repeat(10, 1fr);
-      margin: 0 auto;
-      transform-origin: bottom;
-      transform: rotateX(15deg);
-    }
-    .cell {
-      box-shadow: 0 0 15px 2px var(--grid-color);
-      height: 70px;
-      border: solid 2px var(--grid-color);
-      animation: sail 5s linear infinite forwards;
-    }
-    @keyframes sail {
-      0% {
-        transform: translateY(0);
-      }
-      100% {
-        transform: translateY(665px);
-      }
-    }
-  
-    @keyframes dawn {
-      0% {
-        transform: translate(0,-400px);
-      }
-      100% {
-        transform: translate(0,-110px);
-      }
-    }
-  
-    @keyframes zoom-in {
-      0% {
-        transform: translate(0,72px) scale(0.5);
-      }
-      100% {
-        transform: translate(0,102px) scale(1);
-      }
-    }
-  
-    @keyframes pulse {
-      0% {
-        transform: rotate(-3deg) scale(1);
-      }
-      89% {
-        transform: rotate(-3deg) scale(1);
-      }
-      90% {
-        transform: rotate(-3deg) scale(1.1);
-      }
-      100% {
-        transform: rotate(-3deg) scale(1);
-      }
-    }
-  }
-  /* Index - Animation End */
 
   /* Current Score */
   .curr-score {
@@ -756,7 +264,6 @@ img {
       justify-content: space-between;
       align-items: center;
       text-align: center;
-      font-family: "Gasoek One";
       font-weight: 400;
       line-height: 69.5px;
       font-size: 7rem;
@@ -790,58 +297,6 @@ img {
     }
   }
   /* Current Score End */
-
-  /* Snake */
-  .snake {
-    margin-top: 150px;
-    padding: 0 10%;
-    width: 100%;
-    height: 510px;
-    display: flex;
-    justify-content: center;
-    gap: 100px;
-    .game-container {
-      font-family: "Press Start 2P";
-      margin: 0px;
-      border: #003300 1px solid;
-      box-shadow: 0px 0px 20px black;
-      width: calc((30 * 15px) + 1px);
-    }
-    canvas {
-      display: block;
-    }
-    .link-container {
-      margin: 3% 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-evenly;
-    }
-    a {
-      height: 18%;
-      width: auto;
-      display: block;
-    }
-    a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 66px;
-      color: $yellow;
-    }
-    img {
-      height: 100%;
-    }
-    .fa-facebook {
-      font-size: 64px;
-    }
-    .fa-envelope {
-      font-size: 60px;
-    }
-    img {
-      padding: 13px;
-    }  
-  }
-  /* Snake End */
 
   /* Footer */
   .footer_back{
@@ -923,7 +378,6 @@ img {
           }
         }
         small{
-          font-family: sans-serif;
           font-weight: bold;
           display: inline-block;
           height: 2.5rem;
@@ -1076,7 +530,6 @@ img {
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-family: "CustomFont";
       z-index: 6;
       .game__info__name {
         margin: 0;
@@ -1506,7 +959,6 @@ img {
     }
   }
   .game-day {
-    font-family: "Gentium Book Plus", "Microsoft JhengHei";
     text-align: center;
     font-size: 1.5rem;
     margin-top: 1.5rem;
@@ -1523,7 +975,6 @@ img {
     margin-bottom: .4rem;
     position: relative;
     overflow: hidden;
-    font-family: "Gentium Book Plus", "CustomFont";
     @media (max-width: $screen-md) {
       height: 50vw;
     }
@@ -1693,7 +1144,6 @@ img {
         text-align: center;
         font-size: 1.7rem;
         font-weight: 900;
-        font-family: Noto Sans TC;
         letter-spacing: 0.25em;
         color: rgba(88, 188, 176, 1);
       }
@@ -1721,7 +1171,6 @@ img {
     }
     .about-content {
       margin: 2.5rem 0;
-      font-family: "Gentium Book Plus", "Microsoft JhengHei";
       font-weight: 400;
       text-align: justify;
     }
@@ -1730,7 +1179,6 @@ img {
       margin: 1rem 0;
       padding: 1rem;
       font-size: .9rem;
-      font-family: "CustomFont";
       text-align: left;
       .name-zh {
         font-weight: 700;
@@ -1780,7 +1228,6 @@ img {
         background-color: rgba(88, 188, 176, 1);
         p {
           margin: 2.5rem;
-          font-family: 'Genium Book Plus', 'Microsoft JhengHei';
           text-align: justify;
           font-size: 1.25rem;
           z-index: 1;
@@ -1834,7 +1281,6 @@ img {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-family: Noto Sans TC;
           font-size: 3rem;
           font-weight: 700;
           letter-spacing: 0.2em;
@@ -1871,7 +1317,6 @@ img {
           position: relative;
         }
         .name-zh {
-          font-family: Noto Sans TC;
           font-size: 1.5rem;
           font-weight: 700;
         }

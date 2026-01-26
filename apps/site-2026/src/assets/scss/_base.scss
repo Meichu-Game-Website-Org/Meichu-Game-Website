@@ -1,0 +1,109 @@
+@use "variables" as *;
+
+html {
+  font-size: 24px;
+}
+body {
+  font-family: "CustomFont" !important;
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+  background: $background;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  color: rgba(0,0,0,.8);
+  letter-spacing: 0.02rem;
+}
+a {
+  color: $text;
+  &:hover {
+    text-decoration: none;
+    color: $linked_text;
+  }
+}
+
+h1 {
+  font-weight: 700;
+  margin: 2rem 0;
+  font-size: 2.5rem;
+  color: $text;
+  letter-spacing: .1rem;
+  position: relative;
+  text-align: center;
+  i {
+    width: 3rem;
+    text-align: center;
+  }
+  @media (max-width: $screen-md) {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+}
+h2 {
+  font-weight: 700;
+  margin: 2rem 0;
+  font-size: 2rem;
+  color: $text;
+  letter-spacing: .1rem;
+  position: relative;
+  text-align: center;
+  i {
+    width: 3rem;
+    text-align: center;
+  }
+  @media (max-width: $screen-md) {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+  }
+}
+h3 {
+  font-weight: 700;
+  margin: 1rem 0;
+  font-size: 1.5rem;
+  color: $text;
+  letter-spacing: .1rem;
+  @media (max-width: $screen-md) {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  html, body {
+    font-size: 14px;
+  }
+}
+
+@font-face {
+  font-family: "Honghuang-SemiBold";
+  src: url("@meichu/assets/fonts/REEJI-HonghuangLiGB-SemiBold-2.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Honghuang-Black";
+  src: url("@meichu/assets/fonts/REEJI-HonghuangLiGB-Black-2.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Chiron Hei HK";
+  src: url("@meichu/assets/fonts/ChironHeiHKVF.ttf") format("truetype");
+}
+@font-face {
+  font-family: "CustomFont";
+  src: url("@meichu/assets/fonts/ChironHeiHKVF.ttf") format("truetype"),
+       local("微軟正黑體"), local("Microsoft JhengHei"), local("Heiti TC");
+}
+
+::-webkit-scrollbar {
+  width: 2px;               /* width of the entire scrollbar */
+  height: 2px;
+}
+::-webkit-scrollbar-track {
+  background: #fff;        /* color of the tracking area */
+}
+::-webkit-scrollbar-thumb {
+  background-color: #000;    /* color of the scroll thumb */
+  border-radius: 1px;       /* roundness of the scroll thumb */
+  // border: 3px solid #888;  /* creates padding around scroll thumb */
+}
+
+img {
+  max-width: 100%;
+}
