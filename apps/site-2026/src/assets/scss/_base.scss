@@ -23,9 +23,9 @@ a {
 }
 
 h1 {
-  font-weight: 700;
+  font-weight: 800;
   margin: 2rem 0;
-  font-size: 2.5rem;
+  font-size: 1.67rem;
   color: $text;
   letter-spacing: .1rem;
   position: relative;
@@ -40,9 +40,9 @@ h1 {
   }
 }
 h2 {
-  font-weight: 700;
+  font-weight: 800;
   margin: 2rem 0;
-  font-size: 2rem;
+  font-size: 1.33rem;
   color: $text;
   letter-spacing: .1rem;
   position: relative;
@@ -59,13 +59,54 @@ h2 {
 h3 {
   font-weight: 700;
   margin: 1rem 0;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: $text;
   letter-spacing: .1rem;
   @media (max-width: $screen-md) {
     font-size: 1rem;
   }
 }
+
+.title_bar{
+  position: relative;
+  width: 87%;
+  left: 6.5%;
+  border-bottom: 5px solid $text;
+  z-index: 5;
+  margin-bottom: 2.5rem;
+  @media (max-width: $screen-md) {
+    left: 20%;
+    width: 60%;
+    border-bottom: 4px solid $text;
+    margin-bottom: 1rem;
+  }
+}
+.page-fix-bg{
+  top: 0;
+  position: fixed;
+  object-fit: cover;
+  width: 30vw;
+  left: 50vw;
+  top: 50vh;
+  transform: translate(-50%,-50%);
+  z-index: 0;
+  // height: 100vh;
+}
+.page-fix-bg-container{
+  justify-content: center;
+  display: grid;
+  height: 100%;
+}
+.white_font{
+  color: $white;
+}
+.linked_font{
+  color: $white;
+  &:hover {
+    color: $linked_text;
+  }
+}
+
 
 @media (max-width: 768px) {
   html, body {
