@@ -148,15 +148,12 @@ $trail-length: 75%;
     animation: rotate 4s linear infinite;
     z-index: 0;
 
-    background: conic-gradient(transparent, $white $trail-length, transparent, $background);
+    background: conic-gradient(transparent, $primary $trail-length, transparent, $background);
     @at-root .status-nthu#{&} {
       background: conic-gradient(transparent, $nthu $trail-length, transparent, $background);
     }
     @at-root .status-nctu#{&} {
       background: conic-gradient(transparent, $nctu $trail-length, transparent, $background);
-    }
-    @at-root .status-draw#{&} {
-      background: conic-gradient(transparent, $brown $trail-length, transparent, $background);
     }
   }
   @keyframes rotate {
