@@ -145,11 +145,11 @@ export default {
       color: $linked_text;
     }
     &:hover {
-      text-shadow: 0 0 30px #FF0085;
+      text-shadow: 0 0 30px $linked_text;
       transform: scale(1.09);
       .nav-icon {
-        fill: #FF0085;
-        filter: drop-shadow(0 0 8px #FF0085);
+        fill: $linked_text;
+        filter: drop-shadow(0 0 8px $linked_text);
       }
     }
   }
