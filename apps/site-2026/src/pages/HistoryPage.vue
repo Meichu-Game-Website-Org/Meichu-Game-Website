@@ -1,8 +1,5 @@
 <template>
   <div class="history-page">
-    <div class="page-fix-bg-container">
-      <img src="@/assets/page-bg.png" class="page-fix-bg" alt="History Background" :style="{ width: '55vw', opacity: '0.75' }"/>
-    </div>
     <div class="row">
       <div class="col">
         <h1>歷史紀錄</h1>

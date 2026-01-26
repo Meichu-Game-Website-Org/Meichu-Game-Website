@@ -1,34 +1,12 @@
 <template>
   <div id="game">
-    <div class="page-fix-bg-container">
-      <img src="@/assets/page-bg.png" class="page-fix-bg" alt="Background" :style="{ width: '55vw', opacity: '0.75' }"/>
-    </div>
-    <div :class="'game__scoreboard status-' + game.status">
-      <div class="game__mask"></div>
-      
-
-      <!-- <div class="scoreboard-nctu-score" v-if="showScore">{{ game.score_nctu }}</div>
-      <div class="scoreboard-nthu-score" v-if="showScore">{{ game.score_nthu }}</div> -->
-
-      <div :class="'game__scoreboard__status game-status-' + game.status">
-        {{ GAME_STATUS[game.status] }}
-      </div>
-      
-      <div class="game__info">
-        <h1 class="game__info__name">{{ game.name }}</h1> 
-        <div class="game__info__item">
-          {{ moment(game.date).format('MM/DD') }} {{ game.time }}
-        </div>
-        <div class="game__info__item">
-          <a :href="game.location_url" class="game__location" title="在 Google Maps 中查看">{{ game.location }}</a>
-        </div>
-      </div>
-    </div>
+    
+    <Scoreboard :game="game" />
     
     <div class="game__information">
       <!-- Live -->
       <div class="game-block">
-        <h2>轉播資訊</h2>
+        <h1>轉播資訊</h1>
         <div class="title_bar"/>
         <template v-if="game.is_live">
           <div class="iframe_block">
@@ -45,101 +23,41 @@
         </template>
       </div>
       <!-- Live END -->
-      <!-- Record -->
-      <div class="game-block" v-if="game.is_record">
-        <h2>分場紀錄</h2>
-        <div class="title_bar"/>
-        <div class="record-row" v-if="game.is_record">
-          <table class="record">
-            <thead>
-              <tr>
-                <th class="head">＃</th>
-                <th class="head record-team-nctu">
-                  <span class="normal">{{ game.team_nctu.name }}</span>
-                  <div class="short">陽明交大</div>
-                </th>
-                <th class="head record-team-nthu">
-                  <span class="normal">{{ game.team_nthu.name }}</span>
-                  <div class="short">清大</div>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr :key="record.id" v-for="record in game.records">
-                <td class="head">{{ record.name }}</td>
-                <td>{{ record.score_nctu }}</td>
-                <td>{{ record.score_nthu }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <!-- Record END -->
+
       <!-- Entry Info -->
       <div class="game-block">
-        <h2>入場須知</h2>
+        <h1>入場須知</h1>
         <div class="title_bar"/>
-        <p class="text-box pre-text ">{{ game.info_entry }}</p>
+        <p class="text-box article-body">{{ game.info_entry }}</p>
       </div>
       <!-- Entry Info END -->
+
       <!-- Rule -->
       <div class="game-block">
-        <h2>賽事規則</h2>
+        <h1>賽事規則</h1>
         <div class="title_bar"/>
-        <p class="text-box pre-text ">{{ game.info_rule }}</p>
+        <p class="text-box article-body">{{ game.info_rule }}</p>
       </div>
       <!-- Rule End -->
+
       <!-- Team -->
       <div class="game-block" v-if="slug != 'opening' && slug != 'closing'">
         <h2>隊伍介紹</h2>
         <div class="title_bar"/>
         <div class="row">
-          <div class="col-12 col-md-6" v-if="game.team_nctu">
-            <section class="team-box team1">
-              <img :src="game.team_nctu.photo" class="team-photo" alt="">
-              <div class="team-content">
-                <h3><b>{{ game.team_nctu.name }}</b></h3>
-                <p class="pre-text">{{ game.team_nctu.intro }}</p>
-                <div class="team-link">
-                  <a :href="game.team_nctu.link_facebook" v-if="game.team_nctu.link_facebook" target="_blank" class="team-link-item">
-                    <i class="fab fa-facebook"></i> Facebook
-                  </a>
-                  <a :href="game.team_nctu.link_instagram" v-if="game.team_nctu.link_instagram" target="_blank" class="team-link-item">
-                    <i class="fab fa-instagram"></i> Instagram
-                  </a>
-                  <a :href="game.team_nctu.link_website" v-if="game.team_nctu.link_website" target="_blank" class="team-link-item">
-                    <i class="fas fa-link"></i> 網站
-                  </a>
-                </div>
-              </div>
-            </section>
-          </div>
           <div class="col-12 col-md-6" v-if="game.team_nthu">
-            <section class="team-box team2">
-              <img :src="game.team_nthu.photo" class="team-photo" alt="">
-              <div class="team-content">
-                <h3 class="team-name">{{ game.team_nthu.name }}</h3>
-                <p class="pre-text">{{ game.team_nthu.intro }}</p>
-                <div class="team-link">
-                  <a :href="game.team_nthu.link_facebook" v-if="game.team_nthu.link_facebook" target="_blank" class="team-link-item">
-                    <i class="fab fa-facebook"></i> Facebook
-                  </a>
-                  <a :href="game.team_nthu.link_instagram" v-if="game.team_nthu.link_instagram" target="_blank" class="team-link-item">
-                    <i class="fab fa-instagram"></i> Instagram
-                  </a>
-                  <a :href="game.team_nthu.link_website" v-if="game.team_nthu.link_website" target="_blank" class="team-link-item">
-                    <i class="fas fa-link"></i> 網站
-                  </a>
-                </div>
-              </div>
-            </section>
+            <TeamCard :team="game.team_nthu" variant="nthu" />
+          </div>
+          <div class="col-12 col-md-6" v-if="game.team_nctu">
+            <TeamCard :team="game.team_nctu" variant="nctu" />
           </div>
         </div>
       </div>
       <!-- Team END -->
+
       <!-- Announcement & Report -->
       <div class="game-block">
-        <h2>相關公告 / 媒體報導</h2>
+        <h1>相關公告 / 媒體報導</h1>
         <div class="title_bar"/>
         <div class="row" style="width: 100vw; margin-left: 0;" v-if="game.news && game.news.length">
           <div style="width: 100vw;" :key="news.id" v-for="news in game.news">
@@ -162,82 +80,31 @@
         <div v-else align=center>尚無相關消息</div>
       </div>
       <!-- Announcement & Report END -->
-      <!-- History Record -->
-      <div class="game-block" v-if="slug != 'opening' && slug != 'closing'">
-        <h2>歷史對戰紀錄</h2>
-        <div class="title_bar"/>
-        <div class="stat" v-if="game.score_old_draw || game.score_old_nctu || game.score_old_nthu">
-          <div class="stat-nctu">
-            <span class="number-nctu" align="right">
-              <i>{{ statNCTU }} </i><small>%</small>
-            </span>
-            <span class="stat-content" align="right">陽明交通大學<br>
-              {{ game.score_old_nctu }} 勝場
-              <template v-if="game.score_old_draw > 0">{{ game.score_old_draw }} 平手</template>
-            </span>
-          </div>
-          <div class="stat-bar">
-            <div class="bar-item bar-nctu" :style="'width: ' + statNCTU + '%'"></div>
-            <div class="bar-item bar-draw" :style="'width: ' + (100-statNCTU-statNTHU) + '%'"></div>
-            <div class="bar-item bar-nthu" :style="'width: ' + statNTHU + '%'"></div>
-            <span class="bar-desc">* 截至甲辰梅竹（2024）</span>
-          </div>
-          <div class="stat-nthu">
-            <span class="number-nthu" align="left">
-              <i>{{ statNTHU }} </i><small>%</small>
-            </span>
-            <span class="stat-content" align="left">清華大學<br>
-              {{ game.score_old_nthu }} 勝場
-              <template v-if="game.score_old_draw > 0">{{ game.score_old_draw }} 平手</template>
-            </span>
-          </div>
-        </div>
 
-        <div class="stat" v-else>
-          <div class="stat-nctu">
-            <span class="number-nctu">
-              <small>---%</small>
-            </span>
-            <span class="stat-content">陽明交通大學</span>
-            <span class="stat-content">
-              0 勝場
-            </span>
-          </div>
-          <div class="stat-bar">
-            <span class="bar-first">本屆為該賽第一場</span>
-          </div>
-          <div class="stat-nthu">
-            <span class="number-nthu">
-              ---<small>%</small>
-            </span>
-            <span class="stat-content">清華大學</span>
-            <span class="stat-content">
-              0 勝場
-            </span>
-          </div>
-        </div>
-      </div>
+      <!-- History Record -->
+      <GameHistory :game="game" :slug="slug" />
       <!-- History Record END -->
-      <div class="to-game-list">
-        <router-link :to="{name: 'game-list-2026'}" class="cybr-btn" custom v-slot="{ navigate }">
-          <button @click="navigate" role="link">
-            <div style="z-index:-2;">查看所有賽事</div>
-            <div class="cybr-btn__glitch">查看所有賽事</div>
-          </button>
-        </router-link>
-      </div>
+      <BackToGameListBtn />
     </div>
   </div>
 </template>
 
 <script>
 
-import moment from 'moment'
 import { Game as GameApi } from '@meichu/services'
-import {GAME_STATUS} from '@/utils'
+import Scoreboard from '@/components/Scoreboard.vue'
+import TeamCard from '@/components/TeamCard.vue'
+import GameHistory from '@/components/GameHistory.vue'
+import BackToGameListBtn from '@/components/BackToGameListBtn.vue'
 
 export default {
   name: 'game-show-2026',
+  components: {
+    Scoreboard,
+    TeamCard,
+    GameHistory,
+    BackToGameListBtn
+  },
   scrollToTop() {
     window.scrollTo(0,0);
   },
@@ -251,32 +118,13 @@ export default {
   data: function() {
     return {
       slug: null,
-      game: {},
-      moment,
-      GAME_STATUS
+      game: {}
     }
   },
 
   created() {
     this.slug = this.$route.params.slug
     this.fetch()
-  },
-
-  computed: {
-    showScore() {
-      return this.game.status == 'running' ||
-             this.game.status == 'pause' ||
-             this.game.status == 'nctu' ||
-             this.game.status == 'nthu' ||
-             this.game.status == 'draw' ||
-             this.game.status == 'end'
-    },
-    statNCTU() {
-      return Number.parseFloat(100*(this.game.score_old_nctu / (this.game.score_old_nctu + this.game.score_old_nthu + this.game.score_old_draw))).toFixed(0)
-    },
-    statNTHU() {
-      return Math.min(Number.parseFloat(100*(this.game.score_old_nthu / (this.game.score_old_nctu + this.game.score_old_nthu + this.game.score_old_draw))).toFixed(0), 100-this.statNCTU)
-    },
   },
 
   methods: {
@@ -297,3 +145,41 @@ export default {
 }
 
 </script>
+
+<style scoped lang="scss">
+/* Game - Common */
+#game {
+  height: auto;
+  @media (max-width: $screen-md) {
+    padding-top: 60px;
+  }
+  .text-box {
+    margin: 0 6.5%;
+  }
+  .align-center {
+    text-align: center;
+  }
+  .game__information{
+    position: relative;
+    padding: 15vh 0 5rem 0;
+    width: 100vw;
+    @media (max-width: $screen-md) {
+      padding: 5vh 0 5rem 0;
+      top: 0;
+    }
+  }
+  .iframe_block{
+    margin: 20px 6.5vw;
+    width: 87%;
+    aspect-ratio: 16 / 9;
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.game-block {
+  margin: 2rem 1rem 5rem 1rem;
+}
+</style>

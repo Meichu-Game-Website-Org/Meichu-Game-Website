@@ -1,11 +1,8 @@
 <template>
   <div class="footer">
-    <!-- <div class="footer_back">
-      <img src="@/assets/2022/背景2_素材.svg" class="banner__image" alt="" />
-    </div> -->
     <div class="container">
       <div class="footer__logo">
-        <img src="@/assets/2025-meichu-prep-logo.png" alt="乙巳梅籌logo"/>
+        <img src="@/assets/2026-meichu-prep-logo.png" alt="乙巳梅籌logo"/>
       </div>
       <div class="row row-cols-2 row-cols-lg-4">
         <div class="col">
