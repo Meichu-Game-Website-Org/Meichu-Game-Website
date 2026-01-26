@@ -15,22 +15,22 @@
     <nav :class="{'mobile-nav': true, 'mobile-nav--active': navToggle}">
       <ul class="mobile-nav__ul">
         <li class="mobile-nav__li">
-          <router-link class="mobile-nav__link" :to="{name: 'index-2025'}">
+          <router-link class="mobile-nav__link" :to="{name: 'index-2026'}">
             首頁
           </router-link>
         </li>
         <li class="mobile-nav__li">
-          <router-link class="mobile-nav__link" :to="{name: 'game-list-2025'}">
+          <router-link class="mobile-nav__link" :to="{name: 'game-list-2026'}">
             賽事
           </router-link>
         </li>
         <li class="mobile-nav__li">
-          <router-link class="mobile-nav__link" :to="{name: 'about-2025'}">
+          <router-link class="mobile-nav__link" :to="{name: 'about-2026'}">
             關於
           </router-link>
         </li>
         <li class="mobile-nav__li">
-          <router-link class="mobile-nav__link" :to="{name: 'history-2025'}">
+          <router-link class="mobile-nav__link" :to="{name: 'history-2026'}">
             歷史
           </router-link>
         </li>
@@ -59,7 +59,7 @@
 import skrollr from 'skrollr';
 
 export default {
-  name: 'header-2025',
+  name: 'header-2026',
 
   data() {
     return {
@@ -78,7 +78,6 @@ export default {
     handleScroll(event) {
       event.preventDefault(); // 如果需要阻止默認行為，這行代碼可以保留
       const navbar = document.querySelector('.mobile-header');
-      // const navLinks = document.querySelectorAll('a.nav-item.nav-link__bg');
 
       if (window.scrollY > 0) {
         navbar.classList.add('mobile-header--active');

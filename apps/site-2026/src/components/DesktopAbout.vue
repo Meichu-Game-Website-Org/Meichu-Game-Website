@@ -28,7 +28,7 @@
               <img src="@/assets/about-purple-cross.png" alt="Purple">
               <div>相關單位</div>
             </div>
-            <img src="@/assets/about-org.png" alt="2025 Meichu">
+            <img src="@/assets/about-org.png" alt="2026 Meichu">
           </div>
           <div class="org-content">
             <div class="name-zh">主辦單位 / 梅竹籌備委員會</div>

@@ -3,69 +3,44 @@
     <nav>
       <div class="nav">
         <div class="nav-icon">
-          <router-link class="" :to="{name: 'index-2025'}">
-            <img src="@/assets/2025-logo.png" class="nav-logo" alt="">
+          <router-link class="" :to="{name: 'index-2026'}">
+            <img src="@/assets/2026-logo.svg" class="nav-logo" alt="">
           </router-link>
         </div>
         <div class="nav-content">
           <div class="nav-item">
-            <router-link class="nav-link" :to="{name: 'index-2025'}" custom v-slot="{ navigate }">
+            <router-link class="nav-link" :to="{name: 'index-2026'}" custom v-slot="{ navigate }">
               <button @click="navigate" role="link" class="transparent-button">首頁</button>
             </router-link>
-            <router-link class="nav-link__bg" :to="{name: 'index-2025'}">
-              首頁
-            </router-link>
           </div>
           <div class="nav-item">
-            <router-link class="nav-link" :to="{name: 'game-list-2025'}" custom v-slot="{ navigate }">
+            <router-link class="nav-link" :to="{name: 'game-list-2026'}" custom v-slot="{ navigate }">
               <button @click="navigate" role="link" class="transparent-button">賽事</button>
-            </router-link>
-            <router-link class="nav-link__bg" :to="{name: 'game-list-2025'}">
-              賽事
-            </router-link>          
+            </router-link>        
           </div>
           <div class="nav-item">
-            <router-link class="nav-link" :to="{name: 'about-2025'}" custom v-slot="{ navigate }">
+            <router-link class="nav-link" :to="{name: 'about-2026'}" custom v-slot="{ navigate }">
               <button @click="navigate" role="link" class="transparent-button">關於</button>
             </router-link>
-            <router-link class="nav-link__bg" :to="{name: 'about-2025'}">
-              關於
-            </router-link>
           </div>
           <div class="nav-item">
-            <router-link class="nav-link" :to="{name: 'history-2025'}" custom v-slot="{ navigate }">
+            <router-link class="nav-link" :to="{name: 'history-2026'}" custom v-slot="{ navigate }">
               <button @click="navigate" role="link" class="transparent-button">歷史</button>
-            </router-link>
-            <router-link class="nav-link__bg" :to="{name: 'history-2025'}">
-              歷史
             </router-link>
           </div>
           <div class="nav-item">
             <a href="https://drive.google.com/drive/folders/1dExG8EBZiznedirvdd5vhJIwrgLIAsch?usp=sharing" class="nav-link schoolteam">
-              獎勵辦法與<br/>梅竹法規
-            </a>
-            <a href="https://drive.google.com/drive/folders/1dExG8EBZiznedirvdd5vhJIwrgLIAsch?usp=sharing" class="nav-link__bg schoolteam">
-              獎勵辦法與<br/>梅竹法規
-            </a>
-          </div>
-          <div class="nav-item">
-            <a href="https://web.facebook.com/MeiChuGamePreparatoryCommittee/" class="nav-link">
-              <!-- <i class="fab fa-facebook"></i> -->
-              Facebook
-            </a>
-            <a href="https://web.facebook.com/MeiChuGamePreparatoryCommittee/" class="nav-link__bg">
-              <!-- <i class="fab fa-facebook"></i> -->
-              Facebook
+              獎勵辦法<br/>與梅竹法規
             </a>
           </div>
           <div class="nav-item">
             <a href="https://www.instagram.com/meichu_prep_cmte/" class="nav-link">
-              <!-- <i class="fab fa-instagram"></i>  -->
-              Instagram
+              <img src="@/assets/instagram.svg" alt="icon" class="nav-icon">
             </a>
-            <a href="https://www.instagram.com/meichu_prep_cmte/" class="nav-link__bg">
-              <!-- <i class="fab fa-instagram"></i>  -->
-              Instagram
+          </div>
+          <div class="nav-item">
+            <a href="https://web.facebook.com/MeiChuGamePreparatoryCommittee/" class="nav-link">
+              <img src="@/assets/facebook.svg" alt="icon" class="nav-icon">
             </a>
           </div>
         </div>
@@ -94,7 +69,6 @@ export default {
   methods: {
     handleScroll() {
       const navbar = document.querySelector('.desktop-nav nav .nav');
-      // const navLinks = document.querySelectorAll('a.nav-item.nav-link__bg');
 
       if (window.scrollY > 0) {
         navbar.classList.add('navbar-gb');
@@ -106,8 +80,89 @@ export default {
 }
 </script>
 
-<style>
-.navbar-gb {
-  background-color: rgba(26, 26, 26); /* 你可以根據需要調整背景顏色 */
+<style scoped lang="scss">
+.desktop-nav {
+  display: block;
+  width: 100%;
+  height: max-content;
+  transition: transform 2s ease-in;
+
+  @media (max-width: $screen-md) {
+    display: none;
+  }
+}
+.nav {
+  z-index: 30;
+  position: fixed;
+  width: 100%;
+  padding: 2vw 3vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  &.navbar-gb {
+    background-color: rgba(26, 26, 26);
+  }
+
+  .nav-icon {
+    display: block;
+  }
+  .nav-logo{
+    position: relative;
+    width: 15vw;
+    max-width: 150px;
+  }
+  .nav-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4vw;
+  }
+  .nav-item {
+    position: relative;
+    text-align: center;
+    justify-content: center;
+    a {
+      text-decoration: none;
+    }
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white;
+    font-size: .83rem;
+    padding: 0;
+    font-weight: 800;
+    border-bottom: 3px solid transparent;
+    @media (max-width: $screen-lg) {
+      font-size: .83rem;
+    }
+    @media (max-width: $screen-md) {
+      font-size: 1.5rem;
+    }
+    &.router-link-exact-active {
+      color: $linked_text;
+    }
+    &:hover {
+      text-shadow: 0 0 30px #FF0085;
+      transform: scale(1.09);
+      .nav-icon {
+        fill: #FF0085;
+        filter: drop-shadow(0 0 8px #FF0085);
+      }
+    }
+  }
+  .transparent-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+  .schoolteam {
+    font-size: .75rem;
+    line-height: 100%;
+    margin: 2px 0;
+  }
 }
 </style>

@@ -6,9 +6,7 @@
       <img src="@/assets/index-cover-mobile.png" alt="Cover Image" v-if="!isDesktop">
       <img src="@/assets/index-cover-mobile-bg.png" alt="" v-if="!isDesktop" class="cover-bg">
     </div>
-    <template v-if="isDesktop">
-      <Snake />
-    </template>
+
     <CurrScore />
   </div>
 </template>
@@ -16,15 +14,13 @@
 <script>
 
 import CurrScore from '@/components/CurrScore.vue'
-// import IndexAnime from '@/components/IndexAnime.vue'
-import Snake from '@/components/Snake.vue'
 import { Option as OptionApi } from '@meichu/services'
 
 export default {
   name: 'index',
 
   metaInfo: {
-    title: '乙巳梅竹 | 2025 Meichu Games',
+    title: '乙巳梅竹 | 2026 Meichu Games',
     titleTemplate: '%s',
   },
 
@@ -37,7 +33,6 @@ export default {
 
   components: {
     CurrScore,
-    Snake
   },
 
   computed: {

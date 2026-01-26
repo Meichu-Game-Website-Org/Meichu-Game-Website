@@ -1,44 +1,44 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import axios from 'axios'
 
-import AppView2025 from '@/pages/AppView.vue'
-import IndexPage2025 from '@/pages/IndexPage.vue'
-import GameShowPage2025 from '@/pages/GameShowPage.vue'
-import GameListPage2025 from '@/pages/GameListPage.vue'
-import AboutPage2025 from '@/pages/AboutPage.vue'
-import HistoryPage2025 from '@/pages/HistoryPage.vue'
+import AppView2026 from '@/pages/AppView.vue'
+import IndexPage2026 from '@/pages/IndexPage.vue'
+import GameShowPage2026 from '@/pages/GameShowPage.vue'
+import GameListPage2026 from '@/pages/GameListPage.vue'
+import AboutPage2026 from '@/pages/AboutPage.vue'
+import HistoryPage2026 from '@/pages/HistoryPage.vue'
 
 axios.defaults.withCredentials = true
 
 const routes = [
   {
     path: '/2026/',
-    component: AppView2025,
+    component: AppView2026,
     children: [{
       path: '',
-      name: 'index-2025',
-      component: IndexPage2025,
+      name: 'index-2026',
+      component: IndexPage2026,
       meta: { keepAlive: true }
     },
     {
       path: 'game/:slug',
-      name: 'game-show-2025',
-      component: GameShowPage2025
+      name: 'game-show-2026',
+      component: GameShowPage2026
     },
     {
       path: 'game',
-      name: 'game-list-2025',
-      component: GameListPage2025
+      name: 'game-list-2026',
+      component: GameListPage2026
     },
     {
       path: 'about',
-      name: 'about-2025',
-      component: AboutPage2025
+      name: 'about-2026',
+      component: AboutPage2026
     },
     {
       path: 'history',
-      name: 'history-2025',
-      component: HistoryPage2025
+      name: 'history-2026',
+      component: HistoryPage2026
     }
     ]
   }

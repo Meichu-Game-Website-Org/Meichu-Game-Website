@@ -1,5 +1,5 @@
 <template>
-  <div id="meichu2025">
+  <div id="meichu2026">
     <MobileNav></MobileNav>
     <Nav></Nav>
     <div class="main">
@@ -17,7 +17,7 @@
 
 
 <script>
-import "@/assets/styles-2025.scss"
+import "@/assets/styles-2026.scss"
 import Footer from '@/components/Footer.vue'
 import Nav from '@/components/Nav.vue'
 import MobileNav from '@/components/MobileNav.vue'
@@ -52,13 +52,13 @@ export default {
       this.isIn = true
     }, 1500)
     document.body.classList = []
-    document.body.classList.add('meichu2025')
+    document.body.classList.add('meichu2026')
   },
 
   watch: {
     '$route.name'() {
       document.body.classList = []
-      document.body.classList.add('meichu2025')
+      document.body.classList.add('meichu2026')
     }
   }
 }

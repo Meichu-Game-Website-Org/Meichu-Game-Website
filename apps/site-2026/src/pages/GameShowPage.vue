@@ -219,7 +219,7 @@
       </div>
       <!-- History Record END -->
       <div class="to-game-list">
-        <router-link :to="{name: 'game-list-2025'}" class="cybr-btn" custom v-slot="{ navigate }">
+        <router-link :to="{name: 'game-list-2026'}" class="cybr-btn" custom v-slot="{ navigate }">
           <button @click="navigate" role="link">
             <div style="z-index:-2;">查看所有賽事</div>
             <div class="cybr-btn__glitch">查看所有賽事</div>
@@ -237,7 +237,7 @@ import { Game as GameApi } from '@meichu/services'
 import {GAME_STATUS} from '@/utils'
 
 export default {
-  name: 'game-show-2025',
+  name: 'game-show-2026',
   scrollToTop() {
     window.scrollTo(0,0);
   },

@@ -80,7 +80,7 @@
         </div>
       </div>
       <div class="footer__copyright">
-        Copyright © 2025 乙巳梅竹賽籌備委員會<br>
+        Copyright © 2026 乙巳梅竹賽籌備委員會<br>
         Designed by <a class="linked_font" target="_blank" href="https://iamannsu.wixsite.com/my-site">EnYi</a>. Built by <a class="linked_font" target="_blank" href="https://github.com/Sean20405">Sean</a><br>
         <div class="prev-website">
           <a href="/2025/" class="linked_font">

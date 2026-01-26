@@ -1,6 +1,6 @@
 <template>
   <div :class="'game-item status-' + game.status" v-if="game">
-    <router-link :to="{ name: 'game-show-2025', params: {slug: game.item.slug} }" class="game-item__link"></router-link>
+    <router-link :to="{ name: 'game-show-2026', params: {slug: game.item.slug} }" class="game-item__link"></router-link>
     <div class="game-item__mask"></div>
     <img :src="game.photo" class="game-item__photo" alt="">
     <div class="game-item__content">
@@ -26,7 +26,7 @@
 // import { Game as GameApi } from '@meichu/services'
 
 export default {
-  name: 'game-item-2025',
+  name: 'game-item-2026',
 
   props: ['game'],
 
