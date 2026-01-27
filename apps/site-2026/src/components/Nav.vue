@@ -99,6 +99,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: background-color 0.5s ease;
   
   &.navbar-gb {
     background-color: rgba(26, 26, 26);

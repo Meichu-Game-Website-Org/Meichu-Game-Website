@@ -1,18 +1,23 @@
 <template>
   <div class="curr-score">
-    <div class="curr-score__title">正式賽當前積點</div>
+    <h1>正式賽當前積點</h1>
+    <div class="title_bar"/>
     <div class="curr-score__score">
       <div class="score__school">
-        <img src="@/assets/panda.png" alt="熊貓"/>
+        <img src="@/assets/index-score-panda.png" alt="熊貓"/>
         <div>清華大學</div>
       </div>
       <div class="score__score">
-        <div class="left">{{ this.score['nthu'] }}</div>
+        <div class="left">
+          <ScoreNumber :value="this.score['nthu']" />
+        </div>
         <div class="center">:</div>
-        <div class="right">{{ this.score['nctu'] }}</div>
+        <div class="right">
+          <ScoreNumber :value="this.score['nctu']" />
+        </div>
       </div>
       <div class="score__school">
-        <img src="@/assets/fox.png" alt="狐狸"/>
+        <img src="@/assets/index-score-fox.png" alt="狐狸"/>
         <div>陽明交通大學</div>
       </div>
     </div>
@@ -21,9 +26,14 @@
 
 <script>
 import { Game as GameApi } from '@meichu/services'
+import ScoreNumber from '@/components/ScoreNumber.vue'
 
 export default {
   name: 'curr-score',
+  
+  components: {
+      ScoreNumber
+  },
 
   data: function() {
     return {
@@ -59,3 +69,91 @@ export default {
 </script>
 
 
+<style lang="scss" scoped>
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.curr-score {
+  padding: 100px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .curr-score__score {
+    padding: 0 10%;
+    display: flex;
+    justify-content: space-between;
+    @media (max-width: $screen-md) {
+      padding: 0 5%;
+    }
+  }
+  .score__school {
+    img {
+      width: 18vw;
+      @media (max-width: $screen-md) {
+        width: 50vw;
+      }
+    }
+    div {
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-align: center;
+      font-size: 1.33rem;
+      @media (max-width: $screen-xl) {
+        font-size: 1.5rem;
+      }
+      @media (max-width: $screen-lg) {
+        font-size: 1.2rem;
+      }
+      @media (max-width: $screen-sm) {
+        font-size: .8rem;
+      }
+    }
+  }
+  .score__score {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    font-weight: 800;
+    line-height: normal;
+
+    font-size: 5.3rem;
+    @media (max-width: $screen-xl) {
+      font-size: 6rem;
+    }
+    @media (max-width: $screen-lg) {
+      font-size: 4.5rem;
+    }
+    @media (max-width: $screen-md) {
+      gap: 2rem;
+      font-size: 4rem;
+    }
+    @media (max-width: $screen-sm) {
+      gap: 1rem;
+      font-size: 2rem;
+    }
+    .left {
+      margin-right: auto;
+      text-align: right;
+      height: 1.5em; /* Ensure height for SVG */
+      display: flex;
+      align-items: center;
+    }
+    .right {
+      margin-left: auto;
+      text-align: left;
+      height: 1.5em; /* Ensure height for SVG */
+      display: flex;
+      align-items: center;
+    }
+    .center {
+      margin: 0 auto;
+      animation: blink 2s infinite ease-in-out;
+    }
+  }
+}
+</style>

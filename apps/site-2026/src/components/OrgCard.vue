@@ -8,7 +8,7 @@
         <div style="margin-bottom:2px;">{{ desc }} </div>
         <div v-for="link in links" :key="link.link">
           <a :href="link.link">
-            <img src="@/assets/compass.svg" alt="icon" v-if="link.type=='website'">
+            <img src="@/assets/website-icon.svg" alt="icon" v-if="link.type=='website'">
             <img src="@/assets/facebook.svg" alt="icon" v-if="link.type=='facebook'">
             <img src="@/assets/instagram.svg" alt="icon" v-if="link.type=='instagram'" :style="{ 'padding': '0 1px' }">
             {{ link.text }}

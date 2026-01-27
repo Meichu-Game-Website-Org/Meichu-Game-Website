@@ -95,7 +95,7 @@
           </a>｜ 
           <a href="/2021/" class="linked_font">
             辛丑梅竹
-          </a>｜ 
+          </a>
         </div>
       </div>
     </div>

@@ -38,7 +38,7 @@
               <div class="desc">
                 <div>由兩校學生所組成，負責梅竹賽事之籌辦。</div>
                 <a href="https://meichu.games/">
-                  <img src="@/assets/compass.svg" alt="icon">
+                  <img src="@/assets/website-icon.svg" alt="icon">
                   官方網站
                 </a>
                 <a href="https://www.facebook.com/MeiChuGamePreparatoryCommittee/">
@@ -64,7 +64,7 @@
                 <div class="links">
                   <div>
                     <a href="http://www.nycu.edu.tw/">
-                      <img src="@/assets/compass.svg" alt="icon">
+                      <img src="@/assets/website-icon.svg" alt="icon">
                       官方網站
                     </a>
                     <a href="https://www.facebook.com/YangMingChiaoTung/">
@@ -74,11 +74,11 @@
                   </div>
                   <div>
                     <a href="https://osa.nycu.edu.tw/activity-ct/">
-                      <img src="@/assets/compass.svg" alt="icon">
+                      <img src="@/assets/website-icon.svg" alt="icon">
                       課外活動輔導二組
                     </a>
                     <a href="https://peo.nycu.edu.tw/">
-                      <img src="@/assets/compass.svg" alt="icon">
+                      <img src="@/assets/website-icon.svg" alt="icon">
                       體育室
                     </a>
                   </div>
@@ -104,7 +104,7 @@
                 <div class="links">
                   <div>
                     <a href="http://www.nthu.edu.tw/">
-                      <img src="@/assets/compass.svg" alt="icon">
+                      <img src="@/assets/website-icon.svg" alt="icon">
                       官方網站
                     </a>
                     <a href="https://www.facebook.com/nthu.tw/">
@@ -114,11 +114,11 @@
                   </div>
                   <div>
                     <a href="http://dsa.site.nthu.edu.tw/">
-                      <img src="@/assets/compass.svg" alt="icon">
+                      <img src="@/assets/website-icon.svg" alt="icon">
                       課外活動組
                     </a>
                     <a href="https://nthupeo.site.nthu.edu.tw/">
-                      <img src="@/assets/compass.svg" alt="icon">
+                      <img src="@/assets/website-icon.svg" alt="icon">
                       體育室
                     </a>
                   </div>
