@@ -58,7 +58,7 @@ export default {
       line1: "",
       line2: "",
       cursorLine: 1,
-      visible: true,
+      visible: !window.hasPlayedIndexAnime,
       step: 1,
       typingSpeed: 400, // ms per char
       acceleratedTypingSpeed: 40,
@@ -67,6 +67,7 @@ export default {
     }
   },
   mounted() {
+    if (!this.visible) return;
     // Prevent background scrolling while animation is active
     document.body.style.overflow = 'hidden';
     this.startTyping();
@@ -139,6 +140,7 @@ export default {
     finish() {
       this.visible = false;
       document.body.style.overflow = '';
+      window.hasPlayedIndexAnime = true;
       this.$emit('finish');
     }
   }
