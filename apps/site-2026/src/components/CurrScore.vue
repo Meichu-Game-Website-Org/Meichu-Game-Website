@@ -82,7 +82,7 @@ export default {
   justify-content: center;
 
   @media (max-width: $screen-md) {
-    padding: 100px 0 50px 0;
+    padding: 0;
   }
 
   .curr-score__score {

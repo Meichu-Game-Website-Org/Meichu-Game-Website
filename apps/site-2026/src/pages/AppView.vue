@@ -70,7 +70,7 @@ export default {
   overflow-x: hidden;
   padding-top: 110px;
   @media (max-width: $screen-md) {
-    padding-top: 0;
+    padding-top: 100px;
   }
 }
 </style>
