@@ -1,14 +1,16 @@
 <template>
-  <div :class="{'mobile-header': true, 'mobile-header--active': navToggle}">
-    <div class="mobile-header__left">
-      <!-- <router-link :to="{name: 'index-2022'}">
-        <img src="@/assets/2022/logo-h.svg" alt="壬寅梅竹 | 2021 Meichu Games" class="logo">
-      </router-link> -->
-    </div>
+  <div :class="{'mobile-header': true, 'mobile-header--active': isScrolled, 'mobile-header--open': navToggle}">
+    <div class="mobile-header__row">
+      <div class="mobile-header__left">
+        <router-link :to="{name: 'index-2026'}">
+          <img src="@/assets/2026-logo.svg" alt="丙午梅竹 | 2026 Meichu Games" class="logo">
+        </router-link>
+      </div>
 
-    <div class="mobile-header__right">
-      <div class="mobile-header__toggle" @click="navToggle = !navToggle">
-        <i class="fas fa-bars fa-xs"></i>
+      <div class="mobile-header__right">
+        <div class="mobile-header__toggle" @click="navToggle = !navToggle">
+          <i class="fas fa-bars fa-xs"></i>
+        </div>
       </div>
     </div>
 
@@ -41,12 +43,12 @@
         </li>
         <li class="mobile-nav__li">
           <a href="https://web.facebook.com/MeiChuGamePreparatoryCommittee/" target="_blank" class="mobile-nav__link">
-            <i class="fab fa-facebook"></i>&nbsp;Facebook
+            Facebook
           </a>
         </li>
         <li class="mobile-nav__li">
           <a href="https://www.instagram.com/meichu_prep_cmte/" target="_blank" class="mobile-nav__link">
-            <i class="fab fa-instagram"></i>&nbsp;Instagram
+            Instagram
           </a>
         </li>
       </ul>
@@ -63,27 +65,22 @@ export default {
 
   data() {
     return {
-      navToggle: false
+      navToggle: false,
+      isScrolled: false
     }
   },
   mounted() {
     skrollr.init();
-    window.addEventListener('scroll', this.handleScroll, { passive: false });
+    window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll();
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll);
   },
 
   methods: {
-    handleScroll(event) {
-      event.preventDefault(); // 如果需要阻止默認行為，這行代碼可以保留
-      const navbar = document.querySelector('.mobile-header');
-
-      if (window.scrollY > 0) {
-        navbar.classList.add('mobile-header--active');
-      } else {
-        navbar.classList.remove('mobile-header--active');
-      }
+    handleScroll() {
+      this.isScrolled = window.scrollY > 0;
     }
   },
 
@@ -95,3 +92,94 @@ export default {
 }
 
 </script>
+
+<style scoped lang="scss">
+.mobile-header--active {
+  transition: .5s all cubic-bezier(0.15, 0.82, 0.165, 1);
+}
+.mobile-header--open {
+  transition: .5s all cubic-bezier(0.15, 0.82, 0.165, 1);
+}
+.mobile-header {
+  position: fixed;
+  width: 100%;
+  z-index: 50;
+  @media (min-width: $screen-md) {
+    display: none;
+  }
+  .mobile-header__row {
+    width: 100%;
+    height: 60px;
+    padding: 40px 4rem 40px 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  .logo {
+    width: auto;
+    vertical-align: middle;
+    height: 60px;
+    padding: 1.5rem 0;
+    display: block;
+  }
+  .mobile-header__left {
+    display: flex;
+    align-items: center;
+  }
+  .mobile-header__right {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .mobile-header__toggle {
+    font-size: 2rem;
+    text-align: center;
+    .fas {
+      width: 60%;
+      height: auto;
+    }
+  }
+  .mobile-nav {
+    display: block;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    bottom: auto;
+    width: 100%;
+    visibility: hidden;
+    opacity: 0;
+    transition: 1s all cubic-bezier(0.15, 0.82, 0.165, 1);
+    z-index: 50;
+    transform: translateX(100%);
+    @media (min-width: $screen-md) {
+      display: none;
+    }
+    &.mobile-nav--active {
+      visibility: visible;
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .mobile-nav__ul {
+      list-style: none;
+      margin: 0;
+      padding: 1rem 2rem;
+      background: #90074ECC;
+      border-bottom: 1px solid #90074ECC;
+      overflow: auto;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+    .mobile-nav__link {
+      display: block;
+      width: auto;
+      font-size: 1.67rem;
+      font-weight: 700;
+      text-align: center;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      padding: .35rem 0;
+    }
+  }
+}
+</style>
