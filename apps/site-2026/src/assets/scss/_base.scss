@@ -1,5 +1,7 @@
 @use "variables" as *;
 
+@import '~bootstrap/dist/css/bootstrap-grid.css';
+
 html {
   font-size: 24px;
 }
@@ -85,7 +87,7 @@ h3 {
   @media (max-width: $screen-md) {
     left: 15%;
     width: 70%;
-    border-bottom: 4px solid $text;
+    border-bottom: 2px solid $text;
     margin-bottom: 1.5rem;
   }
 }

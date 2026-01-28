@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import "@/assets/styles-2026.scss"
 import Footer from '@/components/Footer.vue'
 import MobileFooter from '@/components/MobileFooter.vue'
 import Nav from '@/components/Nav.vue'

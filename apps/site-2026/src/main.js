@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+import "@/assets/scss/_base.scss"
 import moment from 'moment'
 import axios from 'axios'
 import router from './router.js'
