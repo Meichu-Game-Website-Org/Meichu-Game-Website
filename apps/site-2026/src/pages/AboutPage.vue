@@ -15,7 +15,7 @@ export default {
 
   metaInfo: {
     title: '關於梅竹',
-    titleTemplate: '%s | 乙巳梅竹',
+    titleTemplate: '%s | 丙午梅竹',
   },
 
   components: {
