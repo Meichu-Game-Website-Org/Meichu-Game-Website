@@ -63,3 +63,14 @@ export default {
   }
 }
 </script>
+
+<style scoped lang="scss">
+.main {
+  width: 100%;
+  overflow-x: hidden;
+  padding-top: 110px;
+  @media (max-width: $screen-md) {
+    padding-top: 0;
+  }
+}
+</style>
