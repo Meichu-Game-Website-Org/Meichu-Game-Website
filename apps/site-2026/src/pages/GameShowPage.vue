@@ -179,6 +179,27 @@ export default {
   }
 }
 
+.news {
+  justify-content: center;
+  text-align: center;
+  padding-top: 7%;
+  padding-left: 5%;
+  padding-right: 5%;
+  .news-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    a {
+      color: $primary;
+      &:hover {
+        color: $light;
+      }
+    }
+  }
+  .news-meta {
+    font-size: .9rem;
+  }
+}
+
 .game-block {
   margin: 2rem 1rem 5rem 1rem;
 }

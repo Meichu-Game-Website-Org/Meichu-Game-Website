@@ -5,17 +5,6 @@
 @import '~bootstrap/dist/css/bootstrap-grid.css';
 
 #meichu2026 {
-  background: $background;
-  color: $text;
-  overflow-x: hidden;
-
-  .game-list{
-    position: relative;
-    @media (max-width: $screen-md) {
-      padding-top: 60px;
-    }
-  }
-
   /* Mobile Nav */
   .mobile-index-background{
     z-index: 5;
@@ -106,27 +95,6 @@
   }
   /* Mobile Nav End */
 
-  .news {
-    justify-content: center;
-    text-align: center;
-    padding-top: 7%;
-    padding-left: 5%;
-    padding-right: 5%;
-    .news-title {
-      font-size: 1.5rem;
-      font-weight: 700;
-      a {
-        color: $primary;
-        &:hover {
-          color: $light;
-        }
-      }
-    }
-    .news-meta {
-      font-size: .9rem;
-    }
-  }
-  
   /* Mobile About */
   .hazard-line {
     color: white;
