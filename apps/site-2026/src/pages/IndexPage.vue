@@ -100,7 +100,7 @@ export default {
     height: 100vh;
     img {
       position: relative;
-      // margin-top: -5vw;
+      margin-top: -2vw;
       width: 100%;
       height: 100%;
       object-fit: cover;
