@@ -71,9 +71,9 @@ export default {
       const navbar = document.querySelector('.desktop-nav nav .nav');
 
       if (window.scrollY > 0) {
-        navbar.classList.add('navbar-gb');
+        navbar.classList.add('navbar-bg');
       } else {
-        navbar.classList.remove('navbar-gb');
+        navbar.classList.remove('navbar-bg');
       }
     }
   }
@@ -101,8 +101,8 @@ export default {
   align-items: center;
   transition: background-color 0.5s ease;
   
-  &.navbar-gb {
-    background-color: rgba(26, 26, 26);
+  &.navbar-bg {
+    background-color: $background;
   }
 
   .nav-icon {
