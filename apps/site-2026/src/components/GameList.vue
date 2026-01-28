@@ -1,46 +1,41 @@
 <template>
 
   <div>
-    <div class="row">
-      <div class="col">
-        <h1>所有賽事</h1>
-        <div class="title-bar">
-        </div>
-        <Loading v-if="isLoading" />
-        <div class="game-row" v-if="!isLoading">
-          <div class="game-col">
-            <h3 class="game-day">03/06 (五)</h3>
-            <GameItem :game="games['opening']" />
-            <GameItem :game="games['billiard']" />
-            <GameItem :game="games['soccer']" />
-            <GameItem :game="games['women-table-tennis']" />
-            <GameItem :game="games['kendo']" />
-            <GameItem :game="games['table-tennis']" />
-            <GameItem :game="games['badminton']" />
-          </div>
-          <div class="game-col">
-            <h3 class="game-day">03/07 (六)</h3>
-            <GameItem :game="games['bridge']" />
-            <GameItem :game="games['chess']" />
-            <GameItem :game="games['go']" />
-            <GameItem :game="games['women-tennis']" />
-            <GameItem :game="games['tennis']" />
-            <GameItem :game="games['women-basketball']" />
-            <GameItem :game="games['men-basketball']" />
-          </div>
-          <div class="game-col">
-            <h3 class="game-day">03/08 (日)</h3>
-            <GameItem :game="games['bridge']" />
-            <GameItem :game="games['archery']" />
-            <GameItem :game="games['softball']" />
-            <GameItem :game="games['men-volleyball']" />
-            <GameItem :game="games['women-volleyball']" />
-            <GameItem :game="games['closing']" />
+    <h1>所有賽事</h1>
+    <div class="title-bar"/>
+    <Loading v-if="isLoading" />
+    <div class="game-row" v-if="!isLoading">
+      <div class="game-col">
+        <h3 class="game-day">03/06 (五)</h3>
+        <GameItem :game="games['opening']" />
+        <GameItem :game="games['billiard']" />
+        <GameItem :game="games['soccer']" />
+        <GameItem :game="games['women-table-tennis']" />
+        <GameItem :game="games['kendo']" />
+        <GameItem :game="games['table-tennis']" />
+        <GameItem :game="games['badminton']" />
+      </div>
+      <div class="game-col">
+        <h3 class="game-day">03/07 (六)</h3>
+        <GameItem :game="games['bridge']" />
+        <GameItem :game="games['chess']" />
+        <GameItem :game="games['go']" />
+        <GameItem :game="games['women-tennis']" />
+        <GameItem :game="games['tennis']" />
+        <GameItem :game="games['women-basketball']" />
+        <GameItem :game="games['men-basketball']" />
+      </div>
+      <div class="game-col">
+        <h3 class="game-day">03/08 (日)</h3>
+        <GameItem :game="games['bridge']" />
+        <GameItem :game="games['archery']" />
+        <GameItem :game="games['softball']" />
+        <GameItem :game="games['men-volleyball']" />
+        <GameItem :game="games['women-volleyball']" />
+        <GameItem :game="games['closing']" />
 
-            <h3 class="game-day">03/15 (日)</h3>
-            <GameItem :game="games['baseball']" />
-          </div>
-        </div>
+        <h3 class="game-day">03/15 (日)</h3>
+        <GameItem :game="games['baseball']" />
       </div>
     </div>
   </div>
@@ -111,8 +106,11 @@ export default {
     background-color: $background;
     @media (max-width: $screen-md) {
       width: 100%;
-      margin: 0 0 2.65vw 0;
+      margin: 0 0 2rem 0;
       padding: 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
     }
   }
 }

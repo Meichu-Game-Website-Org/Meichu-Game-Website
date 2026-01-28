@@ -98,12 +98,15 @@ $trail-length: 75%;
     left: 0;
     width: 100%;
     height: 100%;
-    padding: .4rem .6rem;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     line-height: 1.9;
     z-index: 5;
+    @media (max-width: $screen-md) {
+      padding: 15px;
+    }
   }
   .game-item__info {
     z-index: 6;
@@ -130,6 +133,12 @@ $trail-length: 75%;
     font-weight: 700;
     font-size: .83rem;
     line-height: 1;
+    @media (max-width: $screen-md) {
+      font-size: 1.8rem;
+    }
+    @media (max-width: $screen-sm) {
+      font-size: 1.33rem;
+    }
   }
 
   &:hover {

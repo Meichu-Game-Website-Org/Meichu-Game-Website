@@ -59,9 +59,9 @@
       <div class="game-block">
         <h1>相關公告 / 媒體報導</h1>
         <div class="title-bar"/>
-        <div class="row" style="width: 100vw; margin-left: 0;" v-if="game.news && game.news.length">
-          <div style="width: 100vw;" :key="news.id" v-for="news in game.news">
-            <section class="news" style="width: 100vw;">
+        <div class="row" style="width: 100%; margin-left: 0;" v-if="game.news && game.news.length">
+          <div style="width: 100%;" :key="news.id" v-for="news in game.news">
+            <section class="news" style="width: 100%;">
               <h3 class="news-title">
                 <a :href="news.link" v-if="news.type_of == 'link' || news.type_of == 'news'">
                   {{ news.title }}
@@ -162,7 +162,7 @@ export default {
   .game__information{
     position: relative;
     padding: 15vh 0 5rem 0;
-    width: 100vw;
+    width: 100%;
     @media (max-width: $screen-md) {
       padding: 5vh 0 5rem 0;
       top: 0;
