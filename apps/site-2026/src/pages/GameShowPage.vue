@@ -150,11 +150,11 @@ export default {
 /* Game - Common */
 #game {
   height: auto;
-  @media (max-width: $screen-md) {
-    padding-top: 60px;
-  }
   .text-box {
     margin: 0 6.5%;
+    @media (max-width: $screen-md) {
+      margin: 0 16%;
+    }
   }
   .align-center {
     text-align: center;

@@ -48,21 +48,22 @@ export default {
   margin-bottom: 1rem;
   height: 100%;
   @media (max-width: $screen-md) {
+    width: 75%;
     height: auto;
   }
 }
 .team1 {
-  background-color: rgba($nctu, 0.3);
+  background-color: rgba($nthu, 0.3);
   margin: 0 0 0 10%;
   @media (max-width: $screen-md) {
-    margin: 1rem 2rem;
+    margin: 1rem auto;
   }
 }
 .team2 {
-  background-color: rgba($nthu, 0.3);
+  background-color: rgba($nctu, 0.3);
   margin: 0 10% 0 0;
   @media (max-width: $screen-md) {
-    margin: 1rem 2rem;
+    margin: 1rem auto;
   }
 }
 .team-photo {
@@ -72,12 +73,22 @@ export default {
   object-fit: cover;
   border-radius: 10px;
   margin: 7% auto 0;
+  @media (max-width: $screen-md) {
+    width: 80%;
+    margin: 10% auto 0;
+  }
 }
 .team-content {
-  padding: 1.5rem;
+  padding: 7%;
+  @media (max-width: $screen-md) {
+    padding: 10%;
+  }
 }
 .team-name {
-    font-weight: 800;
+  font-weight: 800;
+  @media (max-width: $screen-md) {
+    font-size: 1.17rem;
+  }
 }
 .team-link {
   padding: .75rem 1.5rem;

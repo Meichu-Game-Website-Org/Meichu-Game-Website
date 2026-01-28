@@ -1,6 +1,7 @@
 <template>
   <div :class="'game__scoreboard status-' + game.status" v-if="game && game.name">
-    <img src="@/assets/game-scoreboard-bg.svg" alt="bg" class="game__scoreboard__bg" />
+    <img src="@/assets/game-scoreboard-bg.svg" alt="bg" class="game__scoreboard__bg --desktop" />
+    <img src="@/assets/game-scoreboard-bg-mobile.svg" alt="bg" class="game__scoreboard__bg --mobile" />
     
     <div class="game__scoreboard__status">
       {{ GAME_STATUS[game.status] }}
@@ -49,7 +50,7 @@ export default {
   top: 15vh;
   margin: 0 10vw;
   @media (max-width: $screen-md) {
-    height: 23vh;
+    height: auto;
     top: 0;
   }
 }
@@ -65,6 +66,18 @@ export default {
   height: auto;
   left: 0;
   z-index: 6;
+  &.--mobile {
+    display: none;
+  }
+  @media (max-width: $screen-md) {
+    &.--desktop {
+      display: none;
+    }
+    &.--mobile {
+      display: block;
+      position: relative;
+    }
+  }
 }
 .game__info {
   position: absolute;
@@ -85,19 +98,28 @@ export default {
     line-height: 1;
     padding: .5rem 0;
     @media (max-width: $screen-lg) {
-      font-size: 3.5rem;
+      font-size: 2rem;
     }
     @media (max-width: $screen-md) {
-      font-size: 2.5rem;
-      padding: .5rem 0;
+      font-size: 3rem;
+      padding: 1rem 0;
+    }
+    @media (max-width: $screen-sm) {
+      font-size: 2rem;
+      padding: 1rem 0;
     }
   }
   .game__info__item {
     display: block;
     color: $white;
     font-weight: 600;
+    text-align: center;
+    margin: 0 10%;
     @media (max-width: $screen-md) {
-      font-size: 1rem;
+      font-size: 1.5rem;
+    }
+    @media (max-width: $screen-sm) {
+      font-size: 13px;
     }
     i {
       width: 2rem;
@@ -117,13 +139,12 @@ export default {
   top: 0;
   padding: 1.5rem;
   line-height: 1;
-  @media (max-width: $screen-lg) {
-    font-size: 1.5rem;        
-  }
   @media (max-width: $screen-md) {
-    font-size: 1rem;
-    bottom: auto;
-    top: 0;
+    font-size: 11px;
+    font-weight: 800;
+    right: 5%;
+    bottom: 5%;
+    top: auto;
     padding: 1rem;
   }
 }

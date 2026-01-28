@@ -28,6 +28,11 @@
   border: none;
   outline: none;
   box-shadow: 1px 1px 10px 0px rgba(255, 255, 255, 0.1);
+
+  @media (max-width: $screen-md) {
+    width: 140px;
+    height: 50px;
+  }
 }
 
 .border-layer {
@@ -63,6 +68,10 @@
   color: #fff;
   font-size: 1.25rem;
   font-weight: 600;
+
+  @media (max-width: $screen-md) {
+    font-size: 14pxm;
+  }
 }
 
 // 註冊自定義屬性以便讓角度可以被動畫化
