@@ -19,7 +19,6 @@ export default {
     align-items: center;
     justify-content: center;
     gap: 50px;
-    font-size: 1.5rem;
 }
 
 .spinner {
