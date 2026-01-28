@@ -78,7 +78,7 @@
         </div>
       </div>
       <div class="footer__copyright">
-        Copyright © 2026 乙巳梅竹賽籌備委員會<br>
+        Copyright © 2026 丙午梅竹賽籌備委員會<br>
         Designed by YuChi Huang. Built by <a class="linked_font" target="_blank" href="https://github.com/Sean20405">Sean</a><br>
         <div class="prev-website">
           <a href="/2025/" class="linked_font">
@@ -104,6 +104,7 @@
 
 <style scoped lang="scss">
 .footer {
+  display: block;
   text-align: center;
   font-size: .67rem;
   color: $text;
@@ -111,8 +112,7 @@
   padding: 3rem 0;
   position: relative;
   @media (max-width: $screen-md) {
-    margin-left: 0;
-    margin-top: 0rem;
+    display: none;
   }
   .container{
     padding-left: 5vw;

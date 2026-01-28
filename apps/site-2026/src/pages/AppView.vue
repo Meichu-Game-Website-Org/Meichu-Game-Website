@@ -10,15 +10,15 @@
     </div>
     <footer>
       <Footer></Footer>
+      <MobileFooter></MobileFooter>
     </footer>
   </div>
-
 </template>
-
 
 <script>
 import "@/assets/styles-2026.scss"
 import Footer from '@/components/Footer.vue'
+import MobileFooter from '@/components/MobileFooter.vue'
 import Nav from '@/components/Nav.vue'
 import MobileNav from '@/components/MobileNav.vue'
 
@@ -35,6 +35,7 @@ export default {
 
   components: {
     Footer,
+    MobileFooter,
     Nav,
     MobileNav
   },
