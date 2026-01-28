@@ -70,11 +70,6 @@ export default {
   },
   mounted() {
     skrollr.init();
-    window.addEventListener('scroll', this.handleScroll);
-    this.handleScroll();
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll);
   },
 
   methods: {
