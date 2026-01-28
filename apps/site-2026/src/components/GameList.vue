@@ -34,7 +34,7 @@
         <GameItem :game="games['women-volleyball']" />
         <GameItem :game="games['closing']" />
 
-        <h3 class="game-day">03/15 (日)</h3>
+        <h3 class="game-day special-day">03/15 (日)</h3>
         <GameItem :game="games['baseball']" />
       </div>
     </div>
@@ -122,6 +122,11 @@ export default {
   position: relative;
   @media (max-width: $screen-md) {
     font-size: 1.15rem;
+  }
+}
+.special-day {
+  @media (max-width: $screen-md) {
+    margin-top: 3.5rem;
   }
 }
 </style>
