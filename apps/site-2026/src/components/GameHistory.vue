@@ -1,7 +1,7 @@
 <template>
   <div class="game-block" v-if="slug != 'opening' && slug != 'closing'">
     <h1>歷史對戰紀錄</h1>
-    <div class="title_bar"/>
+    <div class="title-bar"/>
     <div class="stat" v-if="game.score_old_draw || game.score_old_nctu || game.score_old_nthu">
       <div class="stat-nthu">
         <span class="number-nthu">

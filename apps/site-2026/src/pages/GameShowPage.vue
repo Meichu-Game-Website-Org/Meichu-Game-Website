@@ -7,7 +7,7 @@
       <!-- Live -->
       <div class="game-block">
         <h1>轉播資訊</h1>
-        <div class="title_bar"/>
+        <div class="title-bar"/>
         <template v-if="game.is_live">
           <div class="iframe_block">
             <iframe :src="game.live_url" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen/>
@@ -27,7 +27,7 @@
       <!-- Entry Info -->
       <div class="game-block">
         <h1>入場須知</h1>
-        <div class="title_bar"/>
+        <div class="title-bar"/>
         <p class="text-box article-body">{{ game.info_entry }}</p>
       </div>
       <!-- Entry Info END -->
@@ -35,7 +35,7 @@
       <!-- Rule -->
       <div class="game-block">
         <h1>賽事規則</h1>
-        <div class="title_bar"/>
+        <div class="title-bar"/>
         <p class="text-box article-body">{{ game.info_rule }}</p>
       </div>
       <!-- Rule End -->
@@ -43,7 +43,7 @@
       <!-- Team -->
       <div class="game-block" v-if="slug != 'opening' && slug != 'closing'">
         <h2>隊伍介紹</h2>
-        <div class="title_bar"/>
+        <div class="title-bar"/>
         <div class="row">
           <div class="col-12 col-md-6" v-if="game.team_nthu">
             <TeamCard :team="game.team_nthu" variant="nthu" />
@@ -58,7 +58,7 @@
       <!-- Announcement & Report -->
       <div class="game-block">
         <h1>相關公告 / 媒體報導</h1>
-        <div class="title_bar"/>
+        <div class="title-bar"/>
         <div class="row" style="width: 100vw; margin-left: 0;" v-if="game.news && game.news.length">
           <div style="width: 100vw;" :key="news.id" v-for="news in game.news">
             <section class="news" style="width: 100vw;">

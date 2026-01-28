@@ -4,7 +4,7 @@
       <img src="@/assets/about-circle.png" alt="Circle">
     </div>
     <h1>關於</h1>
-    <div class="title_bar"/>
+    <div class="title-bar"/>
 
     <div class="about-section">
       <div class="about-title">

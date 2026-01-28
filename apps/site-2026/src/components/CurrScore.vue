@@ -1,7 +1,7 @@
 <template>
   <div class="curr-score">
     <h1>正式賽當前積點</h1>
-    <div class="title_bar"/>
+    <div class="title-bar"/>
     <div class="curr-score__score">
       <div class="score__school">
         <img src="@/assets/index-score-panda.png" alt="熊貓"/>

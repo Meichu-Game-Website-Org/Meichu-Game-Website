@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col">
         <h1>歷史紀錄</h1>
-        <div class="title_bar"/>
+        <div class="title-bar"/>
         <Loading v-if="isLoading"/>
         <div class="history-center" v-if="!isLoading">
           <table class="record history-table">

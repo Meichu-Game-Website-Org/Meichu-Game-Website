@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col">
         <h1>所有賽事</h1>
-        <div class="title_bar">
+        <div class="title-bar">
         </div>
         <Loading v-if="isLoading" />
         <div class="game-row" v-if="!isLoading">
