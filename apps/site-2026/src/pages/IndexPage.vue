@@ -4,8 +4,6 @@
 
     <div class="cover">
       <img src="@/assets/index-cover-desktop.png" alt="Cover Image" v-if="isDesktop">
-      <!-- <img src="@/assets/index-cover-mobile.png" alt="Cover Image" v-if="!isDesktop">
-      <img src="@/assets/index-cover-mobile-bg.png" alt="" v-if="!isDesktop" class="cover-bg"> -->
     </div>
 
     <CurrScore />
@@ -97,10 +95,10 @@ export default {
   .cover {
     position: relative;
     width: 100vw;
-    height: 100vh;
+    height: auto;
     img {
       position: relative;
-      margin-top: -2vw;
+      margin-top: -30px;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -109,13 +107,8 @@ export default {
         margin-top: 0;
       }
     }
-    .cover-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+    @media (max-width: $screen-md) {
+      display: none;
     }
   }
 
@@ -140,14 +133,23 @@ export default {
     font-family: "Noto Serif TC";
     min-height: 1.5em; 
     white-space: nowrap; // Keep text on one line if possible
+
+    @media (max-width: $screen-md) {
+      font-size: 2rem;
+    }
     
     @media (max-width: $screen-sm) {
+      font-size: 1.5rem;
       white-space: normal; // Allow wrap on small screens if needed, but 'clamp' usually handles size
       word-break: break-all;
     }
 
     &:nth-child(2) {
       margin-left: 10em;
+
+      @media (max-width: $screen-sm) {
+        margin-left: 5em;
+      }
     }
   }
 }

@@ -13,6 +13,11 @@ body {
   -webkit-font-smoothing: antialiased;
   color: $text;
 }
+@media (max-width: $screen-md) {
+  html, body {
+    font-size: 12px;
+  }
+}
 a {
   color: $text;
   &:hover {
@@ -32,9 +37,16 @@ h1 {
     width: 3rem;
     text-align: center;
   }
-  @media (max-width: $screen-md) {
-    font-size: 1.5rem;
+  @media (max-width: $screen-lg) {
+    font-size: 1.25rem;
     margin: 1rem 0;
+  }
+  @media (max-width: $screen-md) {
+    font-size: 2rem;
+    margin: 1rem 0;
+  }
+  @media (max-width: $screen-sm) {
+    font-size: 1.5rem;
   }
 }
 h2 {
@@ -92,13 +104,6 @@ h3 {
   white-space: pre-wrap;
   word-wrap: break-word;
   word-break: break-all;
-}
-
-
-@media (max-width: 768px) {
-  html, body {
-    font-size: 14px;
-  }
 }
 
 @font-face {
