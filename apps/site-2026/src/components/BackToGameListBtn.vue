@@ -48,10 +48,13 @@
   background: conic-gradient(
     from var(--angle),
     $nctu 0%,
-    $nthu 50%,
+    $nctu 15%,
+    $nthu 35%,
+    $nthu 65%,
+    $nctu 85%,
     $nctu 100%
   );
-  animation: rotate-border 3.2s linear infinite; // 800ms * 4 個狀態 = 3.2s
+  animation: rotate-border 3.2s linear infinite;
 }
 
 .btn-text {
@@ -65,13 +68,17 @@
 // 註冊自定義屬性以便讓角度可以被動畫化
 @property --angle {
   syntax: '<angle>';
-  initial-value: 0deg;
+  initial-value: 90deg;
   inherits: false;
 }
 
 @keyframes rotate-border {
-  to {
-    --angle: 360deg;
-  }
+  0% { --angle: 90deg; }
+  26% { --angle: 300deg; }
+  45% { --angle: 220deg; }
+  50% { --angle: 240deg; }
+  76% { --angle: 480deg; }
+  95% { --angle: 400deg; }
+  100% { --angle: 420deg; }
 }
 </style>
