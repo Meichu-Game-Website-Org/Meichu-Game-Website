@@ -1,56 +1,64 @@
 <template>
   <transition name="fade">
-    <div 
-      v-if="visible" 
-      class="index-anime" 
-      :class="{ 'is-accelerated': isAccelerated }"
-      @wheel="accelerate" 
-      @touchmove="accelerate" 
-      @click="accelerate"
-    >
-      <transition name="fade">
-        <div v-if="step >= 2" class="bg-image"></div>
-      </transition>
+    <div v-if="visible">
+      <div 
+        v-if="!isMobile" 
+        class="index-anime" 
+        :class="{ 'is-accelerated': isAccelerated }"
+        @wheel="accelerate" 
+        @touchmove="accelerate" 
+        @click="accelerate"
+      >
+        <transition name="fade">
+          <div v-if="step >= 2" class="bg-image"></div>
+        </transition>
 
-      <transition name="slide-left">
-        <img v-if="step >= 4" class="anime-panda" src="@/assets/index-anime-panda.png" />
-      </transition>
+        <transition name="slide-left">
+          <img v-if="step >= 4" class="anime-panda" src="@/assets/index-anime-panda.png" />
+        </transition>
 
-      <transition name="slide-right">
-        <img v-if="step >= 3" class="anime-fox" src="@/assets/index-anime-fox.png" />
-      </transition>
+        <transition name="slide-right">
+          <img v-if="step >= 3" class="anime-fox" src="@/assets/index-anime-fox.png" />
+        </transition>
 
-      <transition name="fade">
-        <div v-if="step >= 5" class="anime-mask"></div>
-      </transition>
+        <transition name="fade">
+          <div v-if="step >= 5" class="anime-mask"></div>
+        </transition>
 
-      <transition name="fade">
-        <img v-if="step >= 6" class="anime-text" src="@/assets/index-anime-text.svg" />
-      </transition>
+        <transition name="fade">
+          <img v-if="step >= 6" class="anime-text" src="@/assets/index-anime-text.svg" />
+        </transition>
 
-      <transition name="fade">
-        <div v-if="step === 1" class="anime-container">
-          <div class="ghost-container">
-            <div class="text-line">{{ text1 }}</div>
-            <div class="text-line">{{ text2 }}</div>
-          </div>
-          <div class="typing-container">
-            <div class="text-line">
-              {{ line1 }}<span v-if="cursorLine === 1" class="cursor"></span>
+        <transition name="fade">
+          <div v-if="step === 1" class="anime-container">
+            <div class="ghost-container">
+              <div class="text-line">{{ text1 }}</div>
+              <div class="text-line">{{ text2 }}</div>
             </div>
-            <div class="text-line">
-              {{ line2 }}<span v-if="cursorLine === 2" class="cursor"></span>
+            <div class="typing-container">
+              <div class="text-line">
+                {{ line1 }}<span v-if="cursorLine === 1" class="cursor"></span>
+              </div>
+              <div class="text-line">
+                {{ line2 }}<span v-if="cursorLine === 2" class="cursor"></span>
+              </div>
             </div>
           </div>
-        </div>
-      </transition>
+        </transition>
+      </div>
+      <index-anime-mobile v-else @finish="finish" />
     </div>
   </transition>
 </template>
 
 <script>
+import IndexAnimeMobile from './IndexAnimeMobile.vue';
+
 export default {
   name: 'IndexAnime',
+  components: {
+    IndexAnimeMobile
+  },
   data() {
     return {
       text1: "丙心不懈，熊勢如虹驚八方",
@@ -63,14 +71,21 @@ export default {
       typingSpeed: 400, // ms per char
       acceleratedTypingSpeed: 40,
       timer: null,
-      isAccelerated: false
+      isAccelerated: false,
+      isMobile: false
     }
   },
   mounted() {
+    this.isMobile = window.innerWidth <= 768;
+
     if (!this.visible) return;
     // Prevent background scrolling while animation is active
     document.body.style.overflow = 'hidden';
-    this.startTyping();
+    
+    if (!this.isMobile) {
+      this.startTyping();
+    }
+    
     window.addEventListener('keydown', this.handleKeydown);
   },
   beforeUnmount() {
@@ -85,6 +100,8 @@ export default {
       }
     },
     accelerate() {
+       if (this.isMobile) return;
+
        this.isAccelerated = true;
        if (this.timer) clearTimeout(this.timer);
 
@@ -123,7 +140,8 @@ export default {
       }
     },
     runNextStep() {
-      if (this.step < 6) {
+      const maxSteps = 6;
+      if (this.step < maxSteps) {
         this.step++;
         
         let delay = 1000;
@@ -132,7 +150,7 @@ export default {
         this.timer = setTimeout(() => {
           this.isAccelerated = false;
           this.runNextStep();
-        }, delay);
+        }, this.isAccelerated ? this.acceleratedTypingSpeed : delay);
       } else {
         this.finish();
       }
