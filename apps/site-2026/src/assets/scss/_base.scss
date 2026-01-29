@@ -6,7 +6,7 @@ html {
   font-size: 24px;
 }
 body {
-  font-family: "CustomFont" !important;
+  font-family: $font-family !important;
   margin: 0;
   padding: 0;
   font-size: 24px;
@@ -112,23 +112,18 @@ h3 {
   }
 }
 
-@font-face {
-  font-family: "Honghuang-SemiBold";
-  src: url("@meichu/assets/fonts/REEJI-HonghuangLiGB-SemiBold-2.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Honghuang-Black";
-  src: url("@meichu/assets/fonts/REEJI-HonghuangLiGB-Black-2.ttf") format("truetype");
-}
-@font-face {
-  font-family: "Chiron Hei HK";
-  src: url("@meichu/assets/fonts/ChironHeiHKVF.ttf") format("truetype");
-}
-@font-face {
-  font-family: "CustomFont";
-  src: url("@meichu/assets/fonts/ChironHeiHKVF.ttf") format("truetype"),
-       local("微軟正黑體"), local("Microsoft JhengHei"), local("Heiti TC");
-}
+// @font-face {
+//   font-family: "Honghuang-SemiBold";
+//   src: url("@meichu/assets/fonts/REEJI-HonghuangLiGB-SemiBold-2.ttf") format("truetype");
+// }
+// @font-face {
+//   font-family: "Honghuang-Black";
+//   src: url("@meichu/assets/fonts/REEJI-HonghuangLiGB-Black-2.ttf") format("truetype");
+// }
+// @font-face {
+//   font-family: "Chiron Hei HK";
+//   src: url("@meichu/assets/fonts/ChironHeiHKVF.ttf") format("truetype");
+// }
 
 ::-webkit-scrollbar {
   width: 2px;               /* width of the entire scrollbar */
