@@ -215,6 +215,10 @@ export default {
     font-family: "Noto Serif TC";
     min-height: 1.5em; 
     white-space: nowrap; // Keep text on one line if possible
+
+    @media (max-width: $screen-lg) {
+      font-size: 1.75rem;
+    }
     
     @media (max-width: $screen-sm) {
       white-space: normal; // Allow wrap on small screens if needed, but 'clamp' usually handles size
@@ -286,19 +290,21 @@ export default {
 
 .anime-panda {
   position: absolute;
-  left: 12%;
-  bottom: 0;
-  height: 80vh;
-  z-index: 6;
+  right: calc(50% - 22vw);
+  top: 9%;
+  // bottom: 0;
+  height: 109vh;
+  z-index: 5;
   object-fit: contain;
   pointer-events: none;
 }
 
 .anime-fox {
   position: absolute;
-  right: 12%;
-  bottom: 0;
-  height: 80vh;
+  left: calc(50% - 20vw);
+  top: -6%;
+  // bottom: 0;
+  height: 120vh;
   z-index: 6;
   object-fit: contain;
   pointer-events: none;
@@ -316,6 +322,9 @@ export default {
 
 .anime-text {
   position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   height: 67.5%;
   z-index: 8;
   pointer-events: none;
