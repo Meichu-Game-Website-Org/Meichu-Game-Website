@@ -14,11 +14,11 @@
         </transition>
 
         <transition name="slide-left">
-          <img v-if="step >= 4" class="anime-panda" src="@/assets/index-anime-panda.png" />
+          <img v-if="step >= 4" class="anime-panda" src="@/assets/index-anime-panda.webp" />
         </transition>
 
         <transition name="slide-right">
-          <img v-if="step >= 3" class="anime-fox" src="@/assets/index-anime-fox.png" />
+          <img v-if="step >= 3" class="anime-fox" src="@/assets/index-anime-fox.webp" />
         </transition>
 
         <transition name="fade">
@@ -278,7 +278,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("@/assets/index-anime-bg.png");
+  background-image: url("@/assets/index-anime-bg.webp");
   background-size: cover;
   background-position: center;
   z-index: 5;

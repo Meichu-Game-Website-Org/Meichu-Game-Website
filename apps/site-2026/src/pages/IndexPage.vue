@@ -3,7 +3,7 @@
     <IndexAnime />
 
     <div class="cover">
-      <img src="@/assets/index-cover-desktop.png" alt="Cover Image" v-if="isDesktop">
+      <img src="@/assets/index-cover-desktop.webp" alt="Cover Image" v-if="isDesktop">
     </div>
 
     <CurrScore />

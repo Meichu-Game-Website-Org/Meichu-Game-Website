@@ -99,7 +99,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("@/assets/index-anime-bg-mobile.png");
+  background-image: url("@/assets/index-anime-bg-mobile.webp");
   background-size: cover;
   background-position: center;
   z-index: 5;

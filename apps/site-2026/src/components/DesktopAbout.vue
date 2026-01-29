@@ -1,6 +1,6 @@
 <template>
   <div class="desktop-about">
-    <img class="about-cover-img" src="@/assets/about-cover.png" alt="About cover">
+    <img class="about-cover-img" src="@/assets/about-cover.webp" alt="About cover">
     <AboutDesc />
     <div class="org">
       <h2>相關單位</h2>
