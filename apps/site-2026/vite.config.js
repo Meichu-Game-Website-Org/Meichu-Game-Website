@@ -4,7 +4,7 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/2026/',
+  base: '/',
   server: {
     port: 22026, // Convention: 20000 + Year
     hmr: {
