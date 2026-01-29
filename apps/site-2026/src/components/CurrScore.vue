@@ -4,7 +4,7 @@
     <div class="title-bar"/>
     <div class="curr-score__score">
       <div class="score__school">
-        <img src="@/assets/index-score-panda.svg" alt="熊貓"/>
+        <img src="@/assets/index-score-panda.png" alt="熊貓"/>
         <div>清華大學</div>
       </div>
       <div class="score__score">
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="score__school">
-        <img src="@/assets/index-score-fox.svg" alt="狐狸" style="transform: scale(1.4);"/>
+        <img src="@/assets/index-score-fox.png" alt="狐狸" style="transform: scale(1.4);"/>
         <div>陽明交通大學</div>
       </div>
     </div>

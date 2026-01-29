@@ -1,7 +1,7 @@
 <template>
   <div :class="'game__scoreboard status-' + game.status" v-if="game && game.name">
     <img src="@/assets/game-scoreboard-bg.svg" alt="bg" class="game__scoreboard__bg --desktop" />
-    <img src="@/assets/game-scoreboard-bg-mobile.svg" alt="bg" class="game__scoreboard__bg --mobile" />
+    <img src="@/assets/game-scoreboard-bg-mobile.png" alt="bg" class="game__scoreboard__bg --mobile" />
     
     <div class="game__scoreboard__status">
       {{ GAME_STATUS[game.status] }}

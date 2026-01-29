@@ -1,7 +1,7 @@
 <template>
   <div class="mobile-about">
     <div class="about-cover">
-      <img src="@/assets/about-cover-mobile.svg" alt="丙午梅竹封面" class="cover-img">
+      <img src="@/assets/about-cover-mobile.png" alt="丙午梅竹封面" class="cover-img">
     </div>
 
     <div class="about-section">

@@ -1,6 +1,6 @@
 <template>
   <div class="desktop-about">
-    <img class="about-cover-img" src="@/assets/about-cover.svg" alt="About covere">
+    <img class="about-cover-img" src="@/assets/about-cover.png" alt="About cover">
     <AboutDesc />
     <div class="org">
       <h2>相關單位</h2>
@@ -19,7 +19,7 @@
       </div>
       <div class="org-section">
         <div class="org-img">
-          <img src="@/assets/about-org-panda.svg" alt="Panda">
+          <img src="@/assets/about-org-panda.png" alt="Panda">
         </div>
         <OrgCard 
           style="width: 64.6%"
@@ -38,7 +38,7 @@
           :links="organizations[2].links"
         />
         <div class="org-img">
-          <img src="@/assets/about-org-fox.svg" alt="Fox" style="transform: scale(1.3);">
+          <img src="@/assets/about-org-fox.png" alt="Fox" style="transform: scale(1.3);">
         </div>
       </div>
       <div class="org-section">
