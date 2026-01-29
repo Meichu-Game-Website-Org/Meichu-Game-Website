@@ -27,7 +27,7 @@ export default {
   name: 'index',
 
   metaInfo: {
-    title: '乙巳梅竹 | 2026 Meichu Games',
+    title: '丙午梅竹 | 2026 Meichu Games',
     titleTemplate: '%s',
   },
 

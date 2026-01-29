@@ -111,7 +111,7 @@ export default {
   metaInfo() {
     return {
       title: this.game.name,
-      titleTemplate: '%s | 乙巳梅竹',
+      titleTemplate: '%s | 丙午梅竹',
     }
   },
 
