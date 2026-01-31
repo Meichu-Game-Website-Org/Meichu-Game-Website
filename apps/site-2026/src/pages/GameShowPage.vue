@@ -42,7 +42,7 @@
 
       <!-- Team -->
       <div class="game-block" v-if="slug != 'opening' && slug != 'closing'">
-        <h2>隊伍介紹</h2>
+        <h1>隊伍介紹</h1>
         <div class="title-bar"/>
         <div class="row">
           <div class="col-12 col-md-6" v-if="game.team_nthu">

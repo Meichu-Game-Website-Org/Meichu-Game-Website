@@ -102,6 +102,11 @@ export default {
   color: rgba($primary, 0.7);
 }
 
+.title-bar {
+  width: 100%;
+  left: 0;
+}
+
 .content-divider {
   border: none;
   border-top: 1px solid #333;

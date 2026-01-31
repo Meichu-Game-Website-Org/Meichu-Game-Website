@@ -208,7 +208,12 @@ export default {
     margin: 0 auto 40px auto;
     display: block;
   }
-  
+
+  .title-bar {
+    width: 100%;
+    left: 0;
+  }
+
   .org {
     margin: 0 12vw;
   }
