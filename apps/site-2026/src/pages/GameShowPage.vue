@@ -17,7 +17,7 @@
           </div>
         </template>
         <template v-else>
-          <div class="no-news">
+          <div class="text-box article-body">
             <p>本場賽事不提供轉播服務，敬請見諒。</p>
           </div>        
         </template>
