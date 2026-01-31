@@ -18,7 +18,7 @@
           <a href="https://www.facebook.com/nthu.tw/" target="_blank">
             <img src="@/assets/facebook.svg" alt="icon"> Facebook
           </a>
-          <a href="http://dsa.site.nthu.edu.tw/" target="_blank">
+          <a href="https://dsa.site.nthu.edu.tw/" target="_blank">
             <img src="@/assets/website-icon.svg" alt="icon"> 課外活動組
           </a>
           <a href="https://nthupeo.site.nthu.edu.tw/" target="_blank">
@@ -37,7 +37,7 @@
           <a href="http://www.nycu.edu.tw/" target="_blank">
             <img src="@/assets/website-icon.svg" alt="icon"> 官方網站
           </a>
-          <a href="https://www.facebook.com/YangMingChiaoTung/" target="_blank">
+          <a href="https://www.facebook.com/nycu.taiwan/" target="_blank">
             <img src="@/assets/facebook.svg" alt="icon"> Facebook
           </a>
           <a href="https://osa.nycu.edu.tw/activity-ct" target="_blank">

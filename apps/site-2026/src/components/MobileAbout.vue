@@ -98,7 +98,7 @@ export default {
               type: 'facebook'
             },
             {
-              link: 'http://dsa.site.nthu.edu.tw/',
+              link: 'https://dsa.site.nthu.edu.tw/',
               text: '課外活動組',
               type: 'website'
             },
@@ -120,7 +120,7 @@ export default {
               type: 'website'
             },
             {
-              link: 'https://www.facebook.com/YangMingChiaoTung/',
+              link: 'https://www.facebook.com/nycu.taiwan/',
               text: 'Facebook',
               type: 'facebook'
             },
@@ -142,13 +142,13 @@ export default {
           desc: '賽前造勢活動、電競賽等皆由後援組織所負責。',
           links: [
             {
-              link: 'https://www.facebook.com/nycu.meichu/',
-              text: '陽明交大梅竹後援會',
+              link: 'https://www.facebook.com/meichuwin/',
+              text: '清大梅竹工作會',
               type: 'facebook'
             },
             {
-              link: 'https://www.facebook.com/meichuwin/',
-              text: '清大梅竹工作會',
+              link: 'https://www.facebook.com/nycu.meichu/',
+              text: '陽明交大梅竹後援會',
               type: 'facebook'
             }
           ]
@@ -159,15 +159,15 @@ export default {
           desc: '在比賽現場帶動觀眾，一起為選手及學校加油。',
           links: [
             {
+              link: 'https://www.facebook.com/%E6%88%8A%E6%88%8C%E6%A2%85%E7%AB%B9%E7%81%AB%E5%8A%9B%E7%8F%AD-1571693219711454/',
+              text: '清大火力班',
+              type: 'facebook'
+            },
+            {
               link: 'https://www.facebook.com/nctu.on.fire/',
               text: '陽明交大火力班',
               type: 'facebook'
             },
-            {
-              link: 'https://www.facebook.com/%E6%88%8A%E6%88%8C%E6%A2%85%E7%AB%B9%E7%81%AB%E5%8A%9B%E7%8F%AD-1571693219711454/',
-              text: '清大火力班',
-              type: 'facebook'
-            }
           ]
         }
       ]
