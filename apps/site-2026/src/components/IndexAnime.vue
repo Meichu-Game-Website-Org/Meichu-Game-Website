@@ -45,6 +45,13 @@
             </div>
           </div>
         </transition>
+
+        <div class="scroll-guide">
+          <span class="text">SPEED UP</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="icon" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 13L12 18L17 13M7 6L12 11L17 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
       </div>
       <index-anime-mobile v-else @finish="finish" />
     </div>
@@ -328,5 +335,36 @@ export default {
   height: 67.5%;
   z-index: 8;
   pointer-events: none;
+}
+
+.scroll-guide {
+  position: absolute;
+  right: 3rem;
+  bottom: 3rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bounce 1.5s infinite;
+  pointer-events: none;
+  color: white;
+  
+  .text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 0.1em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  
+  .icon {
+    margin-top: 0.5rem;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.8; }
+  50% { transform: translateY(10px); opacity: 1; }
 }
 </style>
