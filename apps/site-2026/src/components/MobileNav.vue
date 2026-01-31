@@ -108,7 +108,7 @@ export default {
   .mobile-header__row {
     width: 100%;
     height: 60px;
-    padding: 50px 3rem 40px 3rem;
+    padding: 30px 3rem 30px 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -141,7 +141,7 @@ export default {
   .mobile-nav {
     display: block;
     position: absolute;
-    top: 90px;
+    top: 60px;
     left: 0;
     bottom: auto;
     width: 100%;
