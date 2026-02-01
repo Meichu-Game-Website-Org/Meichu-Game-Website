@@ -7,35 +7,34 @@
     <div class="game-row" v-if="!isLoading">
       <div class="game-col">
         <h3 class="game-day">03/06 (五)</h3>
-        <GameItem :game="games['opening']" />
-        <GameItem :game="games['billiard']" />
-        <GameItem :game="games['soccer']" />
-        <GameItem :game="games['women-table-tennis']" />
-        <GameItem :game="games['kendo']" />
-        <GameItem :game="games['table-tennis']" />
-        <GameItem :game="games['badminton']" />
+        <GameItem 
+          v-for="game in gamesByDate('2026-03-06')" 
+          :key="game.id" 
+          :game="game"
+        />
       </div>
       <div class="game-col">
         <h3 class="game-day">03/07 (六)</h3>
-        <GameItem :game="games['bridge']" />
-        <GameItem :game="games['chess']" />
-        <GameItem :game="games['go']" />
-        <GameItem :game="games['women-tennis']" />
-        <GameItem :game="games['tennis']" />
-        <GameItem :game="games['women-basketball']" />
-        <GameItem :game="games['men-basketball']" />
+        <GameItem 
+          v-for="game in gamesByDate('2026-03-07')" 
+          :key="game.id" 
+          :game="game"
+        />
       </div>
       <div class="game-col">
         <h3 class="game-day">03/08 (日)</h3>
-        <GameItem :game="games['bridge']" />
-        <GameItem :game="games['archery']" />
-        <GameItem :game="games['softball']" />
-        <GameItem :game="games['men-volleyball']" />
-        <GameItem :game="games['women-volleyball']" />
-        <GameItem :game="games['closing']" />
+        <GameItem 
+          v-for="game in gamesByDate('2026-03-08')" 
+          :key="game.id" 
+          :game="game"
+        />
 
         <h3 class="game-day special-day">03/15 (日)</h3>
-        <GameItem :game="games['baseball']" />
+        <GameItem 
+          v-for="game in gamesByDate('2026-03-15')" 
+          :key="game.id" 
+          :game="game"
+        />
       </div>
     </div>
   </div>
@@ -47,6 +46,7 @@ import GameItem from '@/components/GameItem.vue'
 import Loading from '@/components/Loading.vue'
 import { Game as GameApi } from '@meichu/services'
 import { YEAR_ID } from '@/utils'
+import moment from 'moment'
 
 export default {
   name: 'game-list',
@@ -58,7 +58,7 @@ export default {
 
   data: function() {
     return {
-      games: {},
+      allGames: [],
       isLoading: true
     }
   },
@@ -74,18 +74,28 @@ export default {
       }
       GameApi.fetchAllGames(params)
         .then((games) => {
-          this.games = Object.assign({}, ...games.filter(val => val.item).map(game => ({
-            [game.item.slug]: game
-          })))
-          // Loop for games and edit the path of the photo
-          for (let key in this.games) {
-            this.games[key].photo = "https://meichu.games" + this.games[key].photo
-          }
+          // Filter valid games
+          let validGames = games.filter(val => val.item)
+
+          // Process Photo URL
+          validGames.forEach(game => {
+            game.photo = "https://meichu.games" + game.photo
+          })
+
+          // Sort by Time (Date sorting happens implicitly by placement, but we sort by time here)
+          validGames.sort((a, b) => {
+             return a.time.localeCompare(b.time)
+          })
+
+          this.allGames = validGames
         })
         .then(() => {
           this.isLoading = false
         })
     },
+    gamesByDate(date) {
+      return this.allGames.filter(game => game.date === date)
+    }
   }
 }
 
