@@ -46,6 +46,7 @@
 import GameItem from '@/components/GameItem.vue'
 import Loading from '@/components/Loading.vue'
 import { Game as GameApi } from '@meichu/services'
+import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'game-list',
@@ -69,7 +70,7 @@ export default {
   methods: {
     fetch() {
       const params = {
-        year_id: 57
+        year_id: YEAR_ID
       }
       GameApi.fetchAllGames(params)
         .then((games) => {

@@ -27,6 +27,7 @@
 <script>
 import { Game as GameApi } from '@meichu/services'
 import ScoreNumber from '@/components/ScoreNumber.vue'
+import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'curr-score',
@@ -51,7 +52,7 @@ export default {
   methods: {
     fetch() {
       const params = {
-        year_id: 57
+        year_id: YEAR_ID
       }
       GameApi.fetchAllGames(params)
         .then((games) => {

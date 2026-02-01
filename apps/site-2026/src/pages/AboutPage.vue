@@ -9,6 +9,7 @@
 import { Option as OptionApi } from '@meichu/services'
 import MobileAbout from '@/components/MobileAbout.vue'
 import DesktopAbout from '@/components/DesktopAbout.vue'
+import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'about',
@@ -37,7 +38,7 @@ export default {
     fetch() {
       const params = {
         data: ['about-meichu', 'meichu-history'],
-        year_id: 57
+        year_id: YEAR_ID
       }
       OptionApi.fetchOptions(params).then((data) => {
         this.options = Object.assign({}, ...data.options.map(option => ({

@@ -1,6 +1,6 @@
 export const API_PATH = 'https://meichu.games/api'
 
-export const YEAR_ID = 1
+export const YEAR_ID = 58
 
 export const GAME_TYPE_OF = {
     'official': '正式賽',

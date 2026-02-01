@@ -96,6 +96,7 @@ import Scoreboard from '@/components/Scoreboard.vue'
 import TeamCard from '@/components/TeamCard.vue'
 import GameHistory from '@/components/GameHistory.vue'
 import BackToGameListBtn from '@/components/BackToGameListBtn.vue'
+import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'game-show-2026',
@@ -130,7 +131,7 @@ export default {
   methods: {
     fetch() {
       const params = {
-        year_id: 57
+        year_id: YEAR_ID
       }
       GameApi.fetchGameBySlug(this.slug, params)
         .then((game) => {
