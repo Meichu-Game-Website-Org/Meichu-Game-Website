@@ -115,7 +115,7 @@ export default {
 }
 
 .content-body {
-  line-height: 40px;
+  line-height: 36px;
   white-space: pre-wrap;
   text-align: justify;
 }
