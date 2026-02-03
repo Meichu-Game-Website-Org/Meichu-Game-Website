@@ -58,8 +58,12 @@
               <hr>
             </div>
             <div class="footer-item__content">
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/meichuwin/"><img src="@/assets/facebook.svg"> 清大梅竹工作會</a>
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nycu.meichu"><img src="@/assets/facebook.svg"> 陽明交大梅竹後援會</a>
+              <a class="footer-item__link" target="_blank" href="https://www.instagram.com/maygong.official">
+                <img src="@/assets/instagram.svg"> 清大梅竹工作會
+              </a>
+              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nycu.meichu">
+                <img src="@/assets/facebook.svg"> 陽明交大梅竹後援會
+              </a>
             </div>
           </div>
         </div>
@@ -71,8 +75,12 @@
               <hr>
             </div>
             <div class="footer-item__content">
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/%E6%88%8A%E6%88%8C%E6%A2%85%E7%AB%B9%E7%81%AB%E5%8A%9B%E7%8F%AD-1571693219711454/"><img src="@/assets/facebook.svg"> 清大火力班</a>
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nctu.on.fire/"><img src="@/assets/facebook.svg"> 陽明交大火力班</a>
+              <a class="footer-item__link" target="_blank" href="https://www.instagram.com/mei.chuuuuu">
+                <img src="@/assets/instagram.svg"> 清大火力班
+              </a>
+              <a class="footer-item__link" target="_blank" href="https://www.instagram.com/blazesquad1896">
+                <img src="@/assets/instagram.svg"> 陽明交大火力班
+              </a>
             </div>
           </div>
         </div>

@@ -56,7 +56,7 @@
           <div class="section-title__en">Fan Clubs</div>
         </div>
         <div class="section-links">
-          <a href="https://www.instagram.com/nthu_meichu_working_group/" target="_blank">
+          <a href="https://www.instagram.com/maygong.official" target="_blank">
             <img src="@/assets/instagram.svg" alt="icon"> 清大梅竹工作會
           </a>
           <a href="https://www.facebook.com/nycu.meichu" target="_blank">
@@ -72,10 +72,10 @@
           <div class="section-title__en">"Hou-Li" Groups</div>
         </div>
         <div class="section-links">
-          <a href="https://www.instagram.com/nthuhou-li/" target="_blank">
+          <a href="https://www.instagram.com/mei.chuuuuu" target="_blank">
             <img src="@/assets/instagram.svg" alt="icon"> 清大火力班
           </a>
-          <a href="https://www.instagram.com/nycu_fireclass/" target="_blank">
+          <a href="https://www.instagram.com/blazesquad1896" target="_blank">
             <img src="@/assets/instagram.svg" alt="icon"> 陽明交大火力班
           </a>
         </div>
