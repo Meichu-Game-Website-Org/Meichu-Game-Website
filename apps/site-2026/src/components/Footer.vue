@@ -89,21 +89,11 @@
         Copyright © 2026 丙午梅竹賽籌備委員會<br>
         Designed by YuChi Huang. Built by <a class="linked_font" target="_blank" href="https://github.com/Sean20405">Sean</a><br>
         <div class="prev-website">
-          <a href="/2025/" class="linked_font">
-            乙巳梅竹
-          </a>｜
-          <a href="/2024/" class="linked_font">
-            甲辰梅竹
-          </a>｜ 
-          <a href="/2023/" class="linked_font">
-            癸卯梅竹
-          </a>｜ 
-          <a href="/2022/" class="linked_font">
-            壬寅梅竹
-          </a>｜ 
-          <a href="/2021/" class="linked_font">
-            辛丑梅竹
-          </a>
+          <a href="https://meichu.games/2025" class="linked_font">乙巳梅竹</a>｜
+          <a href="https://meichu.games/2024" class="linked_font">甲辰梅竹</a>｜ 
+          <a href="https://meichu.games/2023/" class="linked_font">癸卯梅竹</a>｜ 
+          <a href="https://meichu.games/2022" class="linked_font">壬寅梅竹</a>｜ 
+          <a href="https://meichu.games/2021" class="linked_font">辛丑梅竹</a>
         </div>
       </div>
     </div>
