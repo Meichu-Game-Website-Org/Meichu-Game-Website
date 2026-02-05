@@ -28,7 +28,7 @@ export default {
     titleTemplate: '%s | 丙午梅竹',
     description: '丙午梅竹官方網站，提供賽程、票務、戰況、轉播等梅竹賽之即時資訊。',
     link: [
-      { rel: 'icon', href: '/2026-favicon.png' } //to-do
+      { rel: 'icon', href: '/2026-favicon.svg' } //to-do
     ]
   },
 

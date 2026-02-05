@@ -86,7 +86,6 @@ export default {
 <style lang="scss" scoped>
 .home{
   margin-top: -80px;
-  background-image: url('index-bg.svg');
   background-repeat: repeat-y;
   background-size: 100vw auto;
   background-position: center;
