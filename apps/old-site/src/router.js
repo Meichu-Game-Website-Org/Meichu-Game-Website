@@ -101,14 +101,6 @@ axios.defaults.withCredentials = true
 
 const routes = [
   {
-    path: '/',
-    redirect: '/2025'
-  },
-  {
-    path: '/2023/',
-    redirect: '/2024'
-  },
-  {
     path: '/2019/',
     component: AppView2019,
     children: [{
@@ -264,7 +256,7 @@ const routes = [
     ]
   },
   {
-    path: '/2023_temp/',
+    path: '/2023/',
     component: AppView2023,
     children: [{
       path: '',

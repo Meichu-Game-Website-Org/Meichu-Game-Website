@@ -15,7 +15,7 @@
             <div class="footer-item__content">
               <a class="footer-item__link" target="_blank" href="http://www.nthu.edu.tw/"><img src="@/assets/website-icon.svg"> 官方網站</a>
               <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nthu.tw/"><img src="@/assets/facebook.svg"> Facebook</a>
-              <a class="footer-item__link" target="_blank" href="http://dsa.site.nthu.edu.tw/"><img src="@/assets/website-icon.svg"> 課外活動組</a>
+              <a class="footer-item__link" target="_blank" href="https://dsa.site.nthu.edu.tw/"><img src="@/assets/website-icon.svg"> 課外活動組</a>
               <a class="footer-item__link" target="_blank" href="https://nthupeo.site.nthu.edu.tw/"><img src="@/assets/website-icon.svg"> 體育室</a>
             </div>
           </div>
@@ -30,7 +30,7 @@
             </div>
             <div class="footer-item__content">
               <a class="footer-item__link" target="_blank" href="http://www.nycu.edu.tw/"><img src="@/assets/website-icon.svg">官方網站</a>
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/YangMingChiaoTung/"><img src="@/assets/facebook.svg">Facebook</a>
+              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nycu.taiwan/"><img src="@/assets/facebook.svg">Facebook</a>
               <a class="footer-item__link" target="_blank" href="https://osa.nycu.edu.tw/activity-ct"><img src="@/assets/website-icon.svg">課外活動輔導二組</a>
               <a class="footer-item__link" target="_blank" href="https://peo.nycu.edu.tw/"><img src="@/assets/website-icon.svg"> 體育室</a>
             </div>
@@ -58,8 +58,12 @@
               <hr>
             </div>
             <div class="footer-item__content">
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nycu.meichu"><img src="@/assets/facebook.svg"> 陽明交大梅竹後援會</a>
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/meichuwin/"><img src="@/assets/facebook.svg"> 清大梅竹工作會</a>
+              <a class="footer-item__link" target="_blank" href="https://www.instagram.com/maygong.official">
+                <img src="@/assets/instagram.svg"> 清大梅竹工作會
+              </a>
+              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nycu.meichu">
+                <img src="@/assets/facebook.svg"> 陽明交大梅竹後援會
+              </a>
             </div>
           </div>
         </div>
@@ -71,8 +75,12 @@
               <hr>
             </div>
             <div class="footer-item__content">
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/nctu.on.fire/"><img src="@/assets/facebook.svg"> 陽明交大火力班</a>
-              <a class="footer-item__link" target="_blank" href="https://www.facebook.com/%E6%88%8A%E6%88%8C%E6%A2%85%E7%AB%B9%E7%81%AB%E5%8A%9B%E7%8F%AD-1571693219711454/"><img src="@/assets/facebook.svg"> 清大火力班</a>
+              <a class="footer-item__link" target="_blank" href="https://www.instagram.com/mei.chuuuuu">
+                <img src="@/assets/instagram.svg"> 清大火力班
+              </a>
+              <a class="footer-item__link" target="_blank" href="https://www.instagram.com/blazesquad1896">
+                <img src="@/assets/instagram.svg"> 陽明交大火力班
+              </a>
             </div>
           </div>
         </div>
@@ -81,21 +89,11 @@
         Copyright © 2026 丙午梅竹賽籌備委員會<br>
         Designed by YuChi Huang. Built by <a class="linked_font" target="_blank" href="https://github.com/Sean20405">Sean</a><br>
         <div class="prev-website">
-          <a href="/2025/" class="linked_font">
-            乙巳梅竹
-          </a>｜
-          <a href="/2024/" class="linked_font">
-            甲辰梅竹
-          </a>｜ 
-          <a href="/2023/" class="linked_font">
-            癸卯梅竹
-          </a>｜ 
-          <a href="/2022/" class="linked_font">
-            壬寅梅竹
-          </a>｜ 
-          <a href="/2021/" class="linked_font">
-            辛丑梅竹
-          </a>
+          <a href="https://meichu.games/2025" class="linked_font">乙巳梅竹</a>｜
+          <a href="https://meichu.games/2024" class="linked_font">甲辰梅竹</a>｜ 
+          <a href="https://meichu.games/2023/" class="linked_font">癸卯梅竹</a>｜ 
+          <a href="https://meichu.games/2022" class="linked_font">壬寅梅竹</a>｜ 
+          <a href="https://meichu.games/2021" class="linked_font">辛丑梅竹</a>
         </div>
       </div>
     </div>

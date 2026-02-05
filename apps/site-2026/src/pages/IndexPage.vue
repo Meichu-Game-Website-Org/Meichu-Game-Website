@@ -3,7 +3,7 @@
     <IndexAnime />
 
     <div class="cover">
-      <img src="@/assets/index-cover-desktop.png" alt="Cover Image" v-if="isDesktop">
+      <img src="@/assets/index-cover-desktop.webp" alt="Cover Image" v-if="isDesktop">
     </div>
 
     <CurrScore />
@@ -22,12 +22,13 @@
 import IndexAnime from '@/components/IndexAnime.vue'
 import CurrScore from '@/components/CurrScore.vue'
 import { Option as OptionApi } from '@meichu/services'
+import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'index',
 
   metaInfo: {
-    title: '乙巳梅竹 | 2026 Meichu Games',
+    title: '丙午梅竹 | 2026 Meichu Games',
     titleTemplate: '%s',
   },
 
@@ -69,7 +70,7 @@ export default {
     fetch() {
       const params = {
         data: ['banners', 'banner-links'],
-        year_id: 54
+        year_id: YEAR_ID
       }
       OptionApi.fetchOptions(params).then((data) => {
         this.options = Object.assign({}, ...data.options.map(option => ({

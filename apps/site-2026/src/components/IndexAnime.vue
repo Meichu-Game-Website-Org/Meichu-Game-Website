@@ -14,11 +14,11 @@
         </transition>
 
         <transition name="slide-left">
-          <img v-if="step >= 4" class="anime-panda" src="@/assets/index-anime-panda.png" />
+          <img v-if="step >= 4" class="anime-panda" src="@/assets/index-anime-panda.webp" />
         </transition>
 
         <transition name="slide-right">
-          <img v-if="step >= 3" class="anime-fox" src="@/assets/index-anime-fox.png" />
+          <img v-if="step >= 3" class="anime-fox" src="@/assets/index-anime-fox.webp" />
         </transition>
 
         <transition name="fade">
@@ -45,6 +45,13 @@
             </div>
           </div>
         </transition>
+
+        <div class="scroll-guide">
+          <span class="text">SPEED UP</span>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="icon" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 13L12 18L17 13M7 6L12 11L17 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
       </div>
       <index-anime-mobile v-else @finish="finish" />
     </div>
@@ -215,6 +222,10 @@ export default {
     font-family: "Noto Serif TC";
     min-height: 1.5em; 
     white-space: nowrap; // Keep text on one line if possible
+
+    @media (max-width: $screen-lg) {
+      font-size: 1.75rem;
+    }
     
     @media (max-width: $screen-sm) {
       white-space: normal; // Allow wrap on small screens if needed, but 'clamp' usually handles size
@@ -278,7 +289,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("@/assets/index-anime-bg.png");
+  background-image: url("@/assets/index-anime-bg.webp");
   background-size: cover;
   background-position: center;
   z-index: 5;
@@ -286,19 +297,21 @@ export default {
 
 .anime-panda {
   position: absolute;
-  left: 12%;
-  bottom: 0;
-  height: 80vh;
-  z-index: 6;
+  right: calc(50% - 22vw);
+  top: 9%;
+  // bottom: 0;
+  height: 109vh;
+  z-index: 5;
   object-fit: contain;
   pointer-events: none;
 }
 
 .anime-fox {
   position: absolute;
-  right: 12%;
-  bottom: 0;
-  height: 80vh;
+  left: calc(50% - 20vw);
+  top: -6%;
+  // bottom: 0;
+  height: 120vh;
   z-index: 6;
   object-fit: contain;
   pointer-events: none;
@@ -316,8 +329,42 @@ export default {
 
 .anime-text {
   position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   height: 67.5%;
   z-index: 8;
   pointer-events: none;
+}
+
+.scroll-guide {
+  position: absolute;
+  right: 3rem;
+  bottom: 3rem;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bounce 1.5s infinite;
+  pointer-events: none;
+  color: white;
+  
+  .text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: 'Noto Sans TC', sans-serif;
+    letter-spacing: 0.1em;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+  
+  .icon {
+    margin-top: 0.5rem;
+  }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.8; }
+  50% { transform: translateY(10px); opacity: 1; }
 }
 </style>

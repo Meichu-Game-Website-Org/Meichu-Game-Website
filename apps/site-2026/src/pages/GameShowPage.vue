@@ -17,7 +17,7 @@
           </div>
         </template>
         <template v-else>
-          <div class="no-news">
+          <div class="text-box article-body">
             <p>本場賽事不提供轉播服務，敬請見諒。</p>
           </div>        
         </template>
@@ -42,7 +42,7 @@
 
       <!-- Team -->
       <div class="game-block" v-if="slug != 'opening' && slug != 'closing'">
-        <h2>隊伍介紹</h2>
+        <h1>隊伍介紹</h1>
         <div class="title-bar"/>
         <div class="row">
           <div class="col-12 col-md-6" v-if="game.team_nthu">
@@ -96,6 +96,7 @@ import Scoreboard from '@/components/Scoreboard.vue'
 import TeamCard from '@/components/TeamCard.vue'
 import GameHistory from '@/components/GameHistory.vue'
 import BackToGameListBtn from '@/components/BackToGameListBtn.vue'
+import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'game-show-2026',
@@ -111,7 +112,7 @@ export default {
   metaInfo() {
     return {
       title: this.game.name,
-      titleTemplate: '%s | 乙巳梅竹',
+      titleTemplate: '%s | 丙午梅竹',
     }
   },
 
@@ -130,7 +131,7 @@ export default {
   methods: {
     fetch() {
       const params = {
-        year_id: 57
+        year_id: YEAR_ID
       }
       GameApi.fetchGameBySlug(this.slug, params)
         .then((game) => {

@@ -53,7 +53,7 @@ $trail-length: 75%;
   width: 100%;
   height: 18vw;
   margin-bottom: .4rem;
-  font-size: .5rem;
+  font-size: .67rem;
   position: relative;
   overflow: hidden;
 

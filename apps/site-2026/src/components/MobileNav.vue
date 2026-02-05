@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'mobile-header': true, 'mobile-header--open': navToggle}">
+  <div :class="{'mobile-header': true, 'mobile-header--active': isScrolled, 'mobile-header--open': navToggle}">
     <div class="mobile-header__row">
       <div class="mobile-header__left">
         <router-link :to="{name: 'index-2026'}">
@@ -66,13 +66,22 @@ export default {
   data() {
     return {
       navToggle: false,
+      isScrolled: false
     }
   },
   mounted() {
     skrollr.init();
+    window.addEventListener('scroll', this.handleScroll);
+    this.handleScroll();
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll);
   },
 
   methods: {
+    handleScroll() {
+      this.isScrolled = window.scrollY > 0;
+    }
   },
 
   watch: {
@@ -85,6 +94,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.mobile-header--active {
+  background-color: #130F13;
+}
 .mobile-header {
   position: fixed;
   width: 100%;
@@ -96,7 +108,7 @@ export default {
   .mobile-header__row {
     width: 100%;
     height: 60px;
-    padding: 50px 3rem;
+    padding: 30px 3rem 30px 3rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -129,7 +141,7 @@ export default {
   .mobile-nav {
     display: block;
     position: absolute;
-    top: 90px;
+    top: 60px;
     left: 0;
     bottom: auto;
     width: 100%;

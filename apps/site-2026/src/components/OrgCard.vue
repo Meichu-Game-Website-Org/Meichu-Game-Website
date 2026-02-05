@@ -7,7 +7,10 @@
       <div 
         class="links" 
         ref="linksContainer"
-        :class="{ 'is-wrapped': isWrapped }"
+        :class="{ 
+          'is-wrapped': isWrapped,
+          'can-show-two-cols': isWrapped && !isSingleColumn && links.length >= 3
+        }"
       >
         <div v-for="link in links" :key="link.link" class="link-item">
           <a :href="link.link" target="_blank" rel="noopener noreferrer">
@@ -30,6 +33,7 @@ export default {
   data() {
     return {
       isWrapped: false,
+      isSingleColumn: false,
       observer: null
     }
   },
@@ -43,15 +47,50 @@ export default {
     checkWrap() {
       const container = this.$refs.linksContainer;
       if (!container || container.children.length <= 1) {
-        this.isWrapped = false;
+        this.isSingleColumn = false;
         return;
+      }
+      
+      // 1. 偵測在原始 Flex 狀態下是否會換行
+      const wasWrapped = this.isWrapped;
+      if (wasWrapped) {
+        container.classList.remove('is-wrapped');
       }
       
       const firstItem = container.children[0];
       const lastItem = container.children[container.children.length - 1];
+      const shouldWrap = firstItem.offsetTop !== lastItem.offsetTop;
       
-      // 如果第一個與最後一個元素的 offsetTop 不同，代表發生了換行
-      this.isWrapped = firstItem.offsetTop !== lastItem.offsetTop;
+      if (!shouldWrap) {
+        this.isWrapped = false;
+        this.isSingleColumn = false;
+      } else {
+        this.isWrapped = true;
+        
+        // 2. 如果會換行，計算兩欄佈局是否會溢出
+        const items = Array.from(container.children);
+        if (items.length < 3) {
+          this.isSingleColumn = true;
+        } else {
+          let col1Max = 0;
+          let col2Max = 0;
+          items.forEach((item, index) => {
+            // 在 Flex 模式下，item.offsetWidth 代表了它所需的最小寬度
+            if (index % 2 === 0) col1Max = Math.max(col1Max, item.offsetWidth);
+            else col2Max = Math.max(col2Max, item.offsetWidth);
+          });
+          
+          const gap = 24; // 對應 SCSS 的 1.5rem
+          // 如果兩欄最大寬度之和加上間距大於容器，代表 2x2 會溢出
+          this.isSingleColumn = (col1Max + col2Max + gap) > container.offsetWidth;
+        }
+      }
+      
+      // 偵測完後恢復狀態
+      if (wasWrapped) {
+        container.classList.add('is-wrapped');
+      }
+      this.isWrapped = shouldWrap;
     }
   },
   mounted() {
@@ -172,16 +211,23 @@ export default {
 
     &.is-wrapped {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px 1rem;
+      grid-template-columns: minmax(0, 1fr);
+      
+      &.can-show-two-cols {
+        grid-template-columns: auto auto;
+      }
+
+      justify-content: start;
+      gap: 6px 1.5rem;
       @media (max-width: $screen-md) {
-        gap: 0px 1rem;
+        gap: 0px 1.5rem;
       }
     }
 
     .link-item {
       white-space: nowrap;
-      flex: 1;
+      flex: 0 0 auto;
+      width: fit-content;
       a {
         display: flex;
         align-items: center;

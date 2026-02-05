@@ -25,10 +25,10 @@ export default {
   name: 'app',
 
   metaInfo: {
-    titleTemplate: '%s | 乙巳梅竹',
-    description: '乙巳梅竹官方網站，提供賽程、票務、戰況、轉播等梅竹賽之即時資訊。',
+    titleTemplate: '%s | 丙午梅竹',
+    description: '丙午梅竹官方網站，提供賽程、票務、戰況、轉播等梅竹賽之即時資訊。',
     link: [
-      { rel: 'icon', href: '/favicon2025.png' } //to-do
+      { rel: 'icon', href: '/2026-favicon.png' } //to-do
     ]
   },
 

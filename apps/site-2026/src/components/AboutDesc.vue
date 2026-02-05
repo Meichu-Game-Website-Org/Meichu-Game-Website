@@ -32,6 +32,7 @@
 <script>
 import { Option as OptionApi } from '@meichu/services'
 import Loading from '@/components/Loading.vue'
+import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'AboutDesc',
@@ -56,7 +57,7 @@ export default {
     fetch() {
       const params = {
         data: ['about-meichu', 'meichu-history'],
-        year_id: 57
+        year_id: YEAR_ID
       }
       OptionApi.fetchOptions(params).then((data) => {
         this.options = Object.assign({}, ...data.options.map(option => ({
@@ -102,6 +103,11 @@ export default {
   color: rgba($primary, 0.7);
 }
 
+.title-bar {
+  width: 100%;
+  left: 0;
+}
+
 .content-divider {
   border: none;
   border-top: 1px solid #333;
@@ -109,7 +115,7 @@ export default {
 }
 
 .content-body {
-  line-height: 40px;
+  line-height: 36px;
   white-space: pre-wrap;
   text-align: justify;
 }

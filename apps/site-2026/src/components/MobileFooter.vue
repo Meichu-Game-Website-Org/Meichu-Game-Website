@@ -18,7 +18,7 @@
           <a href="https://www.facebook.com/nthu.tw/" target="_blank">
             <img src="@/assets/facebook.svg" alt="icon"> Facebook
           </a>
-          <a href="http://dsa.site.nthu.edu.tw/" target="_blank">
+          <a href="https://dsa.site.nthu.edu.tw/" target="_blank">
             <img src="@/assets/website-icon.svg" alt="icon"> 課外活動組
           </a>
           <a href="https://nthupeo.site.nthu.edu.tw/" target="_blank">
@@ -37,7 +37,7 @@
           <a href="http://www.nycu.edu.tw/" target="_blank">
             <img src="@/assets/website-icon.svg" alt="icon"> 官方網站
           </a>
-          <a href="https://www.facebook.com/YangMingChiaoTung/" target="_blank">
+          <a href="https://www.facebook.com/nycu.taiwan/" target="_blank">
             <img src="@/assets/facebook.svg" alt="icon"> Facebook
           </a>
           <a href="https://osa.nycu.edu.tw/activity-ct" target="_blank">
@@ -56,7 +56,7 @@
           <div class="section-title__en">Fan Clubs</div>
         </div>
         <div class="section-links">
-          <a href="https://www.instagram.com/nthu_meichu_working_group/" target="_blank">
+          <a href="https://www.instagram.com/maygong.official" target="_blank">
             <img src="@/assets/instagram.svg" alt="icon"> 清大梅竹工作會
           </a>
           <a href="https://www.facebook.com/nycu.meichu" target="_blank">
@@ -72,10 +72,10 @@
           <div class="section-title__en">"Hou-Li" Groups</div>
         </div>
         <div class="section-links">
-          <a href="https://www.instagram.com/nthuhou-li/" target="_blank">
+          <a href="https://www.instagram.com/mei.chuuuuu" target="_blank">
             <img src="@/assets/instagram.svg" alt="icon"> 清大火力班
           </a>
-          <a href="https://www.instagram.com/nycu_fireclass/" target="_blank">
+          <a href="https://www.instagram.com/blazesquad1896" target="_blank">
             <img src="@/assets/instagram.svg" alt="icon"> 陽明交大火力班
           </a>
         </div>
@@ -86,11 +86,11 @@
       <div>Copyright © 2026 丙午梅竹賽籌備委員會</div>
       <div>Designed by YuChi Huang. Built by <a href="https://github.com/Sean20405" class="linked_font"  target="_blank">Sean</a></div>
       <div class="prev-links">
-        <a href="/2025/" class="linked_font" >乙巳梅竹</a>｜
-        <a href="/2024/" class="linked_font" >甲辰梅竹</a>｜
-        <a href="/2023/" class="linked_font" >癸卯梅竹</a>｜
-        <a href="/2022/" class="linked_font" >壬寅梅竹</a>｜
-        <a href="/2021/" class="linked_font" >辛丑梅竹</a>
+        <a href="https://meichu.games/2025" class="linked_font" >乙巳梅竹</a>｜
+        <a href="https://meichu.games/2024" class="linked_font" >甲辰梅竹</a>｜
+        <a href="https://meichu.games/2023" class="linked_font" >癸卯梅竹</a>｜
+        <a href="https://meichu.games/2022" class="linked_font" >壬寅梅竹</a>｜
+        <a href="https://meichu.games/2021" class="linked_font" >辛丑梅竹</a>
       </div>
     </div>
   </div>
