@@ -17,6 +17,9 @@ importers:
 
   apps/old-site:
     dependencies:
+      '@fortawesome/fontawesome-free':
+        specifier: 7.2.0
+        version: 7.2.0
       '@meichu/assets':
         specifier: workspace:^
         version: link:../../packages/assets
@@ -81,6 +84,9 @@ importers:
 
   apps/site-2026:
     dependencies:
+      '@fortawesome/fontawesome-free':
+        specifier: 7.2.0
+        version: 7.2.0
       '@meichu/assets':
         specifier: workspace:^
         version: link:../../packages/assets
@@ -677,6 +683,10 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fortawesome/fontawesome-free@7.2.0':
+    resolution: {integrity: sha512-3DguDv/oUE+7vjMeTSOjCSG+KeawgVQOHrKRnvUuqYh1mfArrh7s+s8hXW3e4RerBA1+Wh+hBqf8sJNpqNrBWg==}
+    engines: {node: '>=6'}
 
   '@hapi/address@2.1.4':
     resolution: {integrity: sha512-QD1PhQk+s31P1ixsX0H0Suoupp3VMXzIVMSwobR3F3MSUO2YCV0B7xqLcUw/Bh8yuvd3LhpyqLQWTNcRmp6IdQ==}
@@ -6305,6 +6315,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.12':
     optional: true
+
+  '@fortawesome/fontawesome-free@7.2.0': {}
 
   '@hapi/address@2.1.4': {}
 
