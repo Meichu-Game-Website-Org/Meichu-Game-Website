@@ -3,21 +3,13 @@ import App from './App.vue'
 import "@/assets/scss/_base.scss"
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
-import moment from 'moment'
 import axios from 'axios'
 import router from './router.js'
-
-// VueMeta is not fully compatible with Vue 3 yet (alpha stage), and usually @vueuse/head is preferred.
-// For now, we omit it to ensure the app runs.
-// import VueMeta from 'vue-meta'
+import { installMetadata } from '@meichu/services/src/metadata.mjs'
 
 const app = createApp(App)
-
+installMetadata(app, document, router)
 app.use(router)
-
-// app.use(VueMeta, {
-//   refreshOnceOnNavigation: true
-// })
 
 // Global properties in Vue 3
 app.config.globalProperties.$http = axios
@@ -29,4 +21,4 @@ axios.defaults.withCredentials = true
 // Handle routing scroll (moved to router configuration in Vue 3)
 // router.afterEach(...) logic is handled by router's scrollBehavior usually.
 
-app.mount('#app')
+router.isReady().then(() => app.mount('#app'))

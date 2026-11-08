@@ -39,7 +39,7 @@ export default {
     titleTemplate: '%s | 甲辰梅竹',
     description: '甲辰梅竹官方網站，提供賽程、票務、戰況、轉播等梅竹賽之即時資訊。',
     link: [
-      { rel: 'icon', href: '/favicon2023.ico' } //to-do
+      { rel: 'icon', href: '/favicon2024_128.ico' }
     ]
   },
 

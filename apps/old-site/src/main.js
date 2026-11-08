@@ -8,7 +8,7 @@ import { installMetadata } from './metadata.js'
 
 axios.defaults.withCredentials = true
 const app = createApp(App)
-installMetadata(app)
+installMetadata(app, document, router)
 app.use(router)
 router.isReady().then(() => app.mount('#app'))
 
