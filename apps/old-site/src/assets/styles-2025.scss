@@ -320,7 +320,7 @@ img {
       position: relative;
       width: max-content;
       z-index: 10;
-      &:hover {
+      &:hover .nav-link__label {
         text-shadow: 3px 3px $nthu, -3px -3px $nctu;
         color: $white;
         animation: glitch 1s infinite;
@@ -334,15 +334,22 @@ img {
       --clip-seven: polygon(0 63%, 100% 63%, 100% 80%, 95% 80%, 95% 80%, 85% 80%, 85% 80%, 8% 80%, 0 70%);
       --shimmy-distance: 8;
     }
-    .transparent-button {
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
+    .nav-link:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
+    .nav-link__label {
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
     }
     .schoolteam{
       font-size: 1rem;
     }
     .nav-link__bg {
+      pointer-events: none;
+      color: inherit;
+      font: inherit;
       position: absolute;
       top: 0;
       left: 0;
