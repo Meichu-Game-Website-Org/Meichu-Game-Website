@@ -18,69 +18,16 @@
 </template>
 
 <script>
-
 import IndexAnime from '@/components/IndexAnime.vue'
 import CurrScore from '@/components/CurrScore.vue'
-import { Option as OptionApi } from '@meichu/services'
-import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'index',
-
-  metaInfo: {
-    title: '丙午梅竹 | 2026 Meichu Games',
-    titleTemplate: '%s',
-  },
-
-  data() {
-    return {
-      options: {},
-      isDesktop: false,
-    }
-  },
-
-  components: {
-    IndexAnime,
-    CurrScore,
-  },
-
-  computed: {
-    bannerList() {
-      let banners = []
-      if (!this.options.banners || !this.options['banner-links'].length) return []
-      for (let i = 0; i < this.options.banners.length; i++) {
-        let curBanner = {
-          image_url: this.options.banners[i],
-        }
-        if (i < this.options['banner-links'].length) {
-          curBanner['url'] = this.options['banner-links'][i]
-        }
-        banners.push(curBanner)
-      }
-      return banners
-    }
-  },
-
-  created() {
-    this.isDesktop = window.innerWidth > 1024
-    this.fetch()
-  },
-
-  methods: {
-    fetch() {
-      const params = {
-        data: ['banners', 'banner-links'],
-        year_id: YEAR_ID
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
-    }
-  }
+  metaInfo: { title: '丙午梅竹 | 2026 Meichu Games', titleTemplate: '%s' },
+  components: { IndexAnime, CurrScore },
+  data() { return { isDesktop: false } },
+  created() { this.isDesktop = window.innerWidth > 1024 }
 }
-
 </script>
 
 <style lang="scss" scoped>

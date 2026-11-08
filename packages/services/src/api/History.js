@@ -1,17 +1,17 @@
-import axios from 'axios'
+import client from '../client'
 import {API_PATH} from '../config'
 
 export default {
 
   fetchFullArchives() {
-    return axios.get(`${API_PATH}/archive/full`)
+    return client.get(`${API_PATH}/archive/full`)
       .then(response => {
         return response.data
       })
   },
 
   fetchAllItems() {
-    return axios.get(`${API_PATH}/item`)
+    return client.get(`${API_PATH}/item`)
       .then(response => {
         return response.data
       })

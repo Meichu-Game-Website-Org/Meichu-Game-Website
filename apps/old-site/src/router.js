@@ -94,6 +94,7 @@ import CoursePage2024 from '@/pages/2024/CoursePage.vue'
 import AppView2025 from '@/pages/2025/AppView.vue'
 import IndexPage2025 from '@/pages/2025/IndexPage.vue'
 import GameShowPage2025 from '@/pages/2025/GameShowPage.vue'
+import NewsShowPage2025 from '@/pages/2025/NewsShowPage.vue'
 import GameListPage2025 from '@/pages/2025/GameListPage.vue'
 import AboutPage2025 from '@/pages/2025/AboutPage.vue'
 import HistoryPage2025 from '@/pages/2025/HistoryPage.vue'
@@ -358,6 +359,11 @@ const routes = [
       path: 'game/:slug',
       name: 'game-show-2025',
       component: GameShowPage2025
+    },
+    {
+      path: 'news/:id',
+      name: 'news-show-2025',
+      component: NewsShowPage2025
     },
     {
       path: 'game',

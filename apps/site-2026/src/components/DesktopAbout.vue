@@ -1,7 +1,7 @@
 <template>
   <div class="desktop-about">
     <img class="about-cover-img" src="@/assets/about-cover.webp" alt="About cover">
-    <AboutDesc />
+    <AboutDesc :resource="resource" @retry="$emit('retry')" />
     <div class="org">
       <h2>相關單位</h2>
       <div class="title-bar"/>
@@ -67,6 +67,7 @@ import OrgCard from '@/components/OrgCard.vue'
 
 export default {
   name: 'about',
+  props: { resource: { type: Object, required: true } },
 
   components: {
     AboutDesc,

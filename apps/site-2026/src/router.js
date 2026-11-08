@@ -4,6 +4,7 @@ import axios from 'axios'
 import AppView2026 from '@/pages/AppView.vue'
 import IndexPage2026 from '@/pages/IndexPage.vue'
 import GameShowPage2026 from '@/pages/GameShowPage.vue'
+import NewsShowPage2026 from '@/pages/NewsShowPage.vue'
 import GameListPage2026 from '@/pages/GameListPage.vue'
 import AboutPage2026 from '@/pages/AboutPage.vue'
 import HistoryPage2026 from '@/pages/HistoryPage.vue'
@@ -24,6 +25,11 @@ const routes = [
       path: 'game/:slug',
       name: 'game-show-2026',
       component: GameShowPage2026
+    },
+    {
+      path: 'news/:id',
+      name: 'news-show-2026',
+      component: NewsShowPage2026
     },
     {
       path: 'game',

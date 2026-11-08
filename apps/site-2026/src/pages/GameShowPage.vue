@@ -1,5 +1,7 @@
 <template>
   <div id="game">
+    <RequestState :resource="resource" empty-text="找不到這場賽事。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     
     <Scoreboard :game="game" />
     
@@ -66,7 +68,7 @@
                 <a :href="news.link" v-if="news.type_of == 'link' || news.type_of == 'news'">
                   {{ news.title }}
                 </a>
-                <router-link :to="{name: 'news-show-2024', params: {id: news.id}}" v-else>
+                <router-link :to="{name: 'news-show-2026', params: {id: news.id}}" v-else>
                   {{ news.title }}
                 </router-link>
               </h3>
@@ -86,68 +88,39 @@
       <!-- History Record END -->
       <BackToGameListBtn />
     </div>
+    </template>
+    <BackToGameListBtn v-if="resource.status !== 'success'" />
   </div>
 </template>
 
 <script>
-
-import { Game as GameApi } from '@meichu/services'
+import { Game as GameApi, resourceMixin, loadResource, readGame } from '@meichu/services'
 import Scoreboard from '@/components/Scoreboard.vue'
 import TeamCard from '@/components/TeamCard.vue'
 import GameHistory from '@/components/GameHistory.vue'
 import BackToGameListBtn from '@/components/BackToGameListBtn.vue'
+import RequestState from '@/components/RequestState.vue'
 import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'game-show-2026',
-  components: {
-    Scoreboard,
-    TeamCard,
-    GameHistory,
-    BackToGameListBtn
+  mixins: [resourceMixin],
+  metaInfo() { return { title: this.game.name, titleTemplate: '%s | 丙午梅竹' } },
+  components: { Scoreboard, TeamCard, GameHistory, BackToGameListBtn, RequestState },
+  computed: {
+    slug() { return this.$route.params.slug },
+    game() { return this.resource.data || {} }
   },
-  scrollToTop() {
-    window.scrollTo(0,0);
+  watch: {
+    '$route.params.slug': { immediate: true, handler() { this.fetch() } }
   },
-  metaInfo() {
-    return {
-      title: this.game.name,
-      titleTemplate: '%s | 丙午梅竹',
-    }
-  },
-
-  data: function() {
-    return {
-      slug: null,
-      game: {}
-    }
-  },
-
-  created() {
-    this.slug = this.$route.params.slug
-    this.fetch()
-  },
-
   methods: {
     fetch() {
-      const params = {
-        year_id: YEAR_ID
-      }
-      return GameApi.fetchGameBySlug(this.slug, params)
-        .then((game) => {
-          this.game = game;
-          for (const team of [this.game.team_nctu, this.game.team_nthu]) {
-            if (team && team.photo) {
-              team.photo = new URL(team.photo, 'https://meichu.games').href;
-            }
-          }
-        })
+      const slug = this.slug
+      return loadResource(this.resource, async () => readGame(await GameApi.fetchGameBySlug(slug, { year_id: YEAR_ID })))
     }
   }
-
-
 }
-
 </script>
 
 <style scoped lang="scss">

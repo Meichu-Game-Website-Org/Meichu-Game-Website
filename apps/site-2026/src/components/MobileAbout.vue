@@ -8,8 +8,8 @@
       <h2>丙午梅竹</h2>
       <div class="title-bar"/>
       <div class="about-content break-line">
-        <Loading v-if="isLoading"/>
-        <p v-else v-html="formattedAboutMeichu"></p>
+        <RequestState :resource="resource" empty-text="目前尚無介紹內容。" @retry="$emit('retry')" />
+        <p v-if="resource.status === 'success'" v-html="formattedAboutMeichu"></p>
       </div>
     </div>
 
@@ -17,8 +17,8 @@
       <h2>梅竹賽歷史</h2>
       <div class="title-bar"/>
       <div class="about-content break-line">
-        <Loading v-if="isLoading"/>
-        <p v-else v-html="formattedMeichuHistory"></p>
+        <RequestState :resource="resource" empty-text="目前尚無介紹內容。" @retry="$emit('retry')" />
+        <p v-if="resource.status === 'success'" v-html="formattedMeichuHistory"></p>
       </div>
     </div>
 
@@ -38,17 +38,16 @@
 </template>
 
 <script>
-import { Option as OptionApi } from '@meichu/services'
 import OrgCard from '@/components/OrgCard.vue'
-import Loading from '@/components/Loading.vue'
-import { YEAR_ID } from '@/utils'
+import RequestState from '@/components/RequestState.vue'
 
 export default {
   name: 'MobileAbout',
+  props: { resource: { type: Object, required: true } },
 
   components: {
     OrgCard,
-    Loading
+    RequestState
   },
 
   metaInfo: {
@@ -58,8 +57,6 @@ export default {
 
   data: function() {
     return {
-      options: {},
-      isLoading: true,
       organizations: [
         {
           nameZh: '主辦單位 / 梅竹籌備委員會',
@@ -176,6 +173,7 @@ export default {
   },
 
   computed: {
+    options() { return this.resource.data || {} },
     formattedAboutMeichu() {
       return this.options['about-meichu'] ? this.options['about-meichu'].replace(/\n/g, '<br>') : '';
     },
@@ -184,26 +182,6 @@ export default {
     }
   },
 
-  created() {
-    this.fetch()
-  },
-
-  methods: {
-    fetch() {
-      const params = {
-        data: ['about-meichu', 'meichu-history'],
-        year_id: YEAR_ID
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
-      .then(() => {
-        this.isLoading = false
-      })
-    }
-  }
 }
 </script>
 

@@ -2,7 +2,8 @@
   <div class="curr-score">
     <h1>正式賽當前積點</h1>
     <div class="title-bar"/>
-    <div class="curr-score__score">
+    <RequestState :resource="resource" empty-text="目前尚無正式賽積點資料。" @retry="fetch" />
+    <div v-if="resource.status === 'success'" class="curr-score__score">
       <div class="score__school">
         <img src="@/assets/index-score-panda.png" alt="熊貓"/>
         <div>清華大學</div>
@@ -25,46 +26,29 @@
 </template>
 
 <script>
-import { Game as GameApi } from '@meichu/services'
+import { Game as GameApi, resourceMixin, loadResource, readGames } from '@meichu/services'
 import ScoreNumber from '@/components/ScoreNumber.vue'
+import RequestState from '@/components/RequestState.vue'
 import { YEAR_ID } from '@/utils'
 
 export default {
   name: 'curr-score',
-  
-  components: {
-      ScoreNumber
-  },
-
-  data: function() {
-    return {
-      score: {
-        'nthu': 0,
-        'nctu': 0
-      }
-    }
-  },
-
-  created() {
-    this.fetch()
-  },
-
+  mixins: [resourceMixin],
+  components: { ScoreNumber, RequestState },
+  computed: { score() { return this.resource.data } },
+  created() { this.fetch() },
   methods: {
     fetch() {
-      const params = {
-        year_id: YEAR_ID
-      }
-      GameApi.fetchAllGames(params)
-        .then((games) => {
-          games = games.filter(game => game.item && game.type_of === 'official');
-
-          // Count the current score
-          var draw = games.filter(game => game.status === 'draw').length;
-          this.score['nthu'] = games.filter(game => game.status === 'nthu').length + 0.5 * draw;
-          this.score['nctu'] = games.filter(game => game.status === 'nctu').length + 0.5 * draw;
-          
-        })
-    },
+      return loadResource(this.resource, async () => {
+        const games = readGames(await GameApi.fetchAllGames({ year_id: YEAR_ID })).filter(game => game.type_of === 'official')
+        if (!games.length) return null
+        const draw = games.filter(game => game.status === 'draw').length
+        return {
+          nthu: games.filter(game => game.status === 'nthu').length + 0.5 * draw,
+          nctu: games.filter(game => game.status === 'nctu').length + 0.5 * draw
+        }
+      })
+    }
   }
 }
 </script>

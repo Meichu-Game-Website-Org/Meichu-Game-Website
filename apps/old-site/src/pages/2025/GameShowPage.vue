@@ -144,7 +144,7 @@
                 <a :href="news.link" v-if="news.type_of == 'link' || news.type_of == 'news'">
                   {{ news.title }}
                 </a>
-                <router-link :to="{name: 'news-show-2024', params: {id: news.id}}" v-else>
+                <router-link :to="{name: 'news-show-2025', params: {id: news.id}}" v-else>
                   {{ news.title }}
                 </router-link>
               </h3>

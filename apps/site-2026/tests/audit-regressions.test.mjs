@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs'
 import { test } from 'node:test'
 import vm from 'node:vm'
 import { parse } from 'vue/compiler-sfc'
+import { createResource, loadResource, resourceMixin } from '../../../packages/services/src/resource.js'
+import { readGame } from '../../../packages/services/src/content.js'
 
 const root = new URL('../../../', import.meta.url)
 const stub = { render: () => null }
@@ -15,6 +17,7 @@ function component(path, dependencies = {}) {
     .replace('export default', 'globalThis.component =')
   const context = {
     URL, moment: stub, GAME_STATUS: {}, YEAR_ID: 58,
+    resourceMixin, loadResource, readGame, RequestState: stub,
     GameItem: stub, Loading: stub, Scoreboard: stub,
     TeamCard: stub, GameHistory: stub, BackToGameListBtn: stub,
     ...dependencies
@@ -48,7 +51,8 @@ for (const year of [2025, 2026]) {
       const { options } = component(path, {
         GameApi: { fetchGameBySlug: async () => game }
       })
-      const state = { slug: 'opening', game: {} }
+      const state = { slug: 'opening', game: {}, resource: createResource() }
+      if (year === 2026) Object.defineProperty(state, 'game', { get() { return this.resource.data } })
       await options.methods.fetch.call(state)
       assert.equal(state.game.name, 'Opening')
       for (const key of ['team_nctu', 'team_nthu']) {

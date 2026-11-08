@@ -3,8 +3,8 @@
   <div>
     <h1>所有賽事</h1>
     <div class="title-bar"/>
-    <Loading v-if="isLoading" />
-    <div class="game-row" v-if="!isLoading">
+    <RequestState :resource="resource" empty-text="目前尚無賽事。" @retry="fetch" />
+    <div class="game-row" v-if="resource.status === 'success'">
       <div class="game-col">
         <h3 class="game-day">03/06 (五)</h3>
         <GameItem 
@@ -41,64 +41,31 @@
 </template>
 
 <script>
-
 import GameItem from '@/components/GameItem.vue'
-import Loading from '@/components/Loading.vue'
-import { Game as GameApi } from '@meichu/services'
+import RequestState from '@/components/RequestState.vue'
+import { Game as GameApi, resourceMixin, loadResource, readGames } from '@meichu/services'
 import { YEAR_ID } from '@/utils'
-import moment from 'moment'
 
 export default {
   name: 'game-list',
-
-  components: {
-    GameItem,
-    Loading
+  mixins: [resourceMixin],
+  components: { GameItem, RequestState },
+  computed: {
+    allGames() { return this.resource.data || [] }
   },
-
-  data: function() {
-    return {
-      allGames: [],
-      isLoading: true
-    }
-  },
-
-  created() {
-    this.fetch()
-  },
-
+  created() { this.fetch() },
   methods: {
     fetch() {
-      const params = {
-        year_id: YEAR_ID
-      }
-      GameApi.fetchAllGames(params)
-        .then((games) => {
-          // Filter valid games
-          let validGames = games.filter(val => val.item)
-
-          // Process Photo URL
-          validGames.forEach(game => {
-            game.photo = "https://meichu.games" + game.photo
-          })
-
-          // Sort by Time (Date sorting happens implicitly by placement, but we sort by time here)
-          validGames.sort((a, b) => {
-             return a.time.localeCompare(b.time)
-          })
-
-          this.allGames = validGames
-        })
-        .then(() => {
-          this.isLoading = false
-        })
+      return loadResource(this.resource, async () => {
+        const games = readGames(await GameApi.fetchAllGames({ year_id: YEAR_ID }))
+        return games.sort((a, b) => a.time.localeCompare(b.time))
+      }, games => games.length === 0)
     },
     gamesByDate(date) {
       return this.allGames.filter(game => game.date === date)
     }
   }
 }
-
 </script>
 
 <style scoped lang="scss">
