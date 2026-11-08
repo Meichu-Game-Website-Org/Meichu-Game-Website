@@ -5,7 +5,7 @@ This repository contains the source code for the Meichu Game websites, structure
 ## Project Structure
 
 *   **apps/**
-    *   **old-site/**: The legacy website serving years 2019-2025. Built with Vue 2 + Webpack.
+    *   **old-site/**: The legacy website serving years 2019-2025. Built with Vue 2.7 + Vite.
     *   **site-2026/**: The new website for 2026. Built with Vue 3 + Vite + Node 24.
 *   **packages/**
     *   **services/**: Shared API services and utilities.
@@ -80,7 +80,7 @@ We follow a **Convention over Configuration** approach. To add a new year site, 
 
 ## Technology Stack
 
-*   **Old Site**: Vue 2, Vue CLI, Webpack, BootstrapVue
+*   **Old Site**: Vue 2.7, Vite, Bootstrap
 *   **New Sites (2026+)**: Vue 3, Vite, Tailwind/Custom CSS
 *   **Package Manager**: pnpm (configured with `shamefully-hoist=true` for legacy compatibility)
 
