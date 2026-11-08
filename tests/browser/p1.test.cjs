@@ -258,3 +258,31 @@ for (const width of [390, 1440]) {
     if (width === 1440) assert.equal(await page.locator('.desktop-about .content-body p').textContent(), content)
   })
 }
+
+for (const [year, yearId] of [[2025, '57'], [2026, '58']]) {
+  test(`${year}: API upgrade retains query and credentials without leaking a local XSRF token`, async t => {
+    let requestHeaders, requestQuery
+    const page = await fixture(t, async (route, url) => {
+      if (!url.pathname.startsWith('/api/game/slug/')) return false
+      requestHeaders = await route.request().allHeaders()
+      requestQuery = [...url.searchParams]
+      return json(route, { game })
+    })
+    await page.context().addCookies([{ name: 'XSRF-TOKEN', value: 'local-only-token', url: origins[year] }])
+    await page.addInitScript(() => {
+      window.apiRequests = []
+      const send = XMLHttpRequest.prototype.send
+      XMLHttpRequest.prototype.send = function (...args) {
+        window.apiRequests.push({ withCredentials: this.withCredentials, timeout: this.timeout })
+        return send.apply(this, args)
+      }
+    })
+    await page.goto(origins[year] + (year === 2025 ? '/2025' : '') + '/game/test-game')
+    await page.getByRole('heading', { name: game.name, exact: true }).waitFor()
+    assert.deepEqual(requestQuery, [['year_id', yearId]])
+    assert.equal(requestHeaders['x-xsrf-token'], undefined)
+    const requests = await page.evaluate(() => window.apiRequests)
+    assert.ok(requests.length > 0)
+    assert.ok(requests.every(request => request.withCredentials === true && request.timeout === 10000))
+  })
+}
