@@ -99,12 +99,13 @@ function revisionFor(value) {
 
 function gameDescription(game, year) {
   const details = [trimText(game.date, 24), trimText(game.time, 16), trimText(game.location, 90)]
-  if (STATUSES[game.status]) details.push(game.status === 'nctu' && Number(year) < 2021 ? '交通大學獲勝' : STATUSES[game.status])
+  const status = typeof game.status === 'string' && own(STATUSES, game.status) ? game.status : null
+  if (status) details.push(status === 'nctu' && Number(year) < 2021 ? '交通大學獲勝' : STATUSES[status])
   const score = value => (typeof value === 'number' || typeof value === 'string') && /^\d+(?:\.\d+)?$/.test(String(value).trim()) &&
     Number.isFinite(Number(value)) && Number(value) >= 0 ? String(Number(value)) : null
   const nthu = score(game.score_nthu), nctu = score(game.score_nctu)
   const isScored = game.type_of !== 'agenda' && !['opening', 'closing'].includes(game.item?.slug)
-  if (isScored && ['running', 'pause', 'nctu', 'nthu', 'draw', 'end'].includes(game.status) && nthu !== null && nctu !== null) {
+  if (isScored && ['running', 'pause', 'nctu', 'nthu', 'draw', 'end'].includes(status) && nthu !== null && nctu !== null) {
     details.push(`清華 ${nthu}：${nctu} ${Number(year) < 2021 ? '交大' : '陽明交大'}`)
   }
   const extra = summarizeText(game.description || game.info_entry || game.info_rule, 120)

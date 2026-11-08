@@ -110,3 +110,13 @@ test('summaries and output HTML remain bounded text, including markup and malfor
   assert.ok(!html.includes('<img'))
   assert.ok(html.includes('&lt;/title&gt;'))
 })
+
+test('unknown and malformed game statuses cannot coerce objects or expose prototype properties', () => {
+  const game = { name: '籃球正式賽', item: { slug: 'basketball' }, year_id: 58,
+    date: '2026-03-07', time: '16:00', location: '清華體育館', score_nthu: 0, score_nctu: 0 }
+  for (const status of [undefined, null, false, 1, [], ['running'], {}, { toString: 'invalid' },
+    'unknown', 'constructor', '__proto__', 'toString', 'hasOwnProperty']) {
+    assert.equal(detailMetadata('/2026/game/basketball', { ...game, status }).description,
+      '2026-03-07 · 16:00 · 清華體育館')
+  }
+})
