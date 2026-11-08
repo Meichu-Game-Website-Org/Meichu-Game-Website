@@ -23,7 +23,6 @@
             <i class="fas fa-arrow-circle-right"></i>&nbsp;<span>查看所有公告</span>
           </router-link>
         </div>
-        <router-link :to="{name: ''}"></router-link>
       </div>
       <!-- <div class="col">
         <h2><i class="fab fa-youtube"></i> 宣傳影片</h2>
@@ -40,6 +39,7 @@
 import NewsPanel from '@/components/2021/NewsPanel.vue'
 import GameList from '@/components/2021/GameList.vue'
 import { Option as OptionApi } from '@meichu/services'
+import { createBannerList, readBannerOptions } from '@/utils/banners.mjs'
 
 export default {
   name: 'index',
@@ -62,18 +62,7 @@ export default {
 
   computed: {
     bannerList() {
-      let banners = []
-      if (!this.options.banners || !this.options['banner-links'].length) return []
-      for (let i = 0; i < this.options.banners.length; i++) {
-        let curBanner = {
-          image_url: this.options.banners[i],
-        }
-        if (i < this.options['banner-links'].length) {
-          curBanner['url'] = this.options['banner-links'][i]
-        }
-        banners.push(curBanner)
-      }
-      return banners
+      return createBannerList(this.options)
     }
   },
 
@@ -87,11 +76,9 @@ export default {
         data: ['banners', 'banner-links'],
         year_id: 53
       }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
+      return OptionApi.fetchOptions(params)
+        .then(data => { this.options = readBannerOptions(data) })
+        .catch(() => { this.options = readBannerOptions(null) })
     }
   }
 }

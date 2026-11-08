@@ -14,7 +14,6 @@
             </router-link>
           </div>
 
-          <router-link :to="{name: ''}"></router-link>
         </div>
         <!-- <div class="col">
           <h2><i class="fab fa-youtube"></i> 宣傳影片</h2>

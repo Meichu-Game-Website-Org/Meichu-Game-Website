@@ -94,7 +94,7 @@ export default {
   },
   metaInfo() {
     return {
-      title: this.news.title,
+      title: '賽程',
       titleTemplate: '%s | 甲辰梅竹',
     }
   }
