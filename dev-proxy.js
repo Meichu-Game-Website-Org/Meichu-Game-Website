@@ -70,7 +70,9 @@ const server = http.createServer(function(req, res) {
 
   // Default: Everything else goes to Old Site
   proxy.web(req, res, { target: DEFAULT_TARGET }, (e) => {
-      // console.error(e);
+      console.error('[Proxy] Failed to connect to old-site on port 3030.');
+      res.writeHead(502, { 'Content-Type': 'text/plain' });
+      res.end('Bad Gateway: Could not connect to old-site on port 3030.');
   });
 });
 

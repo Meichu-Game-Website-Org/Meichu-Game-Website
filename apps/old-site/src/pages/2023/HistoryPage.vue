@@ -77,7 +77,6 @@ export default {
           this.archiveList = data.archives.filter(archive => archive.item_id != 30 && archive.item_id != 31)
           this.itemList = data.items.filter(item => item.slug != 'opening' && item.slug != 'closing')
         })
-        this.console.log(this.archiveList)
     },
     
     getOutcome(outcome) {
