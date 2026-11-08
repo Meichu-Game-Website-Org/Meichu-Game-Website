@@ -11,10 +11,12 @@ export function sharingHead(metadata) {
     `<title>${escape(metadata.title)}</title>`, name('description', metadata.description),
     `<link rel="canonical" href="${escape(metadata.url)}">`,
     property('og:title', metadata.title), property('og:description', metadata.description),
-    property('og:site_name', metadata.siteName), property('og:type', 'website'),
+    property('og:site_name', metadata.siteName), property('og:type', metadata.type || 'website'),
     property('og:url', metadata.url), property('og:locale', 'zh_TW'),
-    property('og:image', metadata.image), property('og:image:type', 'image/png'),
-    property('og:image:width', '1200'), property('og:image:height', '630'), property('og:image:alt', metadata.imageAlt),
+    property('og:image', metadata.image),
+    ...(metadata.imageType ? [property('og:image:type', metadata.imageType)] : []),
+    ...(metadata.imageWidth && metadata.imageHeight ? [property('og:image:width', metadata.imageWidth), property('og:image:height', metadata.imageHeight)] : []),
+    property('og:image:alt', metadata.imageAlt),
     name('twitter:card', 'summary_large_image'), name('twitter:title', metadata.title),
     name('twitter:description', metadata.description), name('twitter:image', metadata.image), name('twitter:image:alt', metadata.imageAlt)
   ].join('\n    ')

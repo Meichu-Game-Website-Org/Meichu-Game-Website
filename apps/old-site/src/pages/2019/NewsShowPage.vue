@@ -38,12 +38,14 @@
 </template>
 
 <script>
+import { detailMetadata } from '@meichu/services/src/detail-metadata.mjs'
 import { archiveResourceMixin } from '@/utils/archive-resource'
 
 import { News as NewsApi, loadResource, readNews } from '@meichu/services'
 import moment from 'moment'
 
 export default {
+  metaInfo() { return detailMetadata(`/2019/news/${this.$route.params.id}`, this.news) },
   mixins: [archiveResourceMixin],
   name: 'news-show',
 

@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import { detailMetadata } from '@meichu/services/src/detail-metadata.mjs'
 import { News as NewsApi, resourceMixin, loadResource, readNews } from '@meichu/services'
 import RequestState from '@/components/2025/RequestState.vue'
 import moment from 'moment'
@@ -33,7 +34,7 @@ export default {
   mixins: [resourceMixin],
   components: { RequestState },
   computed: { news() { return this.resource.data || {} } },
-  metaInfo() { return { title: this.news.title || '公告', titleTemplate: '%s | 乙巳梅竹' } },
+  metaInfo() { return detailMetadata(`/2025/news/${this.$route.params.id}`, this.news) },
   watch: {
     '$route.params.id': { immediate: true, handler() { this.fetch() } }
   },

@@ -34,6 +34,7 @@
 </template>
 
 <script>
+import { detailMetadata } from '@meichu/services/src/detail-metadata.mjs'
 import { archiveResourceMixin } from '@/utils/archive-resource'
 
 import { News as NewsApi, loadResource, readNews } from '@meichu/services'
@@ -43,12 +44,7 @@ export default {
   mixins: [archiveResourceMixin],
   name: 'news-show',
 
-  metaInfo() {
-    return {
-      title: this.news.title,
-      titleTemplate: '%s | 癸卯梅竹',
-    }
-  },
+  metaInfo() { return detailMetadata(`/2023/news/${this.$route.params.id}`, this.news) },
 
   data: function() {
     return {

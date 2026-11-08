@@ -22,12 +22,15 @@ export function sharingMetadata(pathname) {
   if (!match) return null
   const year = match[1]
   const edition = EDITIONS[year]
-  const route = (match[2] || '').replace(/\/$/, '')
+  let route = (match[2] || '').replace(/\/$/, '')
   let pageTitle = ''
   if (route) {
     if (edition.routes.includes(route)) pageTitle = PAGE_TITLES[route]
-    else if (/^game\/[A-Za-z0-9_-]+$/.test(route)) pageTitle = '賽事資訊'
-    else if (/^news\/[0-9]+$/.test(route)) pageTitle = '公告'
+    else if (/^game\/[A-Za-z0-9_-]{1,100}$/.test(route)) pageTitle = '賽事資訊'
+    else if (/^news\/[0-9]{1,15}$/.test(route) && Number(route.slice(5)) > 0) {
+      pageTitle = '公告'
+      route = `news/${Number(route.slice(5))}`
+    }
     else return null
   }
   const siteName = `${edition.name}梅竹 | ${year} Meichu Games`
@@ -37,7 +40,8 @@ export function sharingMetadata(pathname) {
     description: `${edition.name}梅竹官方網站，提供賽程、票務、戰況、轉播等梅竹賽之即時資訊。`,
     siteName, url: `${SITE_ORIGIN}/${year}/${route}`,
     image: `${SITE_ORIGIN}${year === '2026' ? '/2026' : ''}/sharing/${year}.png`,
-    imageAlt: `${year} ${edition.name}梅竹主視覺`, icon: edition.icon
+    imageAlt: `${year} ${edition.name}梅竹主視覺`, imageType: 'image/png', imageWidth: 1200, imageHeight: 630,
+    type: 'website', icon: edition.icon
   }
 }
 
@@ -50,6 +54,20 @@ export function selectMetadata(records, defaults) {
     if (!value || typeof value !== 'object') continue
     for (const key of ['title', 'titleTemplate', 'description']) {
       if (own(value, key) && typeof value[key] === 'string') result[key] = value[key]
+    }
+    if (own(value, 'type') && ['website', 'article'].includes(value.type)) result.type = value.type
+    if (own(value, 'image') && typeof value.image === 'string') {
+      try {
+        const image = new URL(value.image)
+        if (image.origin === SITE_ORIGIN && !image.username && !image.password && !image.hash) {
+          result.image = image.href
+          result.imageAlt = own(value, 'imageAlt') && typeof value.imageAlt === 'string' ? value.imageAlt : ''
+          result.imageType = own(value, 'imageType') && ['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(value.imageType) ? value.imageType : null
+          for (const key of ['imageWidth', 'imageHeight']) {
+            result[key] = own(value, key) && Number.isInteger(value[key]) && value[key] > 0 && value[key] <= 4096 ? value[key] : null
+          }
+        }
+      } catch { /* Keep the route's safe fallback image. */ }
     }
     if (own(value, 'link') && Array.isArray(value.link)) {
       const icon = value.link.find(link => link && own(link, 'rel') && own(link, 'href') &&
@@ -76,6 +94,10 @@ export function installMetadata(app, documentRef = document, router = null) {
   const states = new WeakMap()
   const setMeta = (attribute, key, value) => {
     let element = documentRef.querySelector(`meta[${attribute}="${key}"]`)
+    if (value === null || value === undefined || value === '') {
+      element?.remove()
+      return
+    }
     if (!element) {
       element = documentRef.createElement('meta')
       element.setAttribute(attribute, key)
@@ -99,12 +121,13 @@ export function installMetadata(app, documentRef = document, router = null) {
       if (icon) icon.setAttribute('href', metadata.icon)
       if (!route) return
       for (const [key, value] of Object.entries({
-        title: metadata.title, description: metadata.description, type: 'website',
-        url: route.url, site_name: route.siteName, locale: 'zh_TW', image: route.image,
-        'image:type': 'image/png', 'image:width': '1200', 'image:height': '630', 'image:alt': route.imageAlt
+        title: metadata.title, description: metadata.description, type: metadata.type || 'website',
+        url: route.url, site_name: route.siteName, locale: 'zh_TW', image: metadata.image,
+        'image:type': metadata.imageType, 'image:width': metadata.imageWidth,
+        'image:height': metadata.imageHeight, 'image:alt': metadata.imageAlt
       })) setMeta('property', `og:${key}`, value)
       for (const [key, value] of Object.entries({ card: 'summary_large_image', title: metadata.title,
-        description: metadata.description, image: route.image, 'image:alt': route.imageAlt })) {
+        description: metadata.description, image: metadata.image, 'image:alt': metadata.imageAlt })) {
         setMeta('name', `twitter:${key}`, value)
       }
       let canonical = documentRef.querySelector('link[rel="canonical"]')

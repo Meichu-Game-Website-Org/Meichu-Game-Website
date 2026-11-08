@@ -220,6 +220,7 @@
 </template>
 
 <script>
+import { detailMetadata } from '@meichu/services/src/detail-metadata.mjs'
 import { archiveResourceMixin } from '@/utils/archive-resource'
 
 import moment from 'moment'
@@ -227,6 +228,7 @@ import { Game as GameApi, loadResource, readGame } from '@meichu/services'
 import {GAME_STATUS} from '@/utils'
 
 export default {
+  metaInfo() { return detailMetadata(`/2019/game/${this.$route.params.slug}`, this.game) },
   mixins: [archiveResourceMixin],
   name: 'game-show',
 

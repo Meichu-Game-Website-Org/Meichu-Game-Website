@@ -252,6 +252,7 @@
 </template>
 
 <script>
+import { detailMetadata } from '@meichu/services/src/detail-metadata.mjs'
 import { archiveResourceMixin } from '@/utils/archive-resource'
 
 import moment from 'moment'
@@ -262,12 +263,7 @@ export default {
   mixins: [archiveResourceMixin],
   name: 'game-show-2022',
 
-  metaInfo() {
-    return {
-      title: this.game.name,
-      titleTemplate: '%s | 壬寅梅竹',
-    }
-  },
+  metaInfo() { return detailMetadata(`/2022/game/${this.$route.params.slug}`, this.game) },
 
   data: function() {
     return {

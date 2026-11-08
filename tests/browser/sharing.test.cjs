@@ -88,3 +88,64 @@ test('2026 metadata follows async API text and SPA navigation without HTML injec
   assert.equal(await page.locator('meta[property="og:title"]').getAttribute('content'), '賽事資訊 | 丙午梅竹', 'Fallback titles do not repeat the parent edition suffix')
   assert.deepEqual(errors, [])
 })
+
+for (const [year, yearId] of [[2019, 1], [2020, 2], [2021, 53], [2022, 54], [2023, 55], [2024, 56], [2025, 57], [2026, 58]]) {
+  test(`${year}: detail metadata changes across items and clears unknown image dimensions`, async t => {
+    const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } })
+    t.after(() => context.close())
+    await context.addInitScript(() => { window.hasPlayedIndexAnime = true; window.skrollr = { init: () => ({ isMobile: () => true, destroy() {} }) } })
+    const news = {
+      1001: { id: 1001, year_id: yearId, title: `${year} 開賽公告`, content: '<p>開賽安排 &amp; 入場資訊</p>', photo: '/images/announcement_jpg', files: [], type_of: 'game', created_at: `${year}-03-01` },
+      1002: { id: 1002, year_id: yearId, title: `${year} 延期公告`, content: '因天候因素改期至明日。', files: [], type_of: 'game', created_at: `${year}-03-02` }
+    }
+    const game = { id: 77, year_id: yearId, name: `${year} 籃球正式賽`, item: { slug: 'final' }, type_of: 'official',
+      date: `${year}-03-07`, time: '16:00', location: '清華體育館', status: 'nonstrt', photo: '/images/game.png',
+      score_nthu: 0, score_nctu: 0, score_old_nctu: 1, score_old_nthu: 1, score_old_draw: 0,
+      team_nctu: null, team_nthu: null, news: [], records: [] }
+    await context.route('**/*', route => {
+      const url = new URL(route.request().url())
+      if (url.origin === origin) return route.continue()
+      if (url.pathname.startsWith('/api/news/')) return route.fulfill({ json: { news: news[url.pathname.split('/').at(-1)] || null } })
+      if (url.pathname.startsWith('/api/game/slug/')) return route.fulfill({ json: { game } })
+      if (url.pathname.startsWith('/api/')) return route.fulfill({ json: { news: [], games: [], options: [], archives: [], items: [] } })
+      return route.fulfill({ body: '' })
+    })
+    const page = await context.newPage()
+    const errors = []
+    page.on('pageerror', error => errors.push(error.message))
+    const meta = key => page.locator(`meta[property="og:${key}"]`)
+    const navigate = route => page.evaluate(path => document.querySelector('#app').__vue_app__.config.globalProperties.$router.push(path), year === 2026 ? route : `/${year}${route}`)
+    await page.goto(`${origin}/${year}/news/1001`)
+    await page.waitForFunction(title => document.title.startsWith(title), news[1001].title)
+    assert.equal(await meta('description').getAttribute('content'), '開賽安排 & 入場資訊')
+    assert.equal(await meta('type').getAttribute('content'), 'article')
+    assert.equal(await meta('image').getAttribute('content'), 'https://meichu.games/images/announcement_jpg')
+    assert.equal(await meta('image:width').count(), 0)
+    assert.equal(await meta('image:height').count(), 0)
+    assert.equal(await meta('image:type').count(), 0)
+    await navigate('/news/1002')
+    await page.waitForFunction(title => document.title.startsWith(title), news[1002].title)
+    assert.equal(await meta('description').getAttribute('content'), news[1002].content)
+    assert.match(await meta('image').getAttribute('content'), new RegExp(`^https://meichu.games/og/${year}/news/1002\\.png\\?v=[a-f0-9]{8}$`))
+    assert.equal(await meta('image:width').getAttribute('content'), '1200')
+    assert.equal(await meta('image:height').getAttribute('content'), '630')
+    assert.equal(await meta('image:type').getAttribute('content'), 'image/png')
+    const before = await meta('image').getAttribute('content')
+    await navigate('/game/final')
+    await page.waitForFunction(title => document.title.startsWith(title), game.name)
+    assert.equal(await meta('type').getAttribute('content'), 'website')
+    assert.match(await meta('description').getAttribute('content'), /清華體育館 · 尚未開始/)
+    assert.ok(!(await meta('description').getAttribute('content')).includes('0：0'))
+    assert.equal(await meta('image').getAttribute('content'), 'https://meichu.games/images/game.png')
+    assert.equal(await meta('image:width').count(), 0)
+    assert.equal(await meta('image:height').count(), 0)
+    assert.equal(await meta('image:type').count(), 0)
+    news[1002].content = '新的延期時間已公布。'
+    await navigate('/news/1002')
+    await page.waitForFunction(title => document.title.startsWith(title), news[1002].title)
+    assert.notEqual(await meta('image').getAttribute('content'), before, 'Updated article content changes the image cache revision')
+    assert.equal(await meta('description').getAttribute('content'), news[1002].content)
+    assert.equal(await page.locator('meta[name="twitter:image"]').getAttribute('content'), await meta('image').getAttribute('content'))
+    assert.deepEqual(errors, [])
+  })
+}

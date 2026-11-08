@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { detailMetadata } from '@meichu/services/src/detail-metadata.mjs'
 import { Game as GameApi, resourceMixin, loadResource, readGame } from '@meichu/services'
 import Scoreboard from '@/components/Scoreboard.vue'
 import TeamCard from '@/components/TeamCard.vue'
@@ -105,7 +106,7 @@ import { YEAR_ID } from '@/utils'
 export default {
   name: 'game-show-2026',
   mixins: [resourceMixin],
-  metaInfo() { return { title: this.game.name, titleTemplate: '%s | 丙午梅竹' } },
+  metaInfo() { return detailMetadata(`/2026/game/${this.$route.params.slug}`, this.game) },
   components: { Scoreboard, TeamCard, GameHistory, BackToGameListBtn, RequestState },
   computed: {
     slug() { return this.$route.params.slug },
