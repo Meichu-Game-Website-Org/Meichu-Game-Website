@@ -111,7 +111,7 @@ export default {
     fetch() {
       const params = {
         data: ['about-meichu', 'meichu-history'],
-        year_id: 1
+        year_id: 2
       }
       OptionApi.fetchOptions(params).then((data) => {
         this.options = Object.assign({}, ...data.options.map(option => ({

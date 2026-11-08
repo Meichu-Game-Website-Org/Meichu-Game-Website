@@ -40,12 +40,10 @@ async function pageWithFixtures(t, options = []) {
   const requests = []
   await context.route('**/*', async route => {
     const url = new URL(route.request().url())
-    if (url.origin === origin) {
-      if (url.pathname.startsWith('/archive-fixtures/')) return route.fulfill({
+    if (url.origin === 'https://meichu.games' && url.pathname.startsWith('/archive-fixtures/')) return route.fulfill({
         contentType: 'image/svg+xml', body: '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200"><rect width="600" height="200" fill="#b8dfe8"/></svg>'
       })
-      return route.continue()
-    }
+    if (url.origin === origin) return route.continue()
     if (url.origin === 'https://meichu.games' && url.pathname.startsWith('/api/')) {
       requests.push(url)
       return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ options, games: [], news: [], archives: [], items: [] }) })
@@ -65,12 +63,12 @@ for (const [year, yearId] of [[2020, '2'], [2021, '53']]) {
       if (links) options.push({ key: 'banner-links', value: links })
       const { page, errors, requests } = await pageWithFixtures(t, options)
       await page.goto(`${origin}/${year}/`)
-      await page.locator('img[src="/archive-fixtures/second.svg"]').waitFor({ state: 'visible' })
-      const images = page.locator('img[src^="/archive-fixtures/"]')
+      await page.locator('img[src="https://meichu.games/archive-fixtures/second.svg"]').waitFor({ state: 'visible' })
+      const images = page.locator('img[src^="https://meichu.games/archive-fixtures/"]')
       assert.equal(await images.count(), 2)
       assert.equal(await images.first().evaluate(image => image.closest('a')?.getAttribute('href') || null), links?.[0] || null)
       assert.equal(await images.last().evaluate(image => Boolean(image.closest('a'))), false)
-      await page.waitForFunction(() => [...document.querySelectorAll('img[src^="/archive-fixtures/"]')].every(image => image.complete && image.naturalWidth > 0))
+      await page.waitForFunction(() => [...document.querySelectorAll('img[src^="https://meichu.games/archive-fixtures/"]')].every(image => image.complete && image.naturalWidth > 0))
       const bannerRequest = requests.find(url => url.pathname === '/api/option')
       assert.equal(bannerRequest?.searchParams.get('year_id'), yearId)
       assert.deepEqual(errors, [])

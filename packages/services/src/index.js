@@ -14,3 +14,4 @@ export {
 
 export { createResource, loadResource, invalidateResource, resourceMixin } from './resource'
 export { readGame, readGames, readNews, readArchives, readOptions } from './content'
+export { safeHttpUrl } from './urls'

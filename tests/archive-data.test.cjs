@@ -41,12 +41,12 @@ for (const [year, yearId] of [[2020, 2], [2021, 53]]) {
     assert.deepEqual(Array.from(request.data), ['banners', 'banner-links'])
     const noLinks = options.computed.bannerList.call(state)
     assert.equal(noLinks.length, 2)
-    assert.equal(noLinks[0].image_url, '/first.png')
+    assert.equal(noLinks[0].image_url, 'https://meichu.games/first.png')
     assert.ok(!noLinks[0].url)
     state.options['banner-links'] = ['https://example.org/event']
     const shortLinks = options.computed.bannerList.call(state)
     assert.equal(shortLinks[0].url, 'https://example.org/event')
-    assert.equal(shortLinks[1].image_url, '/second.png')
+    assert.equal(shortLinks[1].image_url, 'https://meichu.games/second.png')
     assert.ok(!shortLinks[1].url)
   })
 
@@ -93,8 +93,8 @@ test('banner records retain image/link alignment and tolerate missing or malform
     { key: 'banner-links', value: ['unused', ' https://example.org/second ', 'unused', 42] }
   ] })
   assert.deepEqual(banners.createBannerList(options), [
-    { image_url: '/second.png', url: 'https://example.org/second' },
-    { image_url: '/fourth.png', url: '' }
+    { image_url: 'https://meichu.games/second.png', url: 'https://example.org/second' },
+    { image_url: 'https://meichu.games/fourth.png', url: '' }
   ])
 })
 
