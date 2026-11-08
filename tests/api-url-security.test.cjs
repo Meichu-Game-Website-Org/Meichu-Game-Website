@@ -105,3 +105,18 @@ test('direct content readers enforce the same safe URL boundary', () => {
   assert.equal(news.link, null)
   assert.deepEqual(news.files, ['https://meichu.games/safe.pdf'])
 })
+
+test('object-shaped collections cannot bypass cleanup through Vue object iteration', async () => {
+  const malicious = { link: unsafe[0], files: { attachment: unsafe[0] } }
+  for (const files of [{ attachment: unsafe[0] }, unsafe[0], 1]) {
+    assert.throws(() => urls.sanitizeNewsUrls({ files }), { code: 'INVALID_RESPONSE' })
+  }
+  for (const news of [{ entry: malicious, length: 1 }, { length: { id: 1, title: 'Malformed article', type_of: 'link', link: unsafe[0] } }, unsafe[0], 1]) {
+    assert.throws(() => urls.sanitizeGameUrls({ news }), { code: 'INVALID_RESPONSE' })
+    await assert.rejects(service('News', { news }).fetchAllNews({}), { code: 'INVALID_RESPONSE' })
+  }
+  await assert.rejects(service('News', { news: malicious }).fetchNews(1), { code: 'INVALID_RESPONSE' })
+  await assert.rejects(service('Game', { games: { entry: { live_url: unsafe[0] } } }).fetchAllGames({}), { code: 'INVALID_RESPONSE' })
+  assert.deepEqual(urls.sanitizeNewsUrls({ files: null }), { files: null })
+  assert.deepEqual(urls.sanitizeGameUrls({ news: null }), { news: null })
+})

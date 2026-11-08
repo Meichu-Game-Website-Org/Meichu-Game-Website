@@ -43,6 +43,7 @@ for (const year of [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]) {
     t.after(() => context.close())
     await context.addInitScript(() => { window.skrollr = { init: () => ({ isMobile: () => true, destroy() {} }) } })
     let safe = false
+    let malformedFiles = false
     await context.route('**/*', route => {
       const url = new URL(route.request().url())
       if (origins.includes(url.origin)) return route.continue()
@@ -60,7 +61,7 @@ for (const year of [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]) {
         live_url: safe ? 'https://player.example/embed/fixture' : 'javascript:void(parent.__unsafeFrame=true)',
         news: [{ id: 1, title: 'Fixture article', type_of: 'link', link: safe ? '/articles/fixture' : 'javascript:void(window.__unsafeLink=true)' }]
       }
-      const news = { id: 1, title: 'URL news fixture', content: 'Plain text news', link: 'javascript:void(window.__unsafeLink=true)', files: ['data:text/html,<script>parent.__unsafeFrame=true</script>', '/uploads/notice.pdf'] }
+      const news = { id: 1, title: 'URL news fixture', content: 'Plain text news', link: 'javascript:void(window.__unsafeLink=true)', files: malformedFiles ? { attachment: 'javascript:void(window.__unsafeLink=true)' } : ['data:text/html,<script>parent.__unsafeFrame=true</script>', '/uploads/notice.pdf'] }
       const body = url.pathname.startsWith('/api/game/slug/') ? { game }
         : url.pathname.startsWith('/api/news/') ? { news }
         : { games: [], news: [], options: [], archives: [], items: [] }
@@ -93,6 +94,16 @@ for (const year of [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]) {
     assert.equal(await page.locator('a[href="https://meichu.games/uploads/notice.pdf"]').count(), 1)
     assert.equal(await page.locator('a[href^="javascript:"], a[href^="data:"]').count(), 0)
     assert.deepEqual(await page.evaluate(() => [Boolean(window.__unsafeFrame), Boolean(window.__unsafeLink)]), [false, false])
+    if (year >= 2025) {
+      malformedFiles = true
+      await page.reload()
+      await page.getByRole('alert').waitFor()
+      assert.equal(await page.locator('a[href^="javascript:"]').count(), 0, 'Object iteration cannot bypass the array URL policy')
+      malformedFiles = false
+      await page.getByRole('button', { name: '重新載入', exact: true }).click()
+      await page.getByRole('heading', { name: 'URL news fixture', exact: true }).waitFor()
+      assert.equal(await page.locator('a[href="https://meichu.games/uploads/notice.pdf"]').count(), 1)
+    }
     assert.deepEqual(errors, [])
   })
 }

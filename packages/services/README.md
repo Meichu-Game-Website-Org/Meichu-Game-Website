@@ -29,4 +29,6 @@ The 2026 core pages and the 2025/2026 announcement readers use these states with
 
 Game, news, and option services validate their known link, image, attachment, and stream fields before returning API data. Only HTTP(S) URLs are allowed; relative paths resolve against `https://meichu.games`, and invalid optional URLs become `null`. Invalid news attachments are omitted, while banner arrays retain their positions so images and links stay paired. A missing or blocked stream URL disables the live iframe.
 
+Game/news lists and attachment collections must be arrays. Unexpected collection shapes reject with `INVALID_RESPONSE`, rather than passing object values to Vue's object iteration and bypassing URL validation.
+
 Consumers should use these normalized URLs directly instead of adding the API origin again. `safeHttpUrl` exposes the same policy for other known URL fields. This protects rendering in this frontend; the API should also validate stored URLs for its other clients.
