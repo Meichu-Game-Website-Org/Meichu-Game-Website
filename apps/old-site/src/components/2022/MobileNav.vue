@@ -1,5 +1,5 @@
 <template>
-  <div @keydown.esc.stop="closeMenu" :class="{'mobile-header': true, 'mobile-header--active': navToggle}">
+  <div @keydown.esc="closeMenu" :class="{'mobile-header': true, 'mobile-header--active': navToggle}">
     <div :class="{'mobile-header-inner': true, 'mobile-header--active': navToggle}">
       <div class="mobile-header__left">
         <router-link :to="{name: 'index-2022'}">
@@ -73,7 +73,10 @@ export default {
   },
 
   methods: {
-    closeMenu() {
+    closeMenu(event) {
+      if (!this.navToggle) return
+      event.stopPropagation()
+      event.preventDefault()
       this.navToggle = false
       this.$refs.menuToggle?.focus()
     },

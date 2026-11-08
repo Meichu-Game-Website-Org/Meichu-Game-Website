@@ -101,6 +101,7 @@ export default {
     this.finish();
   },
   beforeUnmount() {
+    this.visible = false;
     this.stopAnimation();
   },
   methods: {
@@ -124,7 +125,7 @@ export default {
       }
     },
     accelerate() {
-       if (this.isMobile) return;
+       if (!this.visible || this.isMobile) return;
 
        this.isAccelerated = true;
        if (this.timer) clearTimeout(this.timer);
@@ -138,9 +139,11 @@ export default {
        }
     },
     startTyping() {
+       if (!this.visible) return;
        this.timer = setTimeout(this.typeNext, this.typingSpeed);
     },
     typeNext() {
+      if (!this.visible) return;
       if (this.line1.length < this.text1.length) {
         this.line1 += this.text1[this.line1.length];
         this.timer = setTimeout(() => {
@@ -164,6 +167,7 @@ export default {
       }
     },
     runNextStep() {
+      if (!this.visible) return;
       const maxSteps = 6;
       if (this.step < maxSteps) {
         this.step++;

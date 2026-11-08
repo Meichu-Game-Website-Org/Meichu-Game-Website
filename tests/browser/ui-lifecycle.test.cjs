@@ -97,6 +97,55 @@ test('2026: Escape ends the intro and restores the existing overflow value', asy
   assert.equal(await page.evaluate(() => document.body.style.overflow), 'auto')
 })
 
+
+test('2026: Escape from the closed mobile menu reaches the intro', async t => {
+  const page = await fixture(t, 390, true)
+  await page.goto(origins.current + '/2026/about')
+  await page.locator('.mobile-header__toggle').click()
+  await page.locator('.mobile-nav').getByRole('link', { name: '首頁', exact: true }).click()
+  await page.locator('.index-anime-mobile').waitFor()
+  assert.equal(await page.locator('.mobile-header__toggle').getAttribute('aria-expanded'), 'false')
+  await page.keyboard.press('Escape')
+  assert.equal(await page.evaluate(() => window.hasPlayedIndexAnime), true, 'Closed navigation must not swallow the intro Escape key')
+  assert.equal(await page.evaluate(() => document.body.style.overflow), '')
+})
+
+for (const width of [390, 1440]) {
+test(`2026: late clicks on the fading ${width}px intro cannot restart its timer`, async t => {
+  const page = await fixture(t, width, true)
+  await page.addInitScript(() => {
+    const originalTimeout = window.setTimeout.bind(window)
+    window.lateIntroTimers = []
+    window.setTimeout = (callback, delay, ...args) => {
+      if (window.hasPlayedIndexAnime && [40, 400, 500, 800, 1000, 1200, 1500].includes(delay)) window.lateIntroTimers.push(delay)
+      return originalTimeout(callback, delay, ...args)
+    }
+  })
+  await page.goto(origins.current + '/2026/')
+  const animation = page.locator(width === 390 ? '.index-anime-mobile' : '.index-anime')
+  await animation.waitFor()
+  await page.keyboard.press('Escape')
+  // A CSS leaving transition retains the old DOM and its event listeners briefly.
+  await animation.dispatchEvent('click')
+  assert.deepEqual(await page.evaluate(() => window.lateIntroTimers), [], 'Finishing must remain final even while leaving DOM can receive events')
+})
+}
+
+async function textContrast(locator) {
+  return locator.evaluate(async element => {
+    await Promise.allSettled(element.getAnimations().map(animation => animation.finished))
+    const rgba = value => value.match(/[\d.]+/g).map(Number)
+    const composite = (front, back) => front.slice(0, 3).map((value, index) => value * (front[3] ?? 1) + back[index] * (1 - (front[3] ?? 1)))
+    const ancestors = []
+    for (let node = element; node; node = node.parentElement) ancestors.unshift(node)
+    const background = ancestors.reduce((color, node) => composite(rgba(getComputedStyle(node).backgroundColor), color), [255, 255, 255])
+    const foreground = composite(rgba(getComputedStyle(element).color), background)
+    const luminance = color => color.map(value => value / 255).map(value => value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0)
+    const a = luminance(foreground), b = luminance(background)
+    return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05)
+  })
+}
+
 for (const year of [2020, 2021, 2022, 2023, 2024, 2025, 2026]) {
   test(`${year}: mobile navigation supports keyboard opening, Escape and selecting the current route`, async t => {
     const page = await fixture(t, 390)
@@ -128,6 +177,13 @@ for (const width of [800, 1440]) {
     const section = page.locator('.about-section:visible')
     const first = section.getByRole('tab', { name: '丙午梅竹', exact: true })
     const history = section.getByRole('tab', { name: '梅竹賽歷史', exact: true })
+    await first.waitFor()
+    const inactiveContrast = await textContrast(history)
+    assert.ok(inactiveContrast >= 4.5, 'The inactive tab label remains readable')
+    await history.hover()
+    const hoverContrast = await textContrast(history)
+    assert.ok(hoverContrast >= 4.5, 'Hover does not reduce tab text contrast')
+    t.diagnostic(`Tab text contrast: inactive ${inactiveContrast.toFixed(2)}:1, hover ${hoverContrast.toFixed(2)}:1`)
     await first.focus()
     await page.keyboard.press('ArrowRight')
     assert.equal(await history.getAttribute('aria-selected'), 'true')
@@ -136,6 +192,8 @@ for (const width of [800, 1440]) {
     await page.keyboard.press('Home')
     assert.equal(await first.getAttribute('aria-selected'), 'true')
     assert.match(await section.getByRole('tabpanel').textContent(), /梅竹介紹內容/)
+    await page.mouse.move(0, 0)
+    await textContrast(history)
     await first.scrollIntoViewIfNeeded()
     await shot(page, `about-${width}`)
     const ids = await page.locator('[role="tab"], [role="tabpanel"]').evaluateAll(elements => elements.map(element => element.id))
@@ -158,4 +216,13 @@ test('2026: homepage cover follows CSS viewport changes without reloading', asyn
   }
   await page.setViewportSize({ width: 390, height: 900 })
   await image.waitFor({ state: 'hidden' })
+})
+
+
+test('2026: mobile About content remains visible without desktop tabs', async t => {
+  const page = await fixture(t, 390)
+  await page.goto(origins.current + '/2026/about')
+  await page.locator('.mobile-about .about-section').first().waitFor()
+  assert.equal(await page.getByRole('tab').count(), 0)
+  await shot(page, 'about-390')
 })

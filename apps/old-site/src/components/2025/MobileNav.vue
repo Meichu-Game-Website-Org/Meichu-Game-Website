@@ -1,5 +1,5 @@
 <template>
-  <div @keydown.esc.stop="closeMenu" :class="{'mobile-header': true, 'mobile-header--active': navToggle}">
+  <div @keydown.esc="closeMenu" :class="{'mobile-header': true, 'mobile-header--active': navToggle}">
     <div class="mobile-header__left">
       <!-- <router-link :to="{name: 'index-2022'}">
         <img src="@/assets/2022/logo-h.svg" alt="壬寅梅竹 | 2021 Meichu Games" class="logo">
@@ -75,7 +75,10 @@ export default {
   },
 
   methods: {
-    closeMenu() {
+    closeMenu(event) {
+      if (!this.navToggle) return
+      event.stopPropagation()
+      event.preventDefault()
       this.navToggle = false
       this.$refs.menuToggle?.focus()
     },

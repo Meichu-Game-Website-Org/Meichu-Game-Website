@@ -87,7 +87,7 @@ export default {
   font: inherit;
   cursor: pointer;
   transition: color 0.3s ease;
-  color: rgba($primary, 0.3);
+  color: $primary;
 }
 .tab-item:focus-visible {
   outline: 2px solid currentColor;
@@ -97,7 +97,7 @@ export default {
   color: $white;
 }
 .tab-item:hover {
-  color: rgba($primary, 0.7);
+  color: $white;
 }
 
 .title-bar {
