@@ -1,3 +1,5 @@
+import { safeHttpUrl, sanitizeGameUrls, sanitizeNewsUrls } from './urls.js'
+
 function invalidResponse() {
   const error = new Error('Unexpected API response')
   error.code = 'INVALID_RESPONSE'
@@ -28,11 +30,11 @@ export function readGame(game) {
   if (game == null) return null
   object(game)
   requiredText(game.name)
-  const result = { ...game }
+  const result = sanitizeGameUrls(game)
   for (const key of ['team_nctu', 'team_nthu']) {
     if (game[key] == null) continue
     const team = object(game[key])
-    result[key] = { ...team, photo: team.photo ? new URL(text(team.photo), 'https://meichu.games').href : null }
+    result[key] = { ...result[key], photo: safeHttpUrl(team.photo) }
   }
   if (game.news != null) array(game.news).forEach(news => {
     object(news)
@@ -47,9 +49,9 @@ export function readGames(games) {
     requiredText(object(game.item).slug)
     text(game.status)
     return {
-      ...game,
+      ...sanitizeGameUrls(game),
       time: game.time == null ? '' : text(game.time),
-      photo: game.photo ? new URL(text(game.photo), 'https://meichu.games').href : null
+      photo: safeHttpUrl(game.photo)
     }
   })
 }
@@ -60,7 +62,7 @@ export function readNews(news) {
   requiredText(news.title)
   text(news.content)
   const files = news.files == null ? [] : array(news.files).map(url => text(url))
-  return { ...news, files }
+  return sanitizeNewsUrls({ ...news, files })
 }
 
 export function readArchives(data) {
