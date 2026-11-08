@@ -30,9 +30,9 @@
           <div class="org-item__content">
             主辦學校為橋藝、撞球、飛鏢、射箭等賽事之主場。<br>
             <a class="org-item__link" target="_blank" href="http://www.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 官方網站</a>
-            <a class="org-item__link" target="_blank" href="https://www.facebook.com/nctu.edu.tw/"><i class="fab fa-facebook"></i> Facebook</a>
-            <a class="org-item__link" target="_blank" href="http://activity.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 課外活動組</a>
-            <a class="org-item__link" target="_blank" href="http://sport.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
+            <a class="org-item__link" target="_blank" href="https://www.facebook.com/nthu.tw/"><i class="fab fa-facebook"></i> Facebook</a>
+            <a class="org-item__link" target="_blank" href="http://eas.web.nthu.edu.tw/bin/home.php"><i class="fas fa-globe-asia"></i> 課外活動組</a>
+            <a class="org-item__link" target="_blank" href="http://peo.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
           </div>
         </div>
         <div class="org-item">
@@ -44,8 +44,8 @@
             協辦學校為男籃、圍棋、劍道、壘球等賽事之主場。<br>
             <a class="org-item__link" target="_blank" href="http://www.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 官方網站</a>
             <a class="org-item__link" target="_blank" href="https://www.facebook.com/nctu.edu.tw/"><i class="fab fa-facebook"></i> Facebook</a>
-            <a class="org-item__link" target="_blank" href="http://eas.web.nthu.edu.tw/bin/home.php"><i class="fas fa-globe-asia"></i> 課外活動指導組</a>
-            <a class="org-item__link" target="_blank" href="http://peo.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
+            <a class="org-item__link" target="_blank" href="http://activity.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 課外活動指導組</a>
+            <a class="org-item__link" target="_blank" href="http://sport.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
           </div>
         </div>
         <div class="org-item">

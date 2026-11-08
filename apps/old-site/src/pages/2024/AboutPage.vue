@@ -58,28 +58,28 @@
         </div>
         <div class="org-item">
           <div class="org-item__title">
-            <h4 class="org-chinese_font">主辦校 / 國立陽明交通大學</h4>
-            <small >National Yang Ming Chiao Tung University</small>
-          </div>
-          <div class="org-item__content">
-            主辦學校為桌球、排球、羽球等賽事之主場。<br>
-            <a class="org-item__link" target="_blank" href="http://www.nycu.edu.tw/"><i class="fas fa-globe-asia"></i> 官方網站</a>
-            <a class="org-item__link" target="_blank" href="https://www.facebook.com/YangMingChiaoTung/"><i class="fab fa-facebook"></i> Facebook</a>
-            <a class="org-item__link" target="_blank" href="https://osa.nycu.edu.tw/activity-ct"><i class="fas fa-globe-asia"></i> 課外活動輔導二組</a>
-            <a class="org-item__link" target="_blank" href="https://peo.nycu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
-          </div>
-        </div>
-        <div class="org-item">
-          <div class="org-item__title">
-            <h4 class="org-chinese_font">協辦校 / 國立清華大學</h4>
+            <h4 class="org-chinese_font">主辦校 / 國立清華大學</h4>
             <small>National Tsing Hua University</small>
           </div>
           <div class="org-item__content">
-            協辦學校為籃球、網球、象棋等賽事之主場。<br>
+            主辦學校為桌球、排球、羽球等賽事之主場。<br>
             <a class="org-item__link" target="_blank" href="http://www.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 官方網站</a>
             <a class="org-item__link" target="_blank" href="https://www.facebook.com/nthu.tw/"><i class="fab fa-facebook"></i> Facebook</a>
             <a class="org-item__link" target="_blank" href="http://dsa.site.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 課外活動組</a>
             <a class="org-item__link" target="_blank" href="https://nthupeo.site.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
+          </div>
+        </div>
+        <div class="org-item">
+          <div class="org-item__title">
+            <h4 class="org-chinese_font">協辦校 / 國立陽明交通大學</h4>
+            <small >National Yang Ming Chiao Tung University</small>
+          </div>
+          <div class="org-item__content">
+            協辦學校為籃球、網球、象棋等賽事之主場。<br>
+            <a class="org-item__link" target="_blank" href="http://www.nycu.edu.tw/"><i class="fas fa-globe-asia"></i> 官方網站</a>
+            <a class="org-item__link" target="_blank" href="https://www.facebook.com/YangMingChiaoTung/"><i class="fab fa-facebook"></i> Facebook</a>
+            <a class="org-item__link" target="_blank" href="https://osa.nycu.edu.tw/activity-ct"><i class="fas fa-globe-asia"></i> 課外活動輔導二組</a>
+            <a class="org-item__link" target="_blank" href="https://peo.nycu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
           </div>
         </div>
 
