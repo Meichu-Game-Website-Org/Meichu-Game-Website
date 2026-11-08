@@ -6,10 +6,10 @@ lockfile's patch hashes are verified. Run `pnpm test`, `pnpm test:browser` and
 
 ## ESLint's minimatch dependency
 
-The scoped `eslint@^10.14.0>minimatch` override selects 11.0.5 to fix
+The scoped ESLint and `@eslint/config-array` overrides select minimatch 11.0.5 to fix
 [GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249), while
 ESLint's published range still selects the affected 10.x line. It is restricted
-to this parent and preserves the CommonJS API used by ESLint. The lint contract
+to these parents and preserve the CommonJS API used by ESLint. The lint contract
 test checks Vue file selection, parsing and undefined-variable diagnostics.
 The override also produced identical diagnostics for all 108 existing source
 files. Remove it once upstream ESLint accepts a patched minimatch version.

@@ -9,3 +9,4 @@ patchedDependencies:
 overrides:
   # ESLint 10 still requests minimatch 10; GHSA-g3hv-75wg-m249 is fixed in 11.
   'eslint@^10.14.0>minimatch': ^11.0.5
+  '@eslint/config-array@^0.23.5>minimatch': ^11.0.5
