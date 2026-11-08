@@ -21,7 +21,6 @@
 <script>
 
 import NewsPanel from '@/components/2020/NewsPanel.vue'
-import GameItem from '@/components/2020/GameItem.vue'
 
 export default {
   name: 'news-list',
@@ -34,7 +33,6 @@ export default {
   },
 
   components: {
-    GameItem,
     NewsPanel,
   }
 }

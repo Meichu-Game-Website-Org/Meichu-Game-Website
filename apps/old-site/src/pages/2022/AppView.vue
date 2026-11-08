@@ -27,7 +27,6 @@
 
 <script>
 import "@/assets/styles-2022.scss"
-import Header from '@/components/2022/Header'
 import Footer from '@/components/2022/Footer'
 import Nav from '@/components/2022/Nav'
 import MobileNav from '@/components/2022/MobileNav'
@@ -44,7 +43,6 @@ export default {
   },
 
   components: {
-    Header,
     Footer,
     Nav,
     MobileNav

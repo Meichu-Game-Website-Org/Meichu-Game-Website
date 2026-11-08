@@ -21,13 +21,11 @@
 <script>
 
 import NewsPanel from '@/components/2019/NewsPanel.vue'
-import GameItem from '@/components/2019/GameItem.vue'
 
 export default {
   name: 'news-list',
 
   components: {
-    GameItem,
     NewsPanel,
   },
 
