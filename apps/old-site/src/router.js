@@ -384,7 +384,7 @@ const router = new VueRouter({
   // eslint-disable-next-line no-unused-vars
   scrollBehavior (to, from, savedPosition) {
     var wraps = document.getElementById('wrapper')
-    wraps.scrollTop = 0
+    if (wraps) wraps.scrollTop = 0
     return { x: 0, y: 0 }
   }
 })

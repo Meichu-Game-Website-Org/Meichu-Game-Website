@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test apps/site-2026/tests/*.test.mjs tests/*.test.cjs",
     "start": "concurrently \"pnpm --filter old-site serve\" \"pnpm --filter \"site-*\" --parallel dev\" \"node dev-proxy.js\""
   },
   "keywords": [],

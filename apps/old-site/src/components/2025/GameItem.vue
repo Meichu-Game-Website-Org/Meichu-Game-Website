@@ -40,7 +40,7 @@ export default {
 
   methods: {
     isShowScore(status) {
-      return status == 'nctu' || status == 'nctu' || status == 'nthu'
+      return status == 'draw' || status == 'nctu' || status == 'nthu'
     }
   }
 }

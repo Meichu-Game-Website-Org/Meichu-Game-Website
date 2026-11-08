@@ -133,11 +133,14 @@ export default {
       const params = {
         year_id: YEAR_ID
       }
-      GameApi.fetchGameBySlug(this.slug, params)
+      return GameApi.fetchGameBySlug(this.slug, params)
         .then((game) => {
           this.game = game;
-          this.game.team_nctu.photo = "https://meichu.games" + this.game.team_nctu.photo;
-          this.game.team_nthu.photo = "https://meichu.games" + this.game.team_nthu.photo;
+          for (const team of [this.game.team_nctu, this.game.team_nthu]) {
+            if (team && team.photo) {
+              team.photo = new URL(team.photo, 'https://meichu.games').href;
+            }
+          }
         })
     }
   }
