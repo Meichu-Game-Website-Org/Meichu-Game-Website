@@ -79,10 +79,6 @@ export default {
           this.games = Object.assign({}, ...games.filter(val => val.item).map(game => ({
             [game.item.slug]: game
           })))
-          // Loop for games and edit the path of the photo
-          for (let key in this.games) {
-            this.games[key].photo = "https://meichu.games" + this.games[key].photo
-          }
         })
         .then(() => {
           this.isLoading = false
