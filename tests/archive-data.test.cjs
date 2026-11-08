@@ -98,7 +98,7 @@ test('banner records retain image/link alignment and tolerate missing or malform
   ])
 })
 
-test('2025: desktop animation follows viewport changes and removes its resize listener', () => {
+test('2025: viewport tracking stops while cached and refreshes when activated again', () => {
   const listeners = new Map()
   const window = {
     innerWidth: 1440,
@@ -113,6 +113,7 @@ test('2025: desktop animation follows viewport changes and removes its resize li
   state.updateViewport = options.methods.updateViewport.bind(state)
   options.created.call(state)
   options.mounted.call(state)
+  options.activated.call(state)
   assert.equal(state.isDesktop, true)
   window.innerWidth = 390
   listeners.get('resize')()
@@ -120,6 +121,34 @@ test('2025: desktop animation follows viewport changes and removes its resize li
   window.innerWidth = 1440
   listeners.get('resize')()
   assert.equal(state.isDesktop, true)
+  options.deactivated.call(state)
+  assert.equal(listeners.size, 0)
+  window.innerWidth = 390
+  assert.equal(state.isDesktop, true, 'A cached page does not mount or remove its game during viewport changes')
+  options.activated.call(state)
+  assert.equal(state.isDesktop, false, 'Returning to the page reads the current viewport')
+  assert.equal(listeners.size, 1)
+  window.innerWidth = 1440
+  listeners.get('resize')()
+  assert.equal(state.isDesktop, true, 'Viewport tracking resumes on the active page')
   options.beforeUnmount.call(state)
   assert.equal(listeners.size, 0)
+})
+
+test('2025: viewport tracking also works without KeepAlive and stops on unmount', () => {
+  const window = new EventTarget()
+  window.innerWidth = 1440
+  const options = component(2025, 'IndexPage', { window })
+  const state = options.data()
+  state.updateViewport = options.methods.updateViewport.bind(state)
+  options.created.call(state)
+  options.mounted.call(state)
+  assert.equal(state.isDesktop, true)
+  window.innerWidth = 390
+  window.dispatchEvent(new Event('resize'))
+  assert.equal(state.isDesktop, false)
+  options.beforeUnmount.call(state)
+  window.innerWidth = 1440
+  window.dispatchEvent(new Event('resize'))
+  assert.equal(state.isDesktop, false)
 })
