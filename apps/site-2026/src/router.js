@@ -47,16 +47,11 @@ const routes = [
       component: HistoryPage2026
     }
     ]
-  },
-  // Fallback for when the router is accessed via /2026/ path but history base is not set
-  {
-    path: '/2026',
-    redirect: '/'
   }
 ]
 
 const router = createRouter({
-  history: createWebHistory(window.location.pathname.startsWith('/2026') ? '/2026/' : '/'),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior (to, from, savedPosition) {
     return { top: 0 }

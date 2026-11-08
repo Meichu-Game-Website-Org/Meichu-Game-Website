@@ -17,10 +17,12 @@ const options = { options: [{ key: 'about-meichu', value: '梅竹介紹測試' }
 const mime = { '.js': 'text/javascript', '.css': 'text/css', '.html': 'text/html', '.svg': 'image/svg+xml', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.woff2': 'font/woff2' }
 let browser, origins, servers
 
-async function serve(directory) {
+async function serve(directory, mount = '/') {
   const server = createServer(async (req, res) => {
     try {
-      const relative = decodeURIComponent(new URL(req.url, 'http://localhost').pathname).replace(/^\/+/, '')
+      const pathname = decodeURIComponent(new URL(req.url, 'http://localhost').pathname)
+      if (!pathname.startsWith(mount)) { res.statusCode = 404; res.end('Not found'); return }
+      const relative = pathname.slice(mount.length)
       let file = path.resolve(directory, relative)
       if (!file.startsWith(directory + path.sep)) file = path.join(directory, 'index.html')
       const info = await stat(file).catch(() => null)
@@ -34,7 +36,7 @@ async function serve(directory) {
 }
 
 before(async () => {
-  servers = await Promise.all(['apps/site-2026/dist', 'apps/old-site/dist'].map(dir => serve(path.resolve(dir))))
+  servers = await Promise.all(['apps/site-2026/dist', 'apps/old-site/dist'].map((dir, index) => serve(path.resolve(dir), index === 0 ? '/2026/' : '/')))
   origins = { 2026: servers[0].origin, 2025: servers[1].origin }
   browser = await chromium.launch({ headless: true, executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined })
 })
@@ -82,16 +84,16 @@ for (const year of [2026, 2025]) {
   test(`${year}: all internal announcement types resolve in-year; external articles remain links`, async t => {
     const announcements = ['game', 'activity', 'other', 'news', 'link'].map((type_of, index) => ({ id: index + 1, title: `公告${type_of}`, type_of, link: `https://news.example/${index + 1}` }))
     const page = await fixture(t, (route, url) => url.pathname.startsWith('/api/game/slug/') ? json(route, { game: { ...game, news: announcements } }) : false)
-    await page.goto(origins[year] + (year === 2025 ? '/2025' : '') + '/game/test-game')
+    await page.goto(origins[year] + `/${year}` + '/game/test-game')
     for (const type of ['game', 'activity', 'other']) {
       const link = page.getByRole('link', { name: `公告${type}`, exact: true })
       await link.waitFor()
-      assert.match(await link.getAttribute('href'), new RegExp(`^${year === 2025 ? '/2025' : ''}/news/`))
+      assert.match(await link.getAttribute('href'), new RegExp(`^/${year}/news/`))
     }
     for (const type of ['news', 'link']) assert.match(await page.getByRole('link', { name: `公告${type}`, exact: true }).getAttribute('href'), /^https:\/\/news.example\//)
     await page.getByRole('link', { name: '公告game', exact: true }).click()
     await page.getByRole('heading', { name: news.title, exact: true }).waitFor()
-    assert.match(page.url(), new RegExp(`${year === 2025 ? '/2025' : ''}/news/1$`))
+    assert.match(page.url(), new RegExp(`/${year}/news/1$`))
     assert.equal(await page.locator('.news-content').textContent(), news.content)
     assert.equal(await page.getByRole('link', { name: '附件 1（另開視窗）' }).getAttribute('href'), news.files[0])
     await page.getByRole('link', { name: '返回賽事列表' }).waitFor()
@@ -114,7 +116,7 @@ for (const [name, status] of [['404', 404], ['503', 503], ['offline', 0], ['malf
       if (status === -1) return true // Leave the XHR unanswered so the real 10-second timeout fires.
       return json(route, {}, status)
     })
-    await page.goto(origins[2026] + '/game')
+    await page.goto(origins[2026] + '/2026' + '/game')
     await page.getByRole('alert').waitFor({ timeout: 15000 })
     assert.equal(await page.locator('.game-row').count(), 0)
     assert.equal(await page.locator('[aria-busy="true"]').count(), 0)
@@ -131,7 +133,7 @@ test('scores hide unavailable values, distinguish empty from valid zero, and rec
   let response = 'failure'
   const page = await fixture(t, (route, url) => url.pathname === '/api/game'
     ? json(route, response === 'failure' ? {} : { games: response === 'empty' ? [] : [game] }, response === 'failure' ? 503 : 200) : false)
-  await page.goto(origins[2026])
+  await page.goto(origins[2026] + '/2026/')
   await page.getByRole('alert').waitFor()
   assert.equal(await page.locator('.score-number-svg').count(), 0)
   response = 'zero'
@@ -152,7 +154,7 @@ for (const width of [1440, 390]) {
       calls++
       return json(route, failure ? {} : options, failure ? 503 : 200)
     }, width)
-    await page.goto(origins[2026] + '/about')
+    await page.goto(origins[2026] + '/2026' + '/about')
     const section = page.locator(width === 390 ? '.mobile-about' : '.desktop-about')
     await section.getByRole('alert').first().waitFor()
     assert.equal(calls, 1)
@@ -171,7 +173,7 @@ for (const [target, endpoint, bad, good, success] of [
   test(`${target}: incomplete response is recoverable`, async t => {
     let failure = true
     const page = await fixture(t, (route, url) => url.pathname === endpoint ? json(route, failure ? bad : good) : false)
-    await page.goto(origins[2026] + target)
+    await page.goto(origins[2026] + '/2026' + target)
     await page.getByRole('alert').waitFor()
     failure = false
     await page.getByRole('button', { name: '重新載入', exact: true }).click()
@@ -192,7 +194,7 @@ for (const type of ['game', 'news']) {
         if (url.pathname.endsWith('/slow')) { started(); await pending; return json(route, payload('舊資料'), staleFailure ? 503 : 200) }
         return json(route, payload('新資料'))
       })
-      await page.goto(origins[2026] + `/${type}/fast`)
+      await page.goto(origins[2026] + '/2026' + `/${type}/fast`)
       await page.getByRole('heading', { name: '新資料', exact: true }).waitFor()
       await push(page, `/${type}/slow`)
       await began
@@ -216,7 +218,7 @@ for (const [target, endpoint, body, message] of [
 ]) {
   test(`${target}: empty responses show an explicit empty state`, async t => {
     const page = await fixture(t, (route, url) => url.pathname === endpoint ? json(route, body) : false)
-    await page.goto(origins[2026] + target)
+    await page.goto(origins[2026] + '/2026' + target)
     await page.getByText(message, { exact: true }).filter({ visible: true }).first().waitFor()
     assert.equal(await page.locator('[aria-busy="true"]').count(), 0)
     assert.equal(await page.getByRole('alert').count(), 0)
@@ -233,7 +235,7 @@ test('scores never show default zero while the first request is pending', async 
     await pending
     return json(route, { games: [{ ...game, status: 'nthu' }] })
   })
-  await page.goto(origins[2026])
+  await page.goto(origins[2026] + '/2026/')
   await began
   assert.equal(await page.locator('.score-number-svg').count(), 0)
   await page.getByText('資料載入中…', { exact: true }).waitFor()
@@ -248,7 +250,7 @@ for (const width of [390, 1440]) {
     const page = await fixture(t, (route, url) => url.pathname === '/api/option' ? json(route, {
       options: [{ key: 'about-meichu', value: content }, { key: 'meichu-history', value: content }]
     }) : false, width)
-    await page.goto(origins[2026] + '/about')
+    await page.goto(origins[2026] + '/2026' + '/about')
     const paragraphs = page.locator('.mobile-about .break-line p')
     await paragraphs.first().waitFor({ state: 'attached' })
     assert.deepEqual(await paragraphs.allTextContents(), [content, content])
@@ -277,7 +279,7 @@ for (const [year, yearId] of [[2025, '57'], [2026, '58']]) {
         return send.apply(this, args)
       }
     })
-    await page.goto(origins[year] + (year === 2025 ? '/2025' : '') + '/game/test-game')
+    await page.goto(origins[year] + `/${year}` + '/game/test-game')
     await page.getByRole('heading', { name: game.name, exact: true }).waitFor()
     assert.deepEqual(requestQuery, [['year_id', yearId]])
     assert.equal(requestHeaders['x-xsrf-token'], undefined)
