@@ -69,10 +69,11 @@ export function summarizeText(value, limit = 180) {
 
 function matchesIdentity(route, resource) {
   if (!record(resource)) return false
-  if (resource.year_id != null && String(resource.year_id) !== String(route.yearId)) return false
-  if (record(resource.year) && resource.year.year != null && String(resource.year.year) !== route.year) return false
-  if (route.type === 'news') return own(resource, 'id') && /^(?:[1-9][0-9]{0,14})$/.test(String(resource.id)) &&
-    ['number', 'string'].includes(typeof resource.id) && String(Number(resource.id)) === route.key
+  const sameScalar = (value, expected) => ['number', 'string'].includes(typeof value) && String(value) === String(expected)
+  if (resource.year_id != null && !sameScalar(resource.year_id, route.yearId)) return false
+  if (record(resource.year) && resource.year.year != null && !sameScalar(resource.year.year, route.year)) return false
+  if (route.type === 'news') return own(resource, 'id') && ['number', 'string'].includes(typeof resource.id) &&
+    /^(?:[1-9][0-9]{0,14})$/.test(String(resource.id)) && String(Number(resource.id)) === route.key
   const slug = record(resource.item) ? resource.item.slug : resource.slug
   return typeof slug === 'string' && slug === route.key
 }
