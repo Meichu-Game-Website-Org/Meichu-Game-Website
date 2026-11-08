@@ -19,32 +19,54 @@ if (!args.length) {
   docker(['build', '--file', 'apps/old-site/Dockerfile', '--tag', image, '.'], { stdio: 'inherit' })
 }
 
+const containers = new Set()
+const network = `meichu-sharing-smoke-${process.pid}-${Date.now()}`
+let networkCreated = false
 let container
 try {
-  container = docker(['run', '--detach', '--rm', '--publish', '127.0.0.1::80', image]).trim()
-  assert.match(container, /^[a-f0-9]{64}$/)
-  const port = docker(['port', container, '80/tcp']).trim()
-  assert.match(port, /^127\.0\.0\.1:\d+$/)
-  const origin = `http://${port}`
+  docker(['network', 'create', '--internal', network])
+  networkCreated = true
+  const fixture = fileURLToPath(new URL('./fixtures/sharing-api.mjs', import.meta.url))
+  const api = docker(['run', '--detach', '--network', network, '--network-alias', 'api-fixture',
+    '--publish', '127.0.0.1::8099', '--read-only', '--volume', `${fixture}:/fixture.mjs:ro`,
+    '--entrypoint', 'node', image, '/fixture.mjs']).trim()
+  containers.add(api)
 
-  let ready = false
-  const deadline = Date.now() + 30000
-  while (Date.now() < deadline) {
-    try {
-      const response = await fetch(`${origin}/healthz`, { signal: AbortSignal.timeout(1000) })
-      if (response.ok && await response.text() === 'ok\n') {
-        ready = true
-        break
-      }
-    } catch { /* Wait for nginx to finish starting. */ }
-    await delay(250)
+  const publishedOrigin = (id, port) => {
+    const address = docker(['port', id, `${port}/tcp`]).trim()
+    assert.match(address, /^127\.0\.0\.1:\d+$/)
+    return `http://${address}`
   }
-  assert.ok(ready, 'nginx health endpoint did not become ready')
+  const waitReady = async origin => {
+    const deadline = Date.now() + 30000
+    while (Date.now() < deadline) {
+      try {
+        const response = await fetch(`${origin}/healthz`, { signal: AbortSignal.timeout(1000) })
+        if (response.ok && await response.text() === 'ok\n') return
+      } catch { /* Wait for both processes to become ready. */ }
+      await delay(250)
+    }
+    throw new Error(`Container health endpoint did not become ready: ${origin}`)
+  }
+  const apiOrigin = publishedOrigin(api, 8099)
+  await waitReady(apiOrigin)
+  const startApplication = async () => {
+    const id = docker(['run', '--detach', '--network', network, '--publish', '127.0.0.1::80',
+      '--env', 'SHARING_API_ORIGIN=http://api-fixture:8099', image]).trim()
+    assert.match(id, /^[a-f0-9]{64}$/)
+    containers.add(id)
+    const origin = publishedOrigin(id, 80)
+    await waitReady(origin)
+    return { id, origin }
+  }
+  const application = await startApplication()
+  container = application.id
+  const origin = application.origin
   // Exercise the same executable and URL used by Docker's HEALTHCHECK.
   docker(['exec', container, 'wget', '-q', '-O', '/dev/null', 'http://127.0.0.1/healthz'])
 
   const request = async (path, options = {}) => fetch(new URL(path, origin), {
-    redirect: 'manual', signal: AbortSignal.timeout(5000), ...options
+    redirect: 'manual', signal: AbortSignal.timeout(8000), ...options
   })
   for (const [path, location] of [['/', '/2026/'], ['/2026', '/2026/'], ['/?from=smoke', '/2026/?from=smoke']]) {
     const response = await request(path)
@@ -64,7 +86,7 @@ try {
   const imageCache = new Map()
   const attributes = tag => Object.fromEntries([...tag.matchAll(/([^\s=]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g)]
     .map(([, name, doubleQuoted, singleQuoted]) => [name, doubleQuoted ?? singleQuoted]))
-  async function assertSharing(path, year, expectedPath = path, headers = {}) {
+  async function assertSharing(path, year, expectedPath = path, headers = {}, expected = {}) {
     const response = await request(path, { headers: { ...crawler, ...headers } })
     assert.equal(response.status, 200, path)
     assert.match(response.headers.get('content-type'), /^text\/html/, path)
@@ -85,6 +107,8 @@ try {
     assert.ok(meta('og:title').length > 0)
     assert.ok(meta('og:site_name').includes(String(year)), `${path}: sharing metadata must identify its year`)
     assert.ok(meta('og:description').length > 0)
+    if (expected.title) assert.ok(meta('og:title').includes(expected.title), `${path}: resource title`)
+    if (expected.description) assert.ok(meta('og:description').includes(expected.description), `${path}: resource description`)
     assert.equal(meta('twitter:card'), 'summary_large_image')
     assert.equal(meta('twitter:image'), meta('og:image'))
     assert.ok(meta('og:image:alt').length > 0)
@@ -95,9 +119,11 @@ try {
 
     const image = new URL(meta('og:image'))
     assert.equal(image.origin, 'https://meichu.games')
-    assert.equal(image.pathname, year === 2026 ? '/2026/sharing/2026.png' : `/sharing/${year}.png`)
-    if (!imageCache.has(image.pathname)) {
-      const imageResponse = await request(image.pathname, { headers: crawler })
+    if (expected.dynamic) assert.match(image.pathname, new RegExp(`^/og/${year}/(?:game|news)/[A-Za-z0-9_-]+\\.png$`))
+    else assert.equal(image.pathname, year === 2026 ? '/2026/sharing/2026.png' : `/sharing/${year}.png`)
+    const imagePath = image.pathname + image.search
+    if (!imageCache.has(imagePath)) {
+      const imageResponse = await request(imagePath, { headers: crawler })
       assert.equal(imageResponse.status, 200, image.pathname)
       assert.match(imageResponse.headers.get('content-type'), /^image\/png/, image.pathname)
       const bytes = Buffer.from(await imageResponse.arrayBuffer())
@@ -105,9 +131,9 @@ try {
       assert.equal(bytes.readUInt32BE(16), 1200, image.pathname)
       assert.equal(bytes.readUInt32BE(20), 630, image.pathname)
       assert.ok(bytes.length < 5 * 1024 * 1024, `${image.pathname}: image exceeds card size limit`)
-      imageCache.set(image.pathname, true)
+      imageCache.set(imagePath, bytes)
     }
-    return html
+    return { html, imagePath, bytes: imageCache.get(imagePath), meta }
   }
 
   for (const year of [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]) {
@@ -116,25 +142,85 @@ try {
     if (year <= 2024) staticRoutes.push('news')
     if (year === 2023 || year === 2024) staticRoutes.push('course')
     for (const route of staticRoutes) await assertSharing(`/${year}/${route}`, year)
-    for (const route of ['game/smoke', 'news/1']) {
-      await assertSharing(`/${year}/${route}`, year, `/${year}/${route}`, {
+    const cards = []
+    for (const [route, title, description] of [
+      ['game/smoke', `${year} 籃球賽 smoke`, `${year} 運動場`],
+      ['game/other', `${year} 籃球賽 other`, `${year} 運動場`],
+      [`news/${year * 100 + 1}`, `${year} 公告 1`, `${year} 第 1 則公告`],
+      [`news/${year * 100 + 2}`, `${year} 公告 2`, `${year} 第 2 則公告`]
+    ]) {
+      cards.push(await assertSharing(`/${year}/${route}`, year, `/${year}/${route}`, {
         cookie: `meichu-year=${year === 2026 ? 2025 : 2026}`,
-        referer: `${origin}/${year === 2026 ? 2025 : 2026}/`
-      })
+        referer: `${origin}/${year === 2026 ? 2025 : 2026}/`,
+        authorization: 'Bearer smoke-only-not-a-real-credential'
+      }, { dynamic: true, title, description }))
     }
+    assert.equal(new Set(cards.map(card => card.imagePath)).size, 4, 'each resource has its own image URL')
+    assert.notDeepEqual(cards[0].bytes, cards[1].bytes, 'different games render different cards')
+    assert.notDeepEqual(cards[2].bytes, cards[3].bytes, 'different news render different cards')
   }
 
   // Canonical metadata uses only a validated route, regardless of host/query input.
   const marker = 'meichu-sharing-injection-probe'
   const query = `?probe=%22%3E%3Cscript%3E${marker}%3C%2Fscript%3E&next=https://attacker.invalid`
-  const detail = await assertSharing(`/2026/game/smoke/${query}`, 2026, '/2026/game/smoke', { host: 'attacker.invalid' })
-  assert.ok(!detail.includes(marker), 'query parameters must not be reflected into HTML')
-  await assertSharing('/2025/news/123/?from=share', 2025, '/2025/news/123')
-  await assertSharing('/2026/game/%73moke', 2026, '/2026/game/smoke')
+  const detail = await assertSharing(`/2026/game/smoke/${query}`, 2026, '/2026/game/smoke', { host: 'attacker.invalid' }, { dynamic: true })
+  assert.ok(!detail.html.includes(marker), 'query parameters must not be reflected into HTML')
+  await assertSharing('/2025/news/202501/?from=share', 2025, '/2025/news/202501', {}, { dynamic: true })
+  await assertSharing('/2026/game/%73moke', 2026, '/2026/game/smoke', {}, { dynamic: true })
   for (const route of [`game/%22%3E${marker}`, `news/1%22${marker}`, `game/%2522${marker}`]) {
-    const html = await assertSharing(`/2026/${route}`, 2026, '/2026/')
+    const { html } = await assertSharing(`/2026/${route}`, 2026, '/2026/')
     assert.ok(!html.includes(marker), 'unsafe encoded paths must not be reflected into HTML')
   }
+
+  // Cache keys ignore client queries/credentials, while different records remain
+  // distinct. The internal fixture network cannot contact production services.
+  const headers = { cookie: 'session=smoke-only', authorization: 'Bearer smoke-only' }
+  const repeated = await request('/2026/game/smoke?year_id=1&origin=http://attacker.invalid', { headers })
+  assert.equal(repeated.status, 200)
+  assert.equal(repeated.headers.get('x-meichu-sharing'), 'fresh')
+  assert.equal(await repeated.text(), detail.html, 'browser and crawler receive identical HTML for the same record')
+  await Promise.all(Array.from({ length: 6 }, () => request('/2026/game/burst').then(response => {
+    assert.equal(response.status, 200)
+  })))
+  const seen = await fetch(`${apiOrigin}/__requests`).then(response => response.json())
+  assert.equal(seen.counts['/api/game/slug/smoke?year_id=58'], 1, 'same resource is fetched once despite hostile queries')
+  assert.equal(seen.counts['/api/game/slug/burst?year_id=58'], 1, 'concurrent requests share one API request')
+  assert.ok(seen.requests.every(item => !item.cookie && !item.authorization), 'browser credentials must not reach the API')
+  assert.ok(seen.requests.every(item => /^\/api\/(news\/[0-9]+|game\/slug\/[A-Za-z0-9_-]+\?year_id=[0-9]+)$/.test(item.path)))
+
+  for (const path of ['/2026/game/missing', '/2026/news/999']) {
+    const response = await request(path)
+    assert.equal(response.status, 404, path)
+    assert.match(response.headers.get('x-robots-tag'), /noindex/)
+    assert.match(response.headers.get('cache-control'), /no-store/)
+    assert.ok((await response.text()).includes('id="app"'), 'missing content retains the SPA shell')
+  }
+  for (const key of ['unavailable', 'redirect', 'slow']) {
+    const response = await request(`/2026/game/${key}`)
+    assert.equal(response.status, 503, key)
+    assert.equal(response.headers.get('x-meichu-sharing'), 'fallback', key)
+    assert.match(response.headers.get('cache-control'), /no-store/)
+    assert.ok(!(await response.text()).includes('__MEICHU_SHARE_URL__'))
+    const imageResponse = await request(`/og/2026/game/${key}.png`)
+    assert.equal(imageResponse.status, 503, key)
+  }
+  const photo = await request('/2026/game/photo').then(response => response.text())
+  assert.match(photo, /property="og:image" content="https:\/\/meichu\.games\/uploads\/game-photo\.png"/)
+  assert.ok(!photo.includes('property="og:image:width"'), 'upstream images must not invent dimensions')
+  const head = await request('/2026/game/smoke', { method: 'HEAD' })
+  assert.equal(head.status, 200)
+  assert.equal(await head.text(), '')
+  const post = await request('/2026/game/smoke', { method: 'POST' })
+  assert.equal(post.status, 405)
+  assert.match(post.headers.get('allow'), /GET.*HEAD/)
+  const imageHead = await request(detail.imagePath, { method: 'HEAD' })
+  assert.equal(imageHead.status, 200)
+  assert.match(imageHead.headers.get('content-type'), /^image\/png/)
+  assert.equal(await imageHead.text(), '')
+  assert.ok(imageHead.headers.get('etag'), 'generated images have a cache validator')
+  const notModified = await request(detail.imagePath, { headers: { 'if-none-match': imageHead.headers.get('etag') } })
+  assert.equal(notModified.status, 304)
+  assert.equal(await notModified.text(), '')
 
   const checkedAssets = new Set()
   for (const [html, prefix] of [[currentHtml, '/2026/'], [archiveHtml, '/']]) {
@@ -160,20 +246,29 @@ try {
     }
   }
 
-  for (const path of ['/2018/', '/2027/', '/2099/', '/20260/', '/2026wrong/', '/missing', '/assets/missing.js', '/2026/assets/missing.js', '/sharing/missing.png', '/2026/sharing/missing.png', '/2025/_game/index.html', '/2026/_news/index.html']) {
+  for (const path of ['/2018/', '/2027/', '/2099/', '/20260/', '/2026wrong/', '/missing', '/assets/missing.js', '/2026/assets/missing.js', '/sharing/missing.png', '/2026/sharing/missing.png', '/2025/_game/index.html', '/2026/_news/index.html', '/og/2099/news/1.png', '/og/2026/news/no-id.png', '/og/2026/game/missing.png']) {
     assert.equal((await request(path)).status, 404, path)
   }
-  console.log(`Container HTTP smoke passed: both apps, 8 years of crawler metadata and images, safe detail URLs, redirects, assets and 404s (${image})`)
+  docker(['stop', '--time', '8', container])
+  assert.equal(docker(['inspect', '--format', '{{.State.ExitCode}}', container]).trim(), '0', 'SIGTERM shuts down both services cleanly')
+  for (const child of ['nginx', 'sharing']) {
+    const app = await startApplication()
+    if (child === 'nginx') docker(['exec', app.id, 'killall', '-TERM', 'nginx'])
+    else docker(['exec', app.id, 'node', '-e', `const fs=require('node:fs');for(const pid of fs.readdirSync('/proc')){if(!/^\\d+$/.test(pid))continue;try{const args=fs.readFileSync('/proc/'+pid+'/cmdline','utf8').split('\\0');if(args[1]==='/app/apps/sharing-server/src/server.mjs')process.kill(Number(pid),'SIGTERM')}catch{}}`])
+    assert.equal(docker(['wait', app.id], { timeout: 15000 }).trim(), '1', `${child} failure shuts down the whole container`)
+  }
+  console.log(`Container HTTP smoke passed: both apps, dynamic OG/PNG for 8 years, safe API requests, caching, failure recovery and process lifecycle (${image})`)
 } catch (error) {
   if (container) {
     try { docker(['logs', container], { stdio: 'inherit' }) } catch { /* Preserve the original failure. */ }
   }
   throw error
 } finally {
-  if (container) {
-    try { docker(['rm', '--force', container]) } catch (error) {
+  for (const id of containers) {
+    try { docker(['rm', '--force', id]) } catch (error) {
       // --rm may already have removed a container that failed during startup.
       if (!String(error.stderr).includes('No such container')) throw error
     }
   }
+  if (networkCreated) docker(['network', 'rm', network])
 }
