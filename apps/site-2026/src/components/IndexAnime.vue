@@ -78,6 +78,7 @@ export default {
       typingSpeed: 400, // ms per char
       acceleratedTypingSpeed: 40,
       timer: null,
+      previousOverflow: null,
       isAccelerated: false,
       isMobile: false
     }
@@ -87,6 +88,7 @@ export default {
 
     if (!this.visible) return;
     // Prevent background scrolling while animation is active
+    this.previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     
     if (!this.isMobile) {
@@ -95,15 +97,30 @@ export default {
     
     window.addEventListener('keydown', this.handleKeydown);
   },
+  deactivated() {
+    this.finish();
+  },
   beforeUnmount() {
-    document.body.style.overflow = '';
-    window.removeEventListener('keydown', this.handleKeydown);
-    if (this.timer) clearTimeout(this.timer);
+    this.stopAnimation();
   },
   methods: {
+    stopAnimation() {
+      if (this.previousOverflow !== null) {
+        document.body.style.overflow = this.previousOverflow;
+        this.previousOverflow = null;
+      }
+      window.removeEventListener('keydown', this.handleKeydown);
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = null;
+    },
     handleKeydown(e) {
-      if (['Space', 'Enter', 'ArrowDown', 'ArrowRight'].includes(e.code)) {
-        this.accelerate();
+      if (e.code === 'Escape') {
+        e.preventDefault();
+        this.finish();
+      } else if (['Space', 'Enter', 'ArrowDown', 'ArrowRight'].includes(e.code)) {
+        e.preventDefault();
+        if (this.isMobile) this.finish();
+        else this.accelerate();
       }
     },
     accelerate() {
@@ -163,8 +180,9 @@ export default {
       }
     },
     finish() {
+      this.stopAnimation();
+      if (!this.visible) return;
       this.visible = false;
-      document.body.style.overflow = '';
       window.hasPlayedIndexAnime = true;
       this.$emit('finish');
     }

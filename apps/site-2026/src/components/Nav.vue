@@ -63,12 +63,13 @@ export default {
     }
     window.addEventListener('scroll', this.handleScroll);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     handleScroll() {
-      const navbar = document.querySelector('.desktop-nav nav .nav');
+      const navbar = this.$el.querySelector('nav .nav');
+      if (!navbar) return;
 
       if (window.scrollY > 0) {
         navbar.classList.add('navbar-bg');
@@ -158,7 +159,10 @@ export default {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    outline: none;
+    &:focus-visible {
+      outline: 2px solid currentColor;
+      outline-offset: 3px;
+    }
   }
   .schoolteam {
     font-size: .75rem;

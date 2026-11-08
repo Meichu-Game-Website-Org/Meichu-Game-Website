@@ -4,24 +4,25 @@
       class="about-content full-width-tabs" 
       :style="{ '--clip-path': 'polygon(0 0, 100% 0, 100% 90%, 95% 100%, 0 100%)' }"
     >
-      <div class="tabs-header">
-        <h2 
-          :class="['tab-item', { active: currentTab === 'about-meichu' }]"
-          @click="currentTab = 'about-meichu'"
-        >
-          丙午梅竹
-        </h2>
-        <h2 
-          :class="['tab-item', { active: currentTab === 'meichu-history' }]"
-          @click="currentTab = 'meichu-history'"
-        >
-          梅竹賽歷史
+      <div class="tabs-header" role="tablist" aria-label="關於梅竹內容">
+        <h2 v-for="tab in tabs" :key="tab.key" class="tab-heading" role="presentation">
+          <button
+            :id="`${tabId}-${tab.key}`"
+            type="button"
+            role="tab"
+            :class="['tab-item', { active: currentTab === tab.key }]"
+            :aria-selected="currentTab === tab.key"
+            :aria-controls="`${tabId}-panel`"
+            :tabindex="currentTab === tab.key ? 0 : -1"
+            @click="currentTab = tab.key"
+            @keydown="onTabKeydown($event, tab.key)"
+          >{{ tab.label }}</button>
         </h2>
       </div>
       
       <div class="title-bar"/>
 
-      <div class="content-body">
+      <div :id="`${tabId}-panel`" class="content-body" role="tabpanel" :aria-labelledby="`${tabId}-${currentTab}`" tabindex="0">
         <RequestState :resource="resource" empty-text="目前尚無介紹內容。" @retry="$emit('retry')" />
         <p v-if="resource.status === 'success'" class="fade-in-text">{{ options[currentTab] || '目前尚無介紹內容。' }}</p>
       </div>
@@ -30,14 +31,33 @@
 </template>
 
 <script>
+import { useId } from 'vue'
 import RequestState from '@/components/RequestState.vue'
 
 export default {
   name: 'AboutDesc',
   components: { RequestState },
   props: { resource: { type: Object, required: true } },
-  data() { return { currentTab: 'about-meichu' } },
-  computed: { options() { return this.resource.data || {} } }
+  setup() { return { tabId: useId() } },
+  data() { return {
+    currentTab: 'about-meichu',
+    tabs: [{ key: 'about-meichu', label: '丙午梅竹' }, { key: 'meichu-history', label: '梅竹賽歷史' }]
+  } },
+  computed: { options() { return this.resource.data || {} } },
+  methods: {
+    onTabKeydown(event, key) {
+      const index = this.tabs.findIndex(tab => tab.key === key)
+      let next
+      if (event.key === 'ArrowRight') next = (index + 1) % this.tabs.length
+      else if (event.key === 'ArrowLeft') next = (index + this.tabs.length - 1) % this.tabs.length
+      else if (event.key === 'Home') next = 0
+      else if (event.key === 'End') next = this.tabs.length - 1
+      else return
+      event.preventDefault()
+      this.currentTab = this.tabs[next].key
+      this.$nextTick(() => this.$el.querySelector(`#${this.tabId}-${this.currentTab}`)?.focus())
+    }
+  }
 }
 </script>
 
@@ -61,9 +81,17 @@ export default {
 }
 
 .tab-item {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
   cursor: pointer;
   transition: color 0.3s ease;
   color: rgba($primary, 0.3);
+}
+.tab-item:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }
 .tab-item.active {
   color: $white;

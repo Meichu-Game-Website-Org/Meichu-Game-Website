@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'mobile-header': true, 'mobile-header--active': isScrolled, 'mobile-header--open': navToggle}">
+  <div @keydown.esc.stop="closeMenu" :class="{'mobile-header': true, 'mobile-header--active': isScrolled, 'mobile-header--open': navToggle}">
     <div class="mobile-header__row">
       <div class="mobile-header__left">
         <router-link :to="{name: 'index-2026'}">
@@ -8,13 +8,13 @@
       </div>
 
       <div class="mobile-header__right">
-        <div class="mobile-header__toggle" @click="navToggle = !navToggle">
+        <button ref="menuToggle" type="button" class="mobile-header__toggle" :aria-expanded="Boolean(navToggle)" aria-controls="mobile-navigation-2026" :aria-label="navToggle ? '關閉導覽選單' : '開啟導覽選單'" @click="navToggle = !navToggle">
           <i class="fas fa-bars fa-xs"></i>
-        </div>
+        </button>
       </div>
     </div>
 
-    <nav :class="{'mobile-nav': true, 'mobile-nav--active': navToggle}">
+    <nav id="mobile-navigation-2026" @click="closeOnNavigate" :class="{'mobile-nav': true, 'mobile-nav--active': navToggle}">
       <ul class="mobile-nav__ul">
         <li class="mobile-nav__li">
           <router-link class="mobile-nav__link" :to="{name: 'index-2026'}">
@@ -74,11 +74,18 @@ export default {
     window.addEventListener('scroll', this.handleScroll);
     this.handleScroll();
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   },
 
   methods: {
+    closeMenu() {
+      this.navToggle = false
+      this.$refs.menuToggle?.focus()
+    },
+    closeOnNavigate(event) {
+      if (event.target.closest('a')) this.navToggle = false
+    },
     handleScroll() {
       this.isScrolled = window.scrollY > 0;
     }
@@ -94,6 +101,19 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.mobile-header__toggle {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  cursor: pointer;
+}
+.mobile-header__toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 .mobile-header--active {
   background-color: #130F13;
 }

@@ -50,6 +50,9 @@ export default {
   mounted() {
     this.timer = setTimeout(this.runNextStep, 1000);
   },
+  deactivated() {
+    if (this.timer) clearTimeout(this.timer);
+  },
   beforeUnmount() {
     if (this.timer) clearTimeout(this.timer);
   },
