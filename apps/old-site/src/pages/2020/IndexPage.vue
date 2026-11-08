@@ -15,7 +15,7 @@
 
     <div class="row">
       <div class="col">
-        <NewsPanel :is_sticky="true"><span slot="title">重要訊息</span></NewsPanel>
+        <NewsPanel :is_sticky="true"><template #title><span>重要訊息</span></template></NewsPanel>
         <div class="see-all-news">
           <router-link :to="{name: 'news-list-2020'}">
             <i class="fas fa-arrow-circle-right"></i>&nbsp;<span>查看所有訊息</span>

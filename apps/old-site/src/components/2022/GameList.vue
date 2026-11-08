@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col">
         <h2>
-          <div class="message_title">所有賽事</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" />
+          <div class="message_title">所有賽事</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" />
         </h2>
         <div class="row game-row">
           <div class="game-col">

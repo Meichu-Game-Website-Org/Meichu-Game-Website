@@ -70,7 +70,7 @@ export default {
     }
     window.addEventListener('scroll', this.handleScroll, { passive: false });
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
   },
 

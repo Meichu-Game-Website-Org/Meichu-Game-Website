@@ -8,10 +8,10 @@ const legacyRequire = createRequire(path.resolve(__dirname, '../apps/old-site/pa
 const compilerPath = legacyRequire.resolve('vue/compiler-sfc')
 const compiler = legacyRequire('vue/compiler-sfc')
 
-test('legacy browser runtime entry does not expose the template compiler', () => {
-  assert.equal(legacyRequire('vue').compile, undefined)
-  const manifest = legacyRequire('vue/package.json')
-  assert.match(manifest.exports['.'].import.default, /vue\.runtime\.esm\.js$/)
+test('archive uses the maintained Vue 3 compiler and runtime-only bundler entry', () => {
+  assert.match(legacyRequire('vue/package.json').version, /^3\./)
+  const config = require('node:fs').readFileSync(path.resolve(__dirname, '../apps/old-site/vite.config.mjs'), 'utf8')
+  assert.match(config, /vue\/dist\/vue\.runtime\.esm-bundler\.js/)
 })
 
 test('legacy compiler terminates on unclosed raw-text tags with large hostile input', () => {
@@ -22,7 +22,7 @@ test('legacy compiler terminates on unclosed raw-text tags with large hostile in
       for (const payload of ['<'.repeat(500000), ('</' + tag).repeat(50000)]) {
         compiler.compileTemplate({
           source: '<div><' + tag + '>' + payload,
-          filename: 'unclosed.vue'
+          filename: 'unclosed.vue', id: 'unclosed'
         });
       }
     }
@@ -41,7 +41,7 @@ test('legacy compiler ignores inherited static class and style expressions', () 
     try {
       const result = compiler.compileTemplate({
         source: '<div :id="id"><span>{{ message }}</span></div>',
-        filename: 'pollution.vue'
+        filename: 'pollution.vue', id: 'pollution'
       });
       assert.deepEqual(result.errors, []);
       assert.doesNotMatch(result.code, /compilerPolluted/);
@@ -55,17 +55,17 @@ test('legacy compiler ignores inherited static class and style expressions', () 
 })
 
 test('legacy compiler preserves valid raw-text content and ordinary template bindings', () => {
-  const parsed = compiler.parseComponent('<template><div /></template><script>const value = "İ<";</ScRiPt><style>.a { color: red }</STYLE>')
+  const { descriptor: parsed } = compiler.parse('<template><div /></template><script>const value = "İ<";</ScRiPt><style>.a { color: red }</STYLE>')
   assert.equal(parsed.script.content, 'const value = "İ<";')
   assert.equal(parsed.styles[0].content, '.a { color: red }')
   const result = compiler.compileTemplate({
     source: '<div class="safe" style="color: red" :id="id"><textarea>\nfirst\nsecond</TEXTAREA><span v-for="n in nums" :key="n">{{n}}</span></div>',
-    filename: 'normal.vue'
+    filename: 'normal.vue', id: 'normal'
   })
   assert.deepEqual(result.errors, [])
-  assert.equal(result.ast.staticClass, '"safe"')
-  assert.equal(result.ast.staticStyle, '{"color":"red"}')
-  assert.equal(result.ast.children[0].children[0].text, 'first\nsecond')
-  assert.match(result.code, /_vm\.id/)
-  assert.match(result.code, /_vm\.nums/)
+  assert.match(result.code, /class: "safe"/)
+  assert.match(result.code, /color.*red/)
+  assert.match(result.code, /first\\nsecond/)
+  assert.match(result.code, /_ctx\.id/)
+  assert.match(result.code, /_ctx\.nums/)
 })

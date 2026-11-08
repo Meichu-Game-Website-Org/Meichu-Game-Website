@@ -179,7 +179,7 @@
       <div v-else><div class="no-news">尚無相關消息</div></div>
     </section>
     <img src="@/assets/2023/Course.svg" class="about_title" alt="" />
-    <router-link @click.native="$scrollToTop" :to="{name: 'course-2023'}">
+    <router-link :to="{name: 'course-2023'}">
       <div class="no-course">按此查看</div>
       </router-link>
 

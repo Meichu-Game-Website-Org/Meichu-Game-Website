@@ -123,3 +123,78 @@ for (const { year, legacy } of archiveCases) {
     }
   })
 }
+
+test('Vue 3 archive metadata follows async news and clears on cross-year navigation', async t => {
+  const context = await browser.newContext()
+  t.after(() => context.close())
+  await context.addInitScript(() => {
+    window.skrollr = { init: () => ({ isMobile: () => true, destroy() {} }) }
+  })
+  const title = '公告 <img src=x onerror="window.metaInjected=true">'
+  await context.route('**/*', async route => {
+    const url = new URL(route.request().url())
+    if (url.origin === origin) return route.continue()
+    if (url.origin === 'https://meichu.games' && url.pathname.startsWith('/api/')) {
+      const data = { news: [{ id: 1, type_of: 'game', title: '公告一', created_at: '2020-03-01', org: '測試' }], games: [], options: [], archives: [], items: [] }
+      if (url.pathname === '/api/news/1') return route.fulfill({ json: { news: { id: 1, title, content: '內文', created_at: '2020-03-01', files: [], org: '測試' } } })
+      return route.fulfill({ json: data })
+    }
+    return route.fulfill({ status: 200, body: '' })
+  })
+  const page = await context.newPage()
+  const errors = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.goto(`${origin}/2020/news`)
+  await page.getByRole('link', { name: '公告一', exact: true }).waitFor()
+  await page.getByRole('link', { name: '公告一', exact: true }).click()
+  await page.getByRole('heading', { name: title, exact: true }).waitFor()
+  await page.waitForFunction(expected => document.title === expected, `${title} | 庚子梅竹`)
+  assert.equal(await page.locator('link[rel="icon"]').getAttribute('href'), '/favicon2020.png')
+  assert.equal(await page.evaluate(() => window.metaInjected), undefined)
+  await page.getByRole('link', { name: '己亥梅竹', exact: true }).last().click()
+  await page.waitForURL('**/2019/')
+  await page.waitForFunction(() => document.title === '己亥梅竹 | 2019 Meichu Games')
+  assert.equal(await page.locator('link[rel="icon"]').getAttribute('href'), '/favicon2019.ico')
+  assert.equal(await page.locator('head img').count(), 0)
+  assert.deepEqual(errors, [])
+})
+
+test('Vue 3 archive named slots and cached home survive route changes', async t => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } })
+  t.after(() => context.close())
+  await context.addInitScript(() => {
+    window.skrollr = { init: () => ({ isMobile: () => true, destroy() {} }) }
+  })
+  let scoreRequests = 0
+  await context.route('**/*', async route => {
+    const url = new URL(route.request().url())
+    if (url.origin === origin) return route.continue()
+    if (url.origin === 'https://meichu.games' && url.pathname.startsWith('/api/')) {
+      if (url.pathname === '/api/game' && url.searchParams.get('year_id') === '57') scoreRequests++
+      return route.fulfill({ json: { news: [], games: [], options: [], archives: [], items: [] } })
+    }
+    return route.fulfill({ status: 200, body: '' })
+  })
+  const page = await context.newPage()
+  const errors = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.goto(`${origin}/2019/news`)
+  await page.getByRole('heading', { name: /所有消息/ }).waitFor()
+  await page.goto(`${origin}/2025/`)
+  await page.getByText('正式賽當前積點').waitFor()
+  await page.waitForFunction(() => document.title === '乙巳梅竹 | 2025 Meichu Games')
+  await page.evaluate(() => { window.archivePageIdentity = document.querySelector('.home') })
+  // These same named routes are used by both responsive navigation variants.
+  const listResponse = page.waitForResponse(response => new URL(response.url()).pathname === '/api/game')
+  await page.evaluate(() => document.querySelector('#app').__vue_app__.config.globalProperties.$router.push({ name: 'game-list-2025' }))
+  await listResponse
+  await page.waitForURL('**/2025/game')
+  await page.waitForFunction(() => document.title === '賽事列表 | 乙巳梅竹')
+  const beforeReturn = scoreRequests
+  await page.evaluate(() => document.querySelector('#app').__vue_app__.config.globalProperties.$router.push({ name: 'index-2025' }))
+  await page.waitForURL('**/2025/')
+  await page.waitForFunction(() => document.title === '乙巳梅竹 | 2025 Meichu Games')
+  assert.equal(await page.evaluate(() => document.querySelector('.home') === window.archivePageIdentity), true)
+  assert.equal(scoreRequests, beforeReturn, 'Cached home is not remounted when returning from another route')
+  assert.deepEqual(errors, [])
+})

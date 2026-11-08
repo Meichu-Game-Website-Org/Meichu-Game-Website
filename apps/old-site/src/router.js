@@ -1,4 +1,4 @@
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import axios from 'axios'
 
 const AppView2019 = () => import('@/pages/2019/AppView.vue')
@@ -384,14 +384,14 @@ const routes = [
   }
 ]
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory('/'),
   routes,
   // eslint-disable-next-line no-unused-vars
   scrollBehavior (to, from, savedPosition) {
     var wraps = document.getElementById('wrapper')
     if (wraps) wraps.scrollTop = 0
-    return { x: 0, y: 0 }
+    return { left: 0, top: 0 }
   }
 })
 

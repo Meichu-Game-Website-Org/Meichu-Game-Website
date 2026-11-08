@@ -5,7 +5,7 @@
 
         <div class="col">
           <NewsPanel :is_sticky="true">
-            <span slot="title">最新消息</span>
+            <template #title><span>最新消息</span></template>
           </NewsPanel>
 
           <div class="see-all-news">

@@ -16,14 +16,12 @@
     "axios": "^1.21.0",
     "bootstrap": "^4.6.2",
     "moment": "^2.31.0",
-    "vue": "^2.7.16",
-    "vue-meta": "^2.4.0",
-    "vue-router": "^3.6.5"
+    "vue": "^3.5.45",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@vitejs/plugin-legacy": "^6.1.1",
-    "@vitejs/plugin-vue2": "^2.3.4",
     "autoprefixer": "^10.6.2",
     "eslint": "^10.14.0",
     "eslint-plugin-vue": "^10.12.0",
@@ -32,11 +30,13 @@
     "sass": "^1.108.1",
     "terser": "^5.51.2",
     "vite": "^6.4.5",
-    "vue-eslint-parser": "^10.4.2"
+    "vue-eslint-parser": "^10.4.2",
+    "@vitejs/plugin-vue": "^5.2.4"
   },
   "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ]
+    "> 1% and supports es6-module",
+    "last 2 versions and supports es6-module",
+    "not dead"
+  ],
+  "type": "module"
 }

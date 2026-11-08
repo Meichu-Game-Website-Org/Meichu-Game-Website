@@ -6,7 +6,7 @@
 
         <div class="col">
           <NewsPanel>
-            <span slot="title">所有消息</span>
+            <template #title><span>所有消息</span></template>
           </NewsPanel>
         </div>
         <!-- <div class="col">
