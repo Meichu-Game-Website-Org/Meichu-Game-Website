@@ -241,3 +241,20 @@ test('scores never show default zero while the first request is pending', async 
   await visible(page, '.score-number-svg')
   assert.deepEqual(await page.locator('.score-number-svg text').allTextContents(), ['1', '1', '0', '0'])
 })
+
+for (const width of [390, 1440]) {
+  test(`About at ${width}px: API markup cannot create executable HTML`, async t => {
+    const content = '<img src=x onerror="window.meichuInjected=true">\n第二行 & 內容'
+    const page = await fixture(t, (route, url) => url.pathname === '/api/option' ? json(route, {
+      options: [{ key: 'about-meichu', value: content }, { key: 'meichu-history', value: content }]
+    }) : false, width)
+    await page.goto(origins[2026] + '/about')
+    const paragraphs = page.locator('.mobile-about .break-line p')
+    await paragraphs.first().waitFor({ state: 'attached' })
+    assert.deepEqual(await paragraphs.allTextContents(), [content, content])
+    assert.equal(await paragraphs.locator('img').count(), 0)
+    assert.equal(await page.evaluate(() => window.meichuInjected), undefined)
+    assert.equal(await paragraphs.first().evaluate(el => getComputedStyle(el).whiteSpace), 'pre-line')
+    if (width === 1440) assert.equal(await page.locator('.desktop-about .content-body p').textContent(), content)
+  })
+}
