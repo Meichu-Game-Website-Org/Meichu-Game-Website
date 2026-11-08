@@ -11,7 +11,7 @@ docker run --rm -p 127.0.0.1:8080:80 meichu-website:local
 The build stage uses Node 24 and pnpm 10.28.1, installs the whole workspace with
 `--frozen-lockfile --ignore-scripts`, and builds both sites. The runtime image
 contains nginx, Node 24, the isolated sharing service and its production
-dependencies, shared metadata helpers, the required existing fonts, and both
+dependencies, shared metadata helpers, the required local fonts, and both
 applications' generated files. Frontend development dependencies remain in the
 build stage. `.dockerignore` excludes local dependency directories, generated
 output and credentials from the build context.
@@ -73,8 +73,10 @@ change is performed by building or testing this repository.
 
 `SHARING_DIST_ROOT` defaults to `/usr/share/nginx/html`, containing both sites;
 `SHARING_ASSET_ROOT` defaults to `/app`, containing the explicitly copied fonts.
-The runtime keeps the existing font files unchanged, including their embedded
-notices; it does not introduce a new font license claim.
+The runtime keeps the existing Kozuka font files unchanged, including their
+embedded notices, and includes the OFL Noto Sans TC fallback with its license and
+pinned upstream source notice. These fonts are used locally for generated PNGs;
+the service does not download fonts or images while serving a request.
 
 Run the repeatable container check with Node 24 and a running Docker daemon:
 

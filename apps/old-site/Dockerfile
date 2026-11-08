@@ -25,9 +25,11 @@ COPY apps/old-site/default.conf /etc/nginx/http.d/default.conf
 COPY --from=build-stage /app/apps/old-site/dist /usr/share/nginx/html/
 COPY --from=build-stage /app/apps/site-2026/dist /usr/share/nginx/html/2026/
 COPY --from=build-stage /out/sharing-server /app/apps/sharing-server/
-COPY packages/services/src /app/packages/services/src/
-COPY scripts/lib /app/scripts/lib/
+COPY packages/services/src/metadata.mjs packages/services/src/detail-metadata.mjs /app/packages/services/src/
+COPY scripts/lib/sharing-html.mjs /app/scripts/lib/sharing-html.mjs
 COPY packages/assets/fonts/KozGoPr6N-Bold.otf packages/assets/fonts/KozGoPr6N-Regular.otf /app/packages/assets/fonts/
+COPY packages/assets/fonts/NotoSansTC-Regular.otf packages/assets/fonts/NotoSansTC-Bold.otf \
+    packages/assets/fonts/NotoSansTC-LICENSE.txt packages/assets/fonts/NotoSansTC-SOURCE.txt /app/packages/assets/fonts/
 COPY scripts/start-container.mjs /app/scripts/start-container.mjs
 EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
