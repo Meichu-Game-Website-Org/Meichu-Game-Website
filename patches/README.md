@@ -1,4 +1,35 @@
-# Vue 2 compiler security patch
+# Dependency security patches
+
+Install with the pinned pnpm version and `pnpm install --frozen-lockfile` so the
+lockfile's patch hashes are verified. Run `pnpm test`, `pnpm test:browser` and
+`pnpm audit` after dependency updates. No advisory IDs are suppressed.
+
+## ESLint's minimatch dependency
+
+The scoped `eslint@^10.14.0>minimatch` override selects 11.0.5 to fix
+[GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249), while
+ESLint's published range still selects the affected 10.x line. It is restricted
+to this parent and preserves the CommonJS API used by ESLint. The lint contract
+test checks Vue file selection, parsing and undefined-variable diagnostics.
+The override also produced identical diagnostics for all 108 existing source
+files. Remove it once upstream ESLint accepts a patched minimatch version.
+
+## deepmerge
+
+`deepmerge@4.3.1.patch` blocks `__proto__` keys before copying from either
+argument in the source, CommonJS and UMD builds. This closes the
+[prototype-poisoning bypass](https://github.com/advisories/GHSA-gcqx-w48m-w2h4)
+for null-prototype targets, nested placeholders and objects carrying their own
+`__proto__` property. `vue-meta` imports the patched CommonJS package through
+Vite; its metadata behavior and ordinary array/symbol merging are preserved.
+
+There is currently no published fixed deepmerge version. The version-based low
+advisory therefore remains visible in `pnpm audit`; no audit suppression is
+configured. `tests/dependency-security.test.cjs` reproduces the bypass against
+the unpatched package and tests the installed patched package. Revisit this
+patch when upstream publishes a fix.
+
+## Vue 2 compiler
 
 `vue-compiler-sfc-2.7.16.patch` hardens the compiler used by the legacy site's
 `@vitejs/plugin-vue2` through `vue/compiler-sfc`. Keep this version-specific

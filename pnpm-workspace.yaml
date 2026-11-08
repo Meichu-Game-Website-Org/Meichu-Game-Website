@@ -3,3 +3,9 @@ packages:
   - 'apps/*'
   # Shared logic (e.g., API services, Types, UI components)
   - 'packages/*'
+patchedDependencies:
+  deepmerge@4.3.1: patches/deepmerge@4.3.1.patch
+  '@vue/compiler-sfc@2.7.16': patches/vue-compiler-sfc-2.7.16.patch
+overrides:
+  # ESLint 10 still requests minimatch 10; GHSA-g3hv-75wg-m249 is fixed in 11.
+  'eslint@^10.14.0>minimatch': ^11.0.5

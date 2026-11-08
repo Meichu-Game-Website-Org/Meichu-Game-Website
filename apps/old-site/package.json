@@ -23,12 +23,12 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@vitejs/plugin-vue2": "^2.3.4",
-    "autoprefixer": "^10.4.21",
+    "autoprefixer": "^10.6.2",
     "eslint": "^10.14.0",
     "eslint-plugin-vue": "^10.12.0",
     "globals": "^17.14.0",
-    "postcss": "^8.5.23",
-    "sass": "^1.97.3",
+    "postcss": "^8.5.32",
+    "sass": "^1.108.1",
     "vite": "^6.4.5",
     "vue-eslint-parser": "^10.4.2"
   },
