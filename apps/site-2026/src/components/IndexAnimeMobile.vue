@@ -43,6 +43,7 @@ export default {
     return {
       step: 1,
       timer: null,
+      finished: false,
       isAccelerated: false,
       acceleratedTypingSpeed: 40
     }
@@ -50,16 +51,26 @@ export default {
   mounted() {
     this.timer = setTimeout(this.runNextStep, 1000);
   },
+  deactivated() {
+    this.stopAnimation();
+  },
   beforeUnmount() {
-    if (this.timer) clearTimeout(this.timer);
+    this.stopAnimation();
   },
   methods: {
+    stopAnimation() {
+      this.finished = true;
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = null;
+    },
     accelerate() {
+       if (this.finished) return;
        this.isAccelerated = true;
        if (this.timer) clearTimeout(this.timer);
        this.runNextStep();
     },
     runNextStep() {
+      if (this.finished) return;
       const maxSteps = 6;
       if (this.step < maxSteps) {
         this.step++;
@@ -78,6 +89,8 @@ export default {
       }
     },
     finish() {
+      if (this.finished) return;
+      this.stopAnimation();
       this.$emit('finish');
     }
   }

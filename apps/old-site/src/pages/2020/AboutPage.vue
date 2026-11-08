@@ -1,5 +1,6 @@
 <template>
   <div class="container about-page" id="about">
+    <RequestState :resource="resource" empty-text="目前尚無簡介資料。" @retry="fetch" />
     <div class="row">
       <div class="col">
             
@@ -30,9 +31,9 @@
           <div class="org-item__content">
             主辦學校為橋藝、撞球、飛鏢、射箭等賽事之主場。<br>
             <a class="org-item__link" target="_blank" href="http://www.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 官方網站</a>
-            <a class="org-item__link" target="_blank" href="https://www.facebook.com/nctu.edu.tw/"><i class="fab fa-facebook"></i> Facebook</a>
-            <a class="org-item__link" target="_blank" href="http://activity.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 課外活動組</a>
-            <a class="org-item__link" target="_blank" href="http://sport.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
+            <a class="org-item__link" target="_blank" href="https://www.facebook.com/nthu.tw/"><i class="fab fa-facebook"></i> Facebook</a>
+            <a class="org-item__link" target="_blank" href="http://eas.web.nthu.edu.tw/bin/home.php"><i class="fas fa-globe-asia"></i> 課外活動組</a>
+            <a class="org-item__link" target="_blank" href="http://peo.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
           </div>
         </div>
         <div class="org-item">
@@ -44,8 +45,8 @@
             協辦學校為男籃、圍棋、劍道、壘球等賽事之主場。<br>
             <a class="org-item__link" target="_blank" href="http://www.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 官方網站</a>
             <a class="org-item__link" target="_blank" href="https://www.facebook.com/nctu.edu.tw/"><i class="fab fa-facebook"></i> Facebook</a>
-            <a class="org-item__link" target="_blank" href="http://eas.web.nthu.edu.tw/bin/home.php"><i class="fas fa-globe-asia"></i> 課外活動指導組</a>
-            <a class="org-item__link" target="_blank" href="http://peo.nthu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
+            <a class="org-item__link" target="_blank" href="http://activity.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 課外活動指導組</a>
+            <a class="org-item__link" target="_blank" href="http://sport.sa.nctu.edu.tw/"><i class="fas fa-globe-asia"></i> 體育室</a>
           </div>
         </div>
         <div class="org-item">
@@ -86,10 +87,12 @@
 </template>
 
 <script>
+import { archiveResourceMixin } from '@/utils/archive-resource'
 
-import { Option as OptionApi } from '@meichu/services'
+import { Option as OptionApi, loadResource, readOptions } from '@meichu/services'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'about',
 
   metaInfo: {
@@ -97,27 +100,19 @@ export default {
     titleTemplate: '%s | 庚子梅竹',
   },
 
-  data: function() {
-    return {
-      options: {}
-    }
-  },
-
   created() {
     this.fetch()
   },
 
+  computed: {
+    options() { return this.resource.data || {} },
+  },
+
   methods: {
     fetch() {
-      const params = {
-        data: ['about-meichu', 'meichu-history'],
-        year_id: 2
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
+      return loadResource(this.resource, () => OptionApi.fetchOptions({
+        data: ['about-meichu', 'meichu-history'], year_id: 2
+      }).then(readOptions), options => !Object.values(options).some(value => value.trim()))
     }
   }
 }

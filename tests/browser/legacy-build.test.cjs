@@ -171,7 +171,7 @@ test('Vue 3 archive named slots and cached home survive route changes', async t 
     if (url.origin === origin) return route.continue()
     if (url.origin === 'https://meichu.games' && url.pathname.startsWith('/api/')) {
       if (url.pathname === '/api/game' && url.searchParams.get('year_id') === '57') scoreRequests++
-      return route.fulfill({ json: { news: [], games: [], options: [], archives: [], items: [] } })
+      return route.fulfill({ json: { news: [{ id: 1, title: '測試具名插槽公告', type_of: 'game', created_at: '2019-03-01' }], games: [], options: [], archives: [], items: [] } })
     }
     return route.fulfill({ status: 200, body: '' })
   })
@@ -180,6 +180,7 @@ test('Vue 3 archive named slots and cached home survive route changes', async t 
   page.on('pageerror', error => errors.push(error.message))
   await page.goto(`${origin}/2019/news`)
   await page.getByRole('heading', { name: /所有消息/ }).waitFor()
+  await page.getByRole('link', { name: '測試具名插槽公告', exact: true }).waitFor()
   await page.goto(`${origin}/2025/`)
   await page.getByText('正式賽當前積點').waitFor()
   await page.waitForFunction(() => document.title === '乙巳梅竹 | 2025 Meichu Games')

@@ -1,5 +1,7 @@
 <template>
   <div id="game">
+    <RequestState :resource="resource" empty-text="找不到這場賽事。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     <div class="page-fix-bg-container">
       <img src="@/assets/2025/page-bg.png" class="page-fix-bg" alt="Background" :style="{ width: '55vw', opacity: '0.75' }"/>
     </div>
@@ -223,16 +225,19 @@
         </router-link>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { archiveResourceMixin } from '@/utils/archive-resource'
 
 import moment from 'moment'
-import { Game as GameApi } from '@meichu/services'
+import { Game as GameApi, loadResource, readGame } from '@meichu/services'
 import {GAME_STATUS} from '@/utils'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'game-show-2025',
   scrollToTop() {
     window.scrollTo(0,0);
@@ -246,19 +251,18 @@ export default {
 
   data: function() {
     return {
-      slug: null,
-      game: {},
       moment,
       GAME_STATUS
     }
   },
 
-  created() {
-    this.slug = this.$route.params.slug
-    this.fetch()
+  watch: {
+    '$route.params.slug': { immediate: true, handler() { this.fetch() } }
   },
 
   computed: {
+    slug() { return this.$route.params.slug },
+    game() { return this.resource.data || {} },
     showScore() {
       return this.game.status == 'running' ||
              this.game.status == 'pause' ||
@@ -277,18 +281,8 @@ export default {
 
   methods: {
     fetch() {
-      const params = {
-        year_id: 57
-      }
-      return GameApi.fetchGameBySlug(this.slug, params)
-        .then((game) => {
-          this.game = game;
-          for (const team of [this.game.team_nctu, this.game.team_nthu]) {
-            if (team && team.photo) {
-              team.photo = new URL(team.photo, 'https://meichu.games').href;
-            }
-          }
-        })
+      const slug = this.slug
+      return loadResource(this.resource, () => GameApi.fetchGameBySlug(slug, { year_id: 57 }).then(readGame))
     }
   }
 

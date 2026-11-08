@@ -78,6 +78,7 @@ export default {
       typingSpeed: 400, // ms per char
       acceleratedTypingSpeed: 40,
       timer: null,
+      previousOverflow: null,
       isAccelerated: false,
       isMobile: false
     }
@@ -87,6 +88,7 @@ export default {
 
     if (!this.visible) return;
     // Prevent background scrolling while animation is active
+    this.previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     
     if (!this.isMobile) {
@@ -95,19 +97,35 @@ export default {
     
     window.addEventListener('keydown', this.handleKeydown);
   },
+  deactivated() {
+    this.finish();
+  },
   beforeUnmount() {
-    document.body.style.overflow = '';
-    window.removeEventListener('keydown', this.handleKeydown);
-    if (this.timer) clearTimeout(this.timer);
+    this.visible = false;
+    this.stopAnimation();
   },
   methods: {
+    stopAnimation() {
+      if (this.previousOverflow !== null) {
+        document.body.style.overflow = this.previousOverflow;
+        this.previousOverflow = null;
+      }
+      window.removeEventListener('keydown', this.handleKeydown);
+      if (this.timer) clearTimeout(this.timer);
+      this.timer = null;
+    },
     handleKeydown(e) {
-      if (['Space', 'Enter', 'ArrowDown', 'ArrowRight'].includes(e.code)) {
-        this.accelerate();
+      if (e.code === 'Escape') {
+        e.preventDefault();
+        this.finish();
+      } else if (['Space', 'Enter', 'ArrowDown', 'ArrowRight'].includes(e.code)) {
+        e.preventDefault();
+        if (this.isMobile) this.finish();
+        else this.accelerate();
       }
     },
     accelerate() {
-       if (this.isMobile) return;
+       if (!this.visible || this.isMobile) return;
 
        this.isAccelerated = true;
        if (this.timer) clearTimeout(this.timer);
@@ -121,9 +139,11 @@ export default {
        }
     },
     startTyping() {
+       if (!this.visible) return;
        this.timer = setTimeout(this.typeNext, this.typingSpeed);
     },
     typeNext() {
+      if (!this.visible) return;
       if (this.line1.length < this.text1.length) {
         this.line1 += this.text1[this.line1.length];
         this.timer = setTimeout(() => {
@@ -147,6 +167,7 @@ export default {
       }
     },
     runNextStep() {
+      if (!this.visible) return;
       const maxSteps = 6;
       if (this.step < maxSteps) {
         this.step++;
@@ -163,8 +184,9 @@ export default {
       }
     },
     finish() {
+      this.stopAnimation();
+      if (!this.visible) return;
       this.visible = false;
-      document.body.style.overflow = '';
       window.hasPlayedIndexAnime = true;
       this.$emit('finish');
     }

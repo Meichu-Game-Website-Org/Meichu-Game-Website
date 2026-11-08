@@ -1,5 +1,7 @@
 <template>
   <div class="history-page">
+    <RequestState :resource="resource" empty-text="目前尚無歷史紀錄。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     <div class="page-fix-bg-container">
       <img src="@/assets/2025/page-bg.png" class="page-fix-bg" alt="History Background" :style="{ width: '55vw', opacity: '0.75' }"/>
     </div>
@@ -7,8 +9,7 @@
       <div class="col">
         <h1>歷史紀錄</h1>
         <div class="title_bar"/>
-        <Loading v-if="isLoading"/>
-        <div class="history-center" v-if="!isLoading">
+        <div class="history-center">
           <table class="record history-table">
             
             <!-- <thead> -->
@@ -44,47 +45,35 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { archiveResourceMixin } from '@/utils/archive-resource'
 
-import { History as HistoryApi } from '@meichu/services'
-import Loading from '@/components/2025/Loading.vue'
+import { History as HistoryApi, loadResource, readArchives } from '@meichu/services'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'history-list',
-
-  components: {
-    Loading
-  },
 
   metaInfo: {
     title: '歷史紀錄'
-  },
-
-  data: function() {
-    return {
-      archiveList: [],
-      itemList: [],
-      isLoading: true
-    }
   },
 
   created() {
     this.fetch()
   },
 
+  computed: {
+    archiveList() { return this.resource.data ? this.resource.data.archives : [] },
+    itemList() { return this.resource.data ? this.resource.data.items : [] },
+  },
+
   methods: {
     fetch() {
-      HistoryApi.fetchFullArchives()
-        .then((data) => {
-          this.archiveList = data.archives.filter(archive => archive.item_id != 30 && archive.item_id != 31)
-          this.itemList = data.items.filter(item => item.slug != 'opening' && item.slug != 'closing')
-        })
-        .then(() => {
-          this.isLoading = false
-        })
+      return loadResource(this.resource, () => HistoryApi.fetchFullArchives().then(readArchives), data => data.archives.length === 0)
     },
     
     getOutcome(outcome, year) {

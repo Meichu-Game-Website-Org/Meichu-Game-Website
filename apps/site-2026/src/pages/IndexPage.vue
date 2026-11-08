@@ -3,7 +3,7 @@
     <IndexAnime />
 
     <div class="cover">
-      <img src="@/assets/index-cover-desktop.webp" alt="Cover Image" v-if="isDesktop">
+      <img src="@/assets/index-cover-desktop.webp" alt="2026 丙午梅竹主視覺">
     </div>
 
     <CurrScore />
@@ -24,9 +24,7 @@ import CurrScore from '@/components/CurrScore.vue'
 export default {
   name: 'index',
   metaInfo: { title: '丙午梅竹 | 2026 Meichu Games', titleTemplate: '%s' },
-  components: { IndexAnime, CurrScore },
-  data() { return { isDesktop: false } },
-  created() { this.isDesktop = window.innerWidth > 1024 }
+  components: { IndexAnime, CurrScore }
 }
 </script>
 

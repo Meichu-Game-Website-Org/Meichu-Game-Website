@@ -20,7 +20,7 @@ export default {
 </script>
 
 <style scoped>
-.request-state { padding: 2rem 1rem; text-align: center; white-space: normal; line-height: 1.6; }
+.request-state { position: relative; z-index: 1; padding: 2rem 1rem; text-align: center; white-space: normal; line-height: 1.6; }
 .request-state p { margin: 0 0 1rem; }
 button { min-height: 44px; padding: .5rem 1.25rem; border: 1px solid currentColor; border-radius: 4px; background: transparent; color: inherit; font: inherit; cursor: pointer; }
 button:hover { text-decoration: underline; }

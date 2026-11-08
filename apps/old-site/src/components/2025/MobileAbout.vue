@@ -18,8 +18,8 @@
         <img src="@/assets/2025/about-basketball.png" alt="Basketball Panda">
       </div>
       <div class="about-content break-line">
-        <Loading v-if="isLoading"/>
-        <p v-else>{{options['about-meichu']}}</p>
+        <RequestState :resource="resource" empty-text="目前尚無簡介資料。" @retry="$emit('retry')" />
+        <p v-if="resource.status === 'success'">{{options['about-meichu']}}</p>
       </div>
     </div>
     <div class="about-section">
@@ -34,8 +34,7 @@
         </div>
       </div>
       <div class="about-content break-line">
-        <Loading v-if="isLoading"/>
-        <p v-else>{{options['meichu-history']}}</p>
+        <p v-if="resource.status === 'success'">{{options['meichu-history']}}</p>
       </div>
     </div>
     <div class="about-section">
@@ -65,16 +64,15 @@
 </template>
 
 <script>
-import { Option as OptionApi } from '@meichu/services'
+import RequestState from '@/components/2025/RequestState.vue'
 import OrgCard from '@/components/2025/OrgCard'
-import Loading from '@/components/2025/Loading.vue'
 
 export default {
   name: 'about',
 
   components: {
     OrgCard,
-    Loading
+    RequestState
   },
 
   metaInfo: {
@@ -84,8 +82,6 @@ export default {
 
   data: function() {
     return {
-      options: {},
-      isLoading: true,
       organizations: [
         {
           nameZh: '主辦單位 / 梅竹籌備委員會',
@@ -201,26 +197,9 @@ export default {
     }
   },
 
-  created() {
-    this.fetch()
-  },
-
-  methods: {
-    fetch() {
-      const params = {
-        data: ['about-meichu', 'meichu-history'],
-        year_id: 57
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
-      .then(() => {
-        this.isLoading = false
-      })
-    }
-  }
+  props: { resource: { type: Object, required: true } },
+  emits: ['retry'],
+  computed: { options() { return this.resource.data || {} } }
 }
 </script>
 

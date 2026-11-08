@@ -1,16 +1,18 @@
 <template>
   <div class="about">
-    <MobileAbout></MobileAbout>
-    <DesktopAbout></DesktopAbout>
+    <MobileAbout :resource="resource" @retry="fetch" />
+    <DesktopAbout :resource="resource" @retry="fetch" />
   </div>
 </template>
 
 <script>
-import { Option as OptionApi } from '@meichu/services'
+import { archiveResourceMixin } from '@/utils/archive-resource'
+import { Option as OptionApi, loadResource, readOptions } from '@meichu/services'
 import MobileAbout from '@/components/2025/MobileAbout'
 import DesktopAbout from '@/components/2025/DesktopAbout'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'about',
 
   metaInfo: {
@@ -23,27 +25,19 @@ export default {
     DesktopAbout
   },
 
-  data: function() {
-    return {
-      options: {}
-    }
-  },
-
   created() {
     this.fetch()
   },
 
+  computed: {
+    options() { return this.resource.data || {} },
+  },
+
   methods: {
     fetch() {
-      const params = {
-        data: ['about-meichu', 'meichu-history'],
-        year_id: 57
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
+      return loadResource(this.resource, () => OptionApi.fetchOptions({
+        data: ['about-meichu', 'meichu-history'], year_id: 57
+      }).then(readOptions), options => !Object.values(options).some(value => value.trim()))
     }
   }
 }

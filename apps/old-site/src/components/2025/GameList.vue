@@ -1,13 +1,14 @@
 <template>
 
   <div>
+    <RequestState :resource="resource" empty-text="目前尚無賽事。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     <div class="row">
       <div class="col">
         <h1>所有賽事</h1>
         <div class="title_bar">
         </div>
-        <Loading v-if="isLoading" />
-        <div class="game-row" v-if="!isLoading">
+        <div class="game-row">
           <div class="game-col">
             <h3 class="game-day">02/28 (五)</h3>
             <GameItem :game="games['opening']" />
@@ -41,48 +42,35 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { archiveResourceMixin, readGameMap } from '@/utils/archive-resource'
 
 import GameItem from '@/components/2025/GameItem.vue'
-import Loading from '@/components/2025/Loading.vue'
-import { Game as GameApi } from '@meichu/services'
+import { Game as GameApi, loadResource } from '@meichu/services'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'game-list',
 
   components: {
     GameItem,
-    Loading
-  },
-
-  data: function() {
-    return {
-      games: {},
-      isLoading: true
-    }
   },
 
   created() {
     this.fetch()
   },
 
+  computed: {
+    games() { return this.resource.data || {} },
+  },
+
   methods: {
     fetch() {
-      const params = {
-        year_id: 57
-      }
-      GameApi.fetchAllGames(params)
-        .then((games) => {
-          this.games = Object.assign({}, ...games.filter(val => val.item).map(game => ({
-            [game.item.slug]: game
-          })))
-        })
-        .then(() => {
-          this.isLoading = false
-        })
+      return loadResource(this.resource, () => GameApi.fetchAllGames({ year_id: 57 }).then(readGameMap), games => Object.keys(games).length === 0)
     },
   }
 }
