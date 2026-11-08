@@ -145,6 +145,18 @@ test('missing API resource fields are temporary errors while explicit null means
   const malformed=await fetch(origin+'/2026/news/2');assert.equal(malformed.status,503);assert.equal(malformed.headers.get('x-robots-tag'),null);assert.equal(malformed.headers.get('cache-control'),'no-store');assert.match(await malformed.text(),/id="app"/)
 })
 
+test('malformed resource titles are unavailable rather than permanently missing pages', async t => {
+  const loadResource=api.createApiClient({fetchImpl:async url=>{
+    const path=new URL(url).pathname
+    const body=path.includes('/news/')?{news:{...news(Number(path.split('/').at(-1))),title:path.endsWith('/3')?null:' \t '}}:{game:{...game(path.split('/').at(-1)),name:path.includes('bad-name')?42:'  '}}
+    return new Response(JSON.stringify(body),{headers:{'content-type':'application/json'}})
+  }})
+  const server=http.createSharingServer(options({loadResource}));const origin=await listen(t,server)
+  for(const path of ['/2026/news/3','/2026/news/4','/2026/game/bad-name','/2026/game/blank-name']) {
+    const response=await fetch(origin+path);assert.equal(response.status,503,path);assert.equal(response.headers.get('x-robots-tag'),null);assert.equal(response.headers.get('cache-control'),'no-store');assert.match(await response.text(),/id="app"/)
+  }
+})
+
 test('HTTP last-good metadata and PNG recover after an outage without mixing revisions', async t => {
   let time=0,fail=false,title='第一版公告',calls=0
   const server=http.createSharingServer(options({now:()=>time,cacheOptions:{ttlMs:10,failureTtlMs:5,staleMs:30},

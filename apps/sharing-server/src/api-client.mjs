@@ -67,6 +67,8 @@ export function createApiClient({ origin = DEFAULT_ORIGIN, fetchImpl = fetch,
       const resource = data[route.type]
       if (resource == null) return null
       if (typeof resource !== 'object' || Array.isArray(resource)) throw new UpstreamError('UPSTREAM_SHAPE')
+      const title = resource[route.type === 'news' ? 'title' : 'name']
+      if (typeof title !== 'string' || !title.trim()) throw new UpstreamError('UPSTREAM_SHAPE')
       return resource
     } catch (error) {
       const aborted = controller.signal.aborted
