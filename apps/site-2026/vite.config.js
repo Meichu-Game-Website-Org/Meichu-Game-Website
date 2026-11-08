@@ -4,12 +4,10 @@ import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/',
+  base: '/2026/',
   server: {
     port: 22026, // Convention: 20000 + Year
-    hmr: {
-        port: 22026,
-    }
+    strictPort: true // The proxy forwards HTTP and HMR on the same /2026/ prefix.
   },
   plugins: [vue()],
   css: {

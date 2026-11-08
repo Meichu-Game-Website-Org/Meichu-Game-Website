@@ -1,29 +1,14 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
 import App from './App.vue'
-import VueRouter from 'vue-router'
-import moment from 'moment'
 import axios from 'axios'
 import router from './router.js'
-import VueMeta from 'vue-meta'
-
-Vue.use(VueMeta, {
-  refreshOnceOnNavigation: true
-})
-
-Vue.use(VueRouter)
+import { installMetadata } from './metadata.js'
 
 axios.defaults.withCredentials = true
-Vue.config.productionTip = false
-
-// eslint-disable-next-line
-router.afterEach((to, from, failure) => {
-  window.scrollTo(0, 0);
-});
-
-new Vue({
-  router,
-  render: h => h(App),
-}).$mount('#app')
+const app = createApp(App)
+installMetadata(app)
+app.use(router)
+router.isReady().then(() => app.mount('#app'))
 

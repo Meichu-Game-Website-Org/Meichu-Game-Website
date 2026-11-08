@@ -5,7 +5,7 @@ This repository contains the source code for the Meichu Game websites, structure
 ## Project Structure
 
 *   **apps/**
-    *   **old-site/**: The legacy website serving years 2019-2025. Built with Vue 2.7 + Vite.
+    *   **old-site/**: The legacy website serving years 2019-2025. Built with Vue 3 + Vite.
     *   **site-2026/**: The new website for 2026. Built with Vue 3 + Vite + Node 24.
 *   **packages/**
     *   **services/**: Shared API services and utilities.
@@ -41,46 +41,59 @@ This command simultaneously starts:
 
 ## How Routing Works
 
-The **Proxy Server** (`dev-proxy.js`) listens on port `8080` and routes requests as follows:
+The **Proxy Server** (`dev-proxy.js`) listens on `127.0.0.1:8080` and uses only
+URL paths to select a site:
 
-*   **/2026/** -> Routes to **site-2026** (Port 22026)
-*   **/2027/** -> Routes to **site-2027** (Port 22027) [Future]
-*   **Everything else** -> Routes to **old-site** (Port 3030)
+* `/` redirects to `/2026/`, preserving the query string.
+* `/2026` redirects to `/2026/`. `/2026/…` is forwarded unchanged to
+  **site-2026** on port **22026**.
+* `/2019/…` through `/2025/…`, legacy `/assets/…` files and legacy public
+  assets go to **old-site** on port **3030**.
+* Only exact `apps/site-YYYY` directories containing a `package.json` register a
+  new year. Missing years (including `/2027/` until that app exists), malformed
+  year prefixes such as `/20260/`, and unknown root paths return **404**.
+* HTTP and Vite HMR WebSocket upgrades use the same routing rules. The year
+  prefix is preserved, including query parameters and Vite's HMR token.
+
+Every new site's Vite public `base` and router history base must be `/YYYY/`.
+Its module, CSS, image and HMR URLs therefore carry the year themselves; the
+proxy never uses a shared cookie or Referer to guess their owner. Archive assets
+remain root-relative. Old `meichu-year` cookies are ignored.
+
+Production servers must mount the 2026 `dist` directory at `/2026/` with a
+fallback to `/2026/index.html`, and mount the archive `dist` directory at the
+root with a fallback to its index for the known archive years. Apply the same
+root redirect and unknown-year policy; do not strip the new site's year prefix.
 
 ## How to Add a New Year (e.g., 2027)
 
-We follow a **Convention over Configuration** approach. To add a new year site, you do **not** need to modify the proxy server or startup scripts if you follow these rules.
+1. Create `apps/site-2027` with its own `package.json` and a `dev` script.
+2. Set Vite's `base` and port, and keep the port strict so a busy port fails
+   explicitly instead of silently serving a different site:
 
-1.  **Create the App**:
-    Create a new directory in `apps/`, e.g., `apps/site-2027`.
+   ```javascript
+   export default defineConfig({
+     base: '/2027/',
+     server: { port: 22027, strictPort: true },
+     // plugins, aliases, etc.
+   })
+   ```
 
-2.  **Configure Vite Port**:
-    In your new app's `vite.config.js`, set the server port to **20000 + Year**.
-    
-    *Example for 2027:*
-    ```javascript
-    // apps/site-2027/vite.config.js
-    export default defineConfig({
-      base: '/2027/', // Important: Must match the year
-      server: {
-        port: 22027,      // Rule: 20000 + 2027
-        hmr: {
-            port: 22027   // Keep HMR port consistent
-        }
-      },
-      // ...
-    })
-    ```
-
-3.  **Run**:
-    Just run `pnpm start` again.
-    
-    *   The command `pnpm --filter "site-*" --parallel dev` will automatically detect and start `site-2027`.
-    *   The `dev-proxy.js` will automatically route `/2027` requests to `http://localhost:22027`.
+3. Configure Vue Router with `createWebHistory(import.meta.env.BASE_URL)`.
+   Prefix public URLs with `import.meta.env.BASE_URL` in JavaScript. Reference
+   public assets from the root in the HTML entry (for example `/favicon.svg`);
+   Vite applies its configured base when transforming that entry. Do not infer
+   the router base from the current URL.
+4. Restart `pnpm start`. The startup script discovers `site-*` workspaces and
+   the proxy registers the exact `site-2027` app. Vite's default HMR connection
+   uses the proxy origin and `/2027/` path; no separate HMR port is needed.
+5. Add the new year to the production server's site mounts. Change the proxy's
+   `defaultYear` and production root redirect together when it becomes the
+   current homepage year.
 
 ## Technology Stack
 
-*   **Old Site**: Vue 2.7, Vite, Bootstrap
+*   **Old Site**: Vue 3, Vue Router 4, Vite, Bootstrap
 *   **New Sites (2026+)**: Vue 3, Vite, Tailwind/Custom CSS
 *   **Package Manager**: pnpm (configured with `shamefully-hoist=true` for legacy compatibility)
 
@@ -92,7 +105,7 @@ Run the component and request-state regressions with:
 pnpm test
 ```
 
-The browser suite builds both apps, serves their production output on temporary localhost ports, and substitutes API fixtures. It checks announcement links, attachments, loading/empty/error states, retry, timeout, and out-of-order responses without calling the production API.
+The browser suite builds both apps, serves their production output on temporary localhost ports, and substitutes API fixtures. It checks announcement links, attachments, loading/empty/error states, retry, timeout, and out-of-order responses without calling the production API. It also starts isolated Vite servers and the real proxy to check simultaneous archive/current/future tabs, dynamic imports, canonical redirects, unknown years and each site's HMR WebSocket channel.
 
 ```bash
 pnpm exec playwright install chromium
@@ -100,3 +113,10 @@ pnpm test:browser
 ```
 
 To use an existing Chromium installation, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to its executable. Screenshots are saved in the system temporary directory under `meichu-p1-screenshots`, or in `P1_SCREENSHOTS` when provided.
+
+## Container deployment
+
+The production image contains both sites and nginx's year-specific routing.
+From the repository root, run `pnpm test:container` to build it and verify its
+HTTP routes and emitted assets. See [deployment instructions](docs/deployment.md)
+for image build/run commands, health checks and release validation.

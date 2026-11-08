@@ -1,15 +1,15 @@
 <template>
   <div :class="'game-item status-' + game.status" v-if="game">
-    <router-link :to="{ name: 'game-show-2026', params: {slug: game.item.slug} }" class="game-item__link"></router-link>
+    <router-link :to="{ name: 'game-show-2026', params: {slug: game.item.slug} }" class="game-item__link" :aria-label="`查看${game.name}賽事詳情`"></router-link>
     <div class="game-item__mask"></div>
-    <img :src="game.photo" class="game-item__photo" alt="">
+    <img v-if="game.photo" :src="game.photo" class="game-item__photo" alt="">
     <div class="game-item__content">
       <div class="game-item__info">
-        <div class="game-item__time"><i class="fa-regular fa-clock"></i> {{ game.time }}</div>
+        <div class="game-item__time"><i class="fa-regular fa-clock" aria-hidden="true"></i> {{ game.time || '時間待定' }}</div>
         <div class="game-item__location">{{ game.location }}</div>
       </div>
       <div class="game-item__text">
-        <div v-if="isShowScore(game.status)" class="game-item__score">陽明交大 {{ game.score_nctu }} : {{ game.score_nthu }} 清大</div>
+        <div v-if="game.type_of !== 'agenda' && isShowScore(game.status)" class="game-item__score">陽明交大 {{ score.nctu }} : {{ score.nthu }} 清大<span v-if="score.note" class="game-item__score-note">{{ score.note }}</span></div>
         <div class="game-item__title">{{ game.name }}</div>
       </div>
     </div>
@@ -21,12 +21,13 @@
 
 <script>
 
-// import { Game as GameApi } from '@meichu/services'
+import { gameScore } from '@/game-display'
 
 export default {
   name: 'game-item-2026',
 
   props: ['game'],
+  computed: { score() { return gameScore(this.game) } },
 
   data: function() {
     return {
@@ -38,7 +39,7 @@ export default {
 
   methods: {
     isShowScore(status) {
-      return status == 'draw' || status == 'nctu' || status == 'nthu'
+      return ['running', 'pause', 'draw', 'nctu', 'nthu', 'end'].includes(status)
     }
   }
 }
@@ -72,6 +73,7 @@ $trail-length: 75%;
     top: 0;
     left: 0;
     z-index: 15;
+    &:focus-visible { outline: 3px solid $white; outline-offset: -6px; }
   }
   .game-item__mask {
     position: absolute;
@@ -129,6 +131,8 @@ $trail-length: 75%;
   .game-item__text {
     z-index: 6;
   }
+  .game-item__score { font-size: max(.75rem, 14px); line-height: 1.4; margin-bottom: .25rem; }
+  .game-item__score-note { display: block; font-size: max(.7rem, 13px); }
   .game-item__title {
     font-weight: 700;
     font-size: .83rem;

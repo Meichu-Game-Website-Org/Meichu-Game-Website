@@ -31,7 +31,7 @@
     <div class="game__information">
     <div class="row">
       <div :class="{'col-12': true, 'col-lg-7': game.is_record}">
-        <h2><div class="message_title">轉播資訊</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+        <h2><div class="message_title">轉播資訊</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
         <template v-if="game.is_live">
           <div class="iframe_block">
           <iframe width="100%" height="450" :src="game.live_url" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -48,7 +48,7 @@
         </template>
       </div>
       <div :class="{'col-12': true, 'col-lg-5': game.is_record}" v-if="game.is_record">
-        <h2><div class="message_title">分場紀錄</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+        <h2><div class="message_title">分場紀錄</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
         <div class="record-row" v-if="game.is_record">
           <table class="record">
             <tr>
@@ -97,14 +97,14 @@
 
       <div class="col-12 col-sm-6">
         <div class="game-block">
-        <h2><div class="message_title">入場須知</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+        <h2><div class="message_title">入場須知</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
         <p class="pre-text">{{ game.info_entry }}</p>
         </div>
       </div>
 
       <div class="col-12 col-sm-6">
         <div class="game-block">
-        <h2><div class="message_title">賽事規則</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+        <h2><div class="message_title">賽事規則</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
         <p class="pre-text">{{ game.info_rule }}</p>
         </div>
       </div>
@@ -112,7 +112,7 @@
     </div>
 
     <section v-if="slug != 'opening' && slug != 'closing'">
-      <h2><div class="message_title">隊伍介紹</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+      <h2><div class="message_title">隊伍介紹</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
       <div class="row">
         <div class="col-12 col-sm-6" v-if="game.team_nctu">
           <section class="team1">
@@ -160,7 +160,7 @@
     </section>
 
     <section>
-      <h2><div class="message_title">相關公告 / 媒體報導</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+      <h2><div class="message_title">相關公告 / 媒體報導</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
       <div class="row" style="width: 100vw; margin-left: 0;" v-if="game.news && game.news.length">
         <div style="width: 100vw;" :key="news.id" v-for="news in game.news">
           <section class="news" style="width: 100vw;">
@@ -183,7 +183,7 @@
     </section>
 
     <section v-if="slug != 'opening' && slug != 'closing'">
-      <h2><div class="message_title">歷史對戰數據</div><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+      <h2><div class="message_title">歷史對戰數據</div><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
 
       <div class="stat" v-if="game.score_old_draw || game.score_old_nctu || game.score_old_nthu">
         <div class="stat-nctu">

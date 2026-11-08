@@ -7,7 +7,7 @@
     <div class="row">
       <div class="col">
         <h2 class="about-title">
-          <span class="message_title">歷史紀錄</span><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" /></h2>
+          <span class="message_title">歷史紀錄</span><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" /></h2>
         <div class="history-center">
         <table class="record history-table">
           <!-- <thead> -->

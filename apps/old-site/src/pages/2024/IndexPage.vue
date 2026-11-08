@@ -21,64 +21,14 @@
 </template>
 
 <script>
-
-// import NewsPanel from '@/components/2023/NewsPanel.vue'
 import GameList from '@/components/2024/GameList.vue'
-import { Option as OptionApi } from '@meichu/services'
 
 export default {
   name: 'index',
-
   metaInfo: {
     title: '甲辰梅竹 | 2024 Meichu Games',
     titleTemplate: '%s',
   },
-
-  data() {
-    return {
-      options: {}
-    }
-  },
-
-  components: {
-    GameList
-    // NewsPanel
-  },
-
-  computed: {
-    bannerList() {
-      let banners = []
-      if (!this.options.banners || !this.options['banner-links'].length) return []
-      for (let i = 0; i < this.options.banners.length; i++) {
-        let curBanner = {
-          image_url: this.options.banners[i],
-        }
-        if (i < this.options['banner-links'].length) {
-          curBanner['url'] = this.options['banner-links'][i]
-        }
-        banners.push(curBanner)
-      }
-      return banners
-    }
-  },
-
-  created() {
-    this.fetch()
-  },
-
-  methods: {
-    fetch() {
-      const params = {
-        data: ['banners', 'banner-links'],
-        year_id: 54
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
-    }
-  }
+  components: { GameList }
 }
-
 </script>

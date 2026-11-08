@@ -12,7 +12,7 @@
         <div class="col margin-new">
           <div class="newspanel">
           <NewsPanel>
-            <span class="message_title">所有公告</span><img src="@/assets/2022/梅竹_圈-素材.svg" slot="title_circle_behind" class="title_circle_behind" alt="" />
+            <span class="message_title">所有公告</span><img src="@/assets/2022/梅竹_圈-素材.svg" class="title_circle_behind" alt="" />
           </NewsPanel></div>
         </div>
         <!-- <div class="col">

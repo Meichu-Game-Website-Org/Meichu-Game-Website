@@ -1,2 +1,0 @@
-# Unified patch context markers precede the dependency's original tab indentation.
-patches/*.patch whitespace=-space-before-tab

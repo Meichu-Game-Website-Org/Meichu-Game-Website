@@ -180,7 +180,7 @@
           <span class="message_title">場地圖</span>
         </h2>
         <div class="title_bar"/>
-    <router-link @click.native="$scrollToTop" :to="{name: 'course-2024'}">
+    <router-link :to="{name: 'course-2024'}">
       <div class="no-course">按此查看</div>
       </router-link> -->
 

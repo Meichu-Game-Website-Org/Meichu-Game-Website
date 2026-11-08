@@ -6,7 +6,7 @@
 
         <div class="col">
           <NewsPanel>
-            <span slot="title">所有消息</span>
+            <template #title><span>所有消息</span></template>
           </NewsPanel>
         </div>
         <!-- <div class="col">
@@ -21,13 +21,11 @@
 <script>
 
 import NewsPanel from '@/components/2019/NewsPanel.vue'
-import GameItem from '@/components/2019/GameItem.vue'
 
 export default {
   name: 'news-list',
 
   components: {
-    GameItem,
     NewsPanel,
   },
 

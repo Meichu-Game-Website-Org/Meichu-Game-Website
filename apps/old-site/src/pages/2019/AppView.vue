@@ -52,6 +52,13 @@ import Header from '@/components/2019/Header'
 export default {
   name: 'app',
 
+  metaInfo: {
+    title: '己亥梅竹 | 2019 Meichu Games',
+    titleTemplate: '%s',
+    description: '己亥梅竹官方網站，提供賽程、戰況與梅竹賽資訊。',
+    link: [{ rel: 'icon', href: '/favicon2019.ico' }]
+  },
+
   components: {
     Header
   },

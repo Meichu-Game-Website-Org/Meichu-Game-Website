@@ -5,7 +5,7 @@
 
         <div class="col">
           <NewsPanel :is_sticky="true">
-            <span slot="title">最新消息</span>
+            <template #title><span>最新消息</span></template>
           </NewsPanel>
 
           <div class="see-all-news">
@@ -14,7 +14,6 @@
             </router-link>
           </div>
 
-          <router-link :to="{name: ''}"></router-link>
         </div>
         <!-- <div class="col">
           <h2><i class="fab fa-youtube"></i> 宣傳影片</h2>

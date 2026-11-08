@@ -4,7 +4,7 @@ import globals from 'globals'
 
 export default [
   js.configs.recommended,
-  ...vue.configs['flat/vue2-essential'],
+  ...vue.configs['flat/essential'],
   {
     files: ['src/**/*.{js,vue}'],
     languageOptions: {

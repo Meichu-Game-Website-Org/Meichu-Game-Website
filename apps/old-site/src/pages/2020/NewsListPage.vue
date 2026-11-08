@@ -6,7 +6,7 @@
 
         <div class="col">
           <NewsPanel>
-            <span slot="title">所有訊息</span>
+            <template #title><span>所有訊息</span></template>
           </NewsPanel>
         </div>
         <!-- <div class="col">
@@ -21,7 +21,6 @@
 <script>
 
 import NewsPanel from '@/components/2020/NewsPanel.vue'
-import GameItem from '@/components/2020/GameItem.vue'
 
 export default {
   name: 'news-list',
@@ -34,7 +33,6 @@ export default {
   },
 
   components: {
-    GameItem,
     NewsPanel,
   }
 }
