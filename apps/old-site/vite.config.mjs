@@ -11,8 +11,11 @@ export default defineConfig({
   base: '/',
   plugins: [
     vue(),
-    // Retain the archive's existing browser targets with a SystemJS fallback.
-    legacy({ targets: require('./package.json').browserslist })
+    // Keep a SystemJS fallback for supported browsers lacking newer features.
+    legacy({
+      targets: require('./package.json').browserslist,
+      additionalLegacyPolyfills: ['core-js/modules/es.promise.js']
+    })
   ],
   resolve: {
     alias: [

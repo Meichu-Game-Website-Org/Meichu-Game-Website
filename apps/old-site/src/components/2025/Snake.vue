@@ -34,7 +34,6 @@ export default {
   mounted() { this.startGame() },
   activated() { this.startGame() },
   deactivated() { this.stopGame() },
-  beforeDestroy() { this.stopGame() },
   beforeUnmount() { this.stopGame() },
   methods: {
     startGame() {
