@@ -80,8 +80,10 @@ root redirect and unknown-year policy; do not strip the new site's year prefix.
    ```
 
 3. Configure Vue Router with `createWebHistory(import.meta.env.BASE_URL)`.
-   Prefix public URLs with `import.meta.env.BASE_URL` in JavaScript or
-   `%BASE_URL%` in the HTML entry. Do not infer the router base from the current URL.
+   Prefix public URLs with `import.meta.env.BASE_URL` in JavaScript. Reference
+   public assets from the root in the HTML entry (for example `/favicon.svg`);
+   Vite applies its configured base when transforming that entry. Do not infer
+   the router base from the current URL.
 4. Restart `pnpm start`. The startup script discovers `site-*` workspaces and
    the proxy registers the exact `site-2027` app. Vite's default HMR connection
    uses the proxy origin and `/2027/` path; no separate HMR port is needed.
