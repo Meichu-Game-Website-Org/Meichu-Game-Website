@@ -10,18 +10,24 @@
     <div class="game__info">
       <h1 :class="'game__info__name game-status-' + game.status">{{ game.name }}</h1> 
       <div class="game__info__item">
-        {{ moment(game.date).format('MM/DD') }} {{ game.time }}
+        {{ gameDateLabel(game.date) }} {{ game.time || '時間待定' }}
       </div>
       <div class="game__info__item">
         <a :href="game.location_url" class="game__location" title="在 Google Maps 中查看" target="_blank">{{ game.location }}</a>
       </div>
+      <div v-if="game.type_of !== 'agenda'" class="game__scores" :aria-label="`陽明交通大學 ${score.nctu} 分，清華大學 ${score.nthu} 分`" role="group">
+        <div><span class="game__scores__school">陽明交通大學</span><strong class="game__scores__value">{{ score.nctu }}</strong></div>
+        <span class="game__scores__separator" aria-hidden="true">:</span>
+        <div><span class="game__scores__school">清華大學</span><strong class="game__scores__value">{{ score.nthu }}</strong></div>
+      </div>
+      <p v-if="score.note" class="game__score-note">{{ score.note }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import moment from 'moment'
 import { GAME_STATUS } from '@/utils'
+import { gameScore, gameDateLabel } from '@/game-display'
 
 export default {
   name: 'GameScoreboard',
@@ -33,10 +39,11 @@ export default {
   },
   data() {
     return {
-      moment,
-      GAME_STATUS
+      GAME_STATUS,
+      gameDateLabel
     }
-  }
+  },
+  computed: { score() { return gameScore(this.game) } }
 }
 </script>
 
@@ -60,6 +67,20 @@ export default {
     color: $linked_text;
   }
 }
+.game__scores {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(.75rem, 3vw, 2rem);
+  margin-top: .5rem;
+  color: $white;
+  text-align: center;
+  line-height: 1.15;
+}
+.game__scores__school { display: block; font-size: max(.75rem, 14px); }
+.game__scores__value { display: block; font-size: clamp(2rem, 5vw, 4rem); font-variant-numeric: tabular-nums; }
+.game__scores__separator { font-size: clamp(2rem, 5vw, 4rem); }
+.game__score-note { margin: .35rem 0 0; color: $white; font-size: max(.75rem, 14px); text-align: center; }
 .game__scoreboard__bg {
   position: absolute;
   width: 100%;

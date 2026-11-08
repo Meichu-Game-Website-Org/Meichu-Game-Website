@@ -3,10 +3,12 @@
     <MobileNav></MobileNav>
     <Nav></Nav>
     <div class="main">
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
-      </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>  
+      <router-view v-slot="{ Component, route }">
+        <keep-alive>
+          <component :is="Component" v-if="route.meta.keepAlive" />
+        </keep-alive>
+        <component :is="Component" v-if="!route.meta.keepAlive" />
+      </router-view>
     </div>
     <footer>
       <Footer></Footer>
@@ -28,7 +30,7 @@ export default {
     titleTemplate: '%s | 丙午梅竹',
     description: '丙午梅竹官方網站，提供賽程、票務、戰況、轉播等梅竹賽之即時資訊。',
     link: [
-      { rel: 'icon', href: '/2026-favicon.svg' } //to-do
+      { rel: 'icon', href: `${import.meta.env.BASE_URL}2026-favicon.svg` }
     ]
   },
 

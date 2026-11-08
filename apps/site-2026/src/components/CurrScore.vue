@@ -2,13 +2,19 @@
   <div class="curr-score">
     <h1>正式賽當前積點</h1>
     <div class="title-bar"/>
+    <div class="curr-score__updates">
+      <button type="button" :disabled="requestPending" @click="fetch">{{ requestPending ? '更新中…' : '更新積點' }}</button>
+      <span v-if="updatedAt && ['success', 'empty'].includes(resource.status)">
+        最後更新（台灣時間）：<time :datetime="updatedAt">{{ updatedTime }}</time>
+      </span>
+    </div>
     <RequestState :resource="resource" empty-text="目前尚無正式賽積點資料。" @retry="fetch" />
     <div v-if="resource.status === 'success'" class="curr-score__score">
       <div class="score__school">
         <img src="@/assets/index-score-panda.png" alt="熊貓"/>
         <div>清華大學</div>
       </div>
-      <div class="score__score">
+      <div class="score__score" role="img" :aria-label="`清華大學 ${score.nthu} 點，陽明交通大學 ${score.nctu} 點`">
         <div class="left">
           <ScoreNumber :value="this.score['nthu']" />
         </div>
@@ -30,15 +36,31 @@ import { Game as GameApi, resourceMixin, loadResource, readGames } from '@meichu
 import ScoreNumber from '@/components/ScoreNumber.vue'
 import RequestState from '@/components/RequestState.vue'
 import { YEAR_ID } from '@/utils'
+import { SCORE_REFRESH_INTERVAL } from '@/game-display'
 
 export default {
   name: 'curr-score',
   mixins: [resourceMixin],
   components: { ScoreNumber, RequestState },
-  computed: { score() { return this.resource.data } },
+  data() { return { requestPending: false, lastAttemptAt: 0, updatedAt: null } },
+  computed: {
+    score() { return this.resource.data },
+    updatedTime() {
+      return this.updatedAt ? new Intl.DateTimeFormat('zh-TW', {
+        timeZone: 'Asia/Taipei', year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      }).format(new Date(this.updatedAt)) : ''
+    }
+  },
   created() { this.fetch() },
+  activated() {
+    if (Date.now() - this.lastAttemptAt >= SCORE_REFRESH_INTERVAL) this.fetch()
+  },
   methods: {
     fetch() {
+      if (this.requestPending) return
+      this.requestPending = true
+      this.lastAttemptAt = Date.now()
       return loadResource(this.resource, async () => {
         const games = readGames(await GameApi.fetchAllGames({ year_id: YEAR_ID })).filter(game => game.type_of === 'official')
         if (!games.length) return null
@@ -47,7 +69,9 @@ export default {
           nthu: games.filter(game => game.status === 'nthu').length + 0.5 * draw,
           nctu: games.filter(game => game.status === 'nctu').length + 0.5 * draw
         }
-      })
+      }).then(() => {
+        if (['success', 'empty'].includes(this.resource.status)) this.updatedAt = new Date().toISOString()
+      }).finally(() => { this.requestPending = false })
     }
   }
 }
@@ -65,6 +89,31 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  .curr-score__updates {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: .75rem 1rem;
+    margin: 1rem 1rem 2rem;
+    font-size: max(.8rem, 14px);
+    line-height: 1.5;
+    text-align: center;
+    button {
+      min-height: 44px;
+      border: 1px solid currentColor;
+      border-radius: 4px;
+      padding: .5rem 1.25rem;
+      color: inherit;
+      background: transparent;
+      font: inherit;
+      cursor: pointer;
+      &:hover:not(:disabled) { text-decoration: underline; }
+      &:disabled { opacity: .65; cursor: wait; }
+      &:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+    }
+  }
 
   @media (max-width: $screen-md) {
     padding: 0;
