@@ -8,14 +8,30 @@ COPY . .
 RUN --mount=type=cache,id=meichu-pnpm-store,target=/pnpm/store \
     pnpm install --frozen-lockfile --ignore-scripts --store-dir=/pnpm/store
 RUN pnpm --filter old-site build && pnpm --filter site-2026 build
+RUN pnpm --filter sharing-server --prod deploy --legacy /out/sharing-server
 
-# Both SPAs share one origin. The 2026 app owns its /2026/ asset namespace.
-FROM nginx:stable-alpine AS production-stage
-RUN rm -f /usr/share/nginx/html/index.html /usr/share/nginx/html/50x.html
-COPY apps/old-site/default.conf /etc/nginx/conf.d/default.conf
+# nginx keeps serving static assets; a local Node service renders dynamic OG heads.
+# Use one Alpine base for Node and native PNG dependencies, without copying a Node
+# binary between different Alpine releases.
+FROM node:24-alpine AS production-stage
+RUN apk add --no-cache nginx && rm -f /etc/nginx/http.d/default.conf \
+    && mkdir -p /run/nginx
+WORKDIR /app
+ENV SHARING_HOST=127.0.0.1 \
+    SHARING_PORT=8787 \
+    SHARING_DIST_ROOT=/usr/share/nginx/html \
+    SHARING_ASSET_ROOT=/app
+COPY apps/old-site/default.conf /etc/nginx/http.d/default.conf
 COPY --from=build-stage /app/apps/old-site/dist /usr/share/nginx/html/
 COPY --from=build-stage /app/apps/site-2026/dist /usr/share/nginx/html/2026/
+COPY --from=build-stage /out/sharing-server /app/apps/sharing-server/
+COPY packages/services/src/metadata.mjs packages/services/src/detail-metadata.mjs /app/packages/services/src/
+COPY scripts/lib/sharing-html.mjs /app/scripts/lib/sharing-html.mjs
+COPY packages/assets/fonts/KozGoPr6N-Bold.otf packages/assets/fonts/KozGoPr6N-Regular.otf /app/packages/assets/fonts/
+COPY packages/assets/fonts/NotoSansTC-Regular.otf packages/assets/fonts/NotoSansTC-Bold.otf \
+    packages/assets/fonts/NotoSansTC-LICENSE.txt packages/assets/fonts/NotoSansTC-SOURCE.txt /app/packages/assets/fonts/
+COPY scripts/start-container.mjs /app/scripts/start-container.mjs
 EXPOSE 80
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
     CMD wget -q -O /dev/null http://127.0.0.1/healthz || exit 1
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "/app/scripts/start-container.mjs"]

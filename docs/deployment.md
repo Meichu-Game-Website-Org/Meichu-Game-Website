@@ -10,9 +10,11 @@ docker run --rm -p 127.0.0.1:8080:80 meichu-website:local
 
 The build stage uses Node 24 and pnpm 10.28.1, installs the whole workspace with
 `--frozen-lockfile --ignore-scripts`, and builds both sites. The runtime image
-contains nginx and the generated static files; Node, source files and development
-dependencies remain in the build stage. `.dockerignore` excludes local dependency
-directories, generated output and credentials from the build context.
+contains nginx, Node 24, the isolated sharing service and its production
+dependencies, shared metadata helpers, the required local fonts, and both
+applications' generated files. Frontend development dependencies remain in the
+build stage. `.dockerignore` excludes local dependency directories, generated
+output and credentials from the build context.
 
 The nginx configuration is copied into the image and defines one routing contract:
 
@@ -22,47 +24,80 @@ The nginx configuration is copied into the image and defines one routing contrac
 | `/2026/…` | 2026 application, with its own assets, generated sharing HTML and SPA fallback |
 | `/2019/…` through `/2025/…` | Archive application, with each year's generated sharing HTML and fallback |
 | `/assets/…` and existing root public files | Archive assets |
+| Valid `/{year}/game/{slug}` and `/{year}/news/{id}` | Dynamic initial HTML with the record's sharing metadata |
+| `/og/{year}/{game\|news}/{key}.png` | Record-specific PNG when the API record has no suitable image |
 | Unknown years or unknown root paths | HTTP 404 |
 | Missing files under either assets directory | HTTP 404, never SPA HTML |
-| `/healthz` | HTTP 200, used by the container health check |
+| `/healthz` | HTTP 200 only when nginx can reach the ready sharing service |
 
 No year cookie or Referer header selects an application. Relative redirects also
 work when the image is published on a different host port or placed behind a TLS
-reverse proxy. The API remains the external endpoint configured by
+reverse proxy. The browser API remains the external endpoint configured by
 `packages/services`; this image does not start or proxy a backend API.
 
 The build emits separate HTML for each implemented year and static route. Social
 crawlers receive Open Graph and Twitter card metadata without executing the SPA.
 Game detail slugs containing only letters, digits, `_` or `-`, and numeric news
-IDs, receive the matching year's generic detail card. These cards identify the
-year and content type; they do not fetch or server-render individual API records.
-The browser continues to fetch the live record after navigation.
+IDs are sent to the sharing service on loopback port 8787. All visitors receive
+the same initial HTML; there is no crawler User-Agent branch. The service requests
+the corresponding public API record, renders its title and description, and uses
+an appropriate API image or a generated per-record PNG. The browser continues to
+fetch the live record after navigation. A bounded in-memory cache and shared
+in-flight requests limit API and image-rendering work.
 
-nginx substitutes the canonical URL and `og:url` only in those generated detail
-templates. The replacement uses a fixed `https://meichu.games` origin and strictly
-validated route captures, excludes the query string, and removes a trailing slash.
-The request's Host header and arbitrary encoded characters are never inserted into
-HTML. Other detail paths retain the corresponding year's normal SPA fallback.
-The `_game` and `_news` templates are internal resources, and missing files under
-the sharing-image directories return 404 instead of HTML.
+Canonical URLs use the fixed `https://meichu.games` origin and validated routes.
+Request Host, query, Cookie and Authorization values do not choose the API or
+change metadata. nginx strips forwarded request headers and bodies; the service
+also validates routes before making fixed, credential-free API requests. The
+`_game` and `_news` templates remain private, and missing sharing assets return
+404 instead of HTML. Missing records return HTML 404 with `noindex`; transient
+API failures use bounded last-good metadata when available, otherwise return a
+non-cacheable HTML 503 with `Retry-After`. Both retain the SPA shell.
+
+The PID 1 entrypoint supervises nginx and Node together. A terminated or failed
+child stops its sibling and exits nonzero. Container `SIGTERM` stops both, with a
+bounded shutdown deadline. The internal service port is not published.
+
+### API origin and files
+
+`SHARING_API_ORIGIN` defaults to `https://meichu.games`. Only deployment operators
+may set it; it must be an origin without credentials, path, query or fragment.
+The service appends its fixed `/api/news/…` or `/api/game/slug/…` paths and does not
+follow redirects. The local smoke check overrides it with an isolated fixture.
+
+If a future rollout points the entire `meichu.games` domain to this container,
+first provide a separately reachable origin for the existing API, or preserve an
+explicit `/api` upstream route outside this image. Otherwise the default API
+origin would point back at this frontend and return 404. No DNS or API routing
+change is performed by building or testing this repository.
+
+`SHARING_DIST_ROOT` defaults to `/usr/share/nginx/html`, containing both sites;
+`SHARING_ASSET_ROOT` defaults to `/app`, containing the explicitly copied fonts.
+The runtime keeps the existing Kozuka font files unchanged, including their
+embedded notices, and includes the OFL Noto Sans TC fallback with its license and
+pinned upstream source notice. These fonts are used locally for generated PNGs;
+the service does not download fonts or images while serving a request.
 
 Run the repeatable container check with Node 24 and a running Docker daemon:
 
 ```sh
-# Build the image, start it on a temporary loopback port, test it, remove the test container.
+# Build the image, run isolated containers, test them, then remove test containers.
 node scripts/smoke-container.mjs
 
 # Validate an image already built by CI or a release pipeline.
 node scripts/smoke-container.mjs --image meichu-website:local
 ```
 
-The smoke check verifies both entry points, all seven archive years, deep links,
-query-preserving redirects, emitted JavaScript/CSS/fonts/images, cross-year
-cookies, and unknown/missing paths. It also requests every implemented static
-sharing page and each year's detail templates as a social crawler, checks PNG
-dimensions and metadata, and exercises hostile Host/query/encoded-path inputs.
-It creates and removes only its own temporary
-container. It does not publish the image or change a production deployment.
+The smoke check starts a read-only fixture API and the application on a Docker
+**internal** network, so neither can request production content. It pipes the
+test-only HTTP checks into Node 24 inside the application container with
+`docker exec`; no test ports are published. It verifies both entry points, all
+archive years, static sharing pages, distinct news/game titles, descriptions and
+PNGs, API credential isolation, cache sharing, errors/timeouts/redirects,
+HEAD/405/ETag handling, emitted assets, cross-year cookies and unknown paths. It
+also checks graceful shutdown and the loss of either child process. The check
+removes only its own temporary containers and network. It does not publish the
+image or change a production deployment.
 
 For a release, build an immutable application-specific image tag, run the smoke
 check against that exact tag, then use the hosting platform's deployment command.

@@ -252,6 +252,7 @@
 </template>
 
 <script>
+import { detailMetadata } from '@meichu/services/src/detail-metadata.mjs'
 import { archiveResourceMixin } from '@/utils/archive-resource'
 
 import moment from 'moment'
@@ -264,12 +265,7 @@ export default {
   scrollToTop() {
     window.scrollTo(0,0);
   },
-  metaInfo() {
-    return {
-      title: this.game.name,
-      titleTemplate: '%s | 癸卯梅竹',
-    }
-  },
+  metaInfo() { return detailMetadata(`/2023/game/${this.$route.params.slug}`, this.game) },
 
   data: function() {
     return {

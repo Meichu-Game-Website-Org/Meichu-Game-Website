@@ -92,3 +92,51 @@ test('Snake mounts after SPA navigation, accepts focused controls and stops when
   assert.equal(await page.evaluate(() => 'Application' in window || 'KeyboardController' in window || 'ctrApplication' in window), false)
   assert.deepEqual(errors, [])
 })
+
+
+test('2025 desktop navigation keeps one clickable target across glitch animation phases', async t => {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } })
+  t.after(() => context.close())
+  await context.addInitScript(() => {
+    window.skrollr = { init: () => ({ isMobile: () => true, destroy() {} }) }
+    window.navPointerTargets = {}
+    for (const type of ['mousedown', 'mouseup']) window.addEventListener(type, event => { window.navPointerTargets[type] = event.target })
+  })
+  await context.route('**/*', route => {
+    const url = new URL(route.request().url())
+    if (url.origin === origin) return route.continue()
+    if (url.pathname.startsWith('/api/')) return route.fulfill({ contentType: 'application/json', body: JSON.stringify({ games: [], options: [], archives: [], items: [] }) })
+    return route.fulfill({ body: '' })
+  })
+  const page = await context.newPage()
+  const errors = []
+  page.on('pageerror', error => errors.push(error.message))
+  await page.goto(`${origin}/2025/game`)
+  const home = page.locator('.desktop-nav').getByRole('link', { name: '首頁', exact: true }).first()
+  await home.waitFor()
+  const box = await home.boundingBox()
+  const point = { x: box.x + box.width / 2, y: box.y + box.height / 2 }
+  await page.mouse.move(point.x, point.y)
+  const animations = await home.evaluate(element => {
+    const animations = element.getAnimations({ subtree: true })
+    for (const animation of animations) { animation.pause(); animation.currentTime = 0 }
+    return animations.length
+  })
+  assert.ok(animations > 0, 'Exercise the actual hover animation rather than disabling it')
+  await page.mouse.down()
+  await home.evaluate(element => {
+    for (const animation of element.getAnimations({ subtree: true })) animation.currentTime = 150
+  })
+  await page.mouse.up()
+  assert.equal(await page.evaluate(() => window.navPointerTargets.mousedown === window.navPointerTargets.mouseup), true, 'Clipping the visual label must not change the interactive hit target')
+  await page.waitForURL('**/2025/')
+  await page.locator('#render-target').waitFor()
+  const navigation = page.locator('.desktop-nav')
+  assert.equal(await navigation.getByRole('link', { name: '首頁', exact: true }).count(), 1, 'Decorative text must not create a duplicate link or tab stop')
+  assert.equal(await navigation.getByRole('link', { name: '首頁', exact: true }).getAttribute('href'), '/2025/')
+  assert.equal(await navigation.getByRole('link', { name: 'Facebook', exact: true }).count(), 1)
+  await navigation.getByRole('link', { name: '賽事', exact: true }).focus()
+  await page.keyboard.press('Enter')
+  await page.waitForURL('**/2025/game')
+  assert.deepEqual(errors, [])
+})

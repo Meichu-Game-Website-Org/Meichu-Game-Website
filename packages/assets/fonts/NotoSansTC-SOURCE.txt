@@ -1,0 +1,16 @@
+NotoSansTC-Regular.otf and NotoSansTC-Bold.otf
+
+Unmodified Traditional Chinese regional subset from the official Noto CJK project:
+https://github.com/notofonts/noto-cjk/blob/f8d157532fbfaeda587e826d4cd5b21a49186f7c/Sans/SubsetOTF/TC/NotoSansTC-Regular.otf
+https://github.com/notofonts/noto-cjk/blob/f8d157532fbfaeda587e826d4cd5b21a49186f7c/Sans/SubsetOTF/TC/NotoSansTC-Bold.otf
+
+Upstream revision: f8d157532fbfaeda587e826d4cd5b21a49186f7c
+License: SIL Open Font License 1.1, included as NotoSansTC-LICENSE.txt.
+
+SHA-256:
+5bab0cb3c1cf89dde07c4a95a4054b195afbcfe784d69d75c340780712237537  NotoSansTC-Regular.otf
+55420b259eb119bf5f2a0aadba10cf9d736c12d64ab93e78546d69ef5f43558b  NotoSansTC-Bold.otf
+
+Used only as a local fallback for Traditional Chinese glyphs absent from the
+project's existing KozGoPr6N brand fonts when rendering dynamic sharing PNGs.
+The sharing server does not expose a font download endpoint.
