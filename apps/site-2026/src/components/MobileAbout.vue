@@ -9,7 +9,7 @@
       <div class="title-bar"/>
       <div class="about-content break-line">
         <RequestState :resource="resource" empty-text="目前尚無介紹內容。" @retry="$emit('retry')" />
-        <p v-if="resource.status === 'success'" v-html="formattedAboutMeichu"></p>
+        <p v-if="resource.status === 'success'">{{ options['about-meichu'] }}</p>
       </div>
     </div>
 
@@ -18,7 +18,7 @@
       <div class="title-bar"/>
       <div class="about-content break-line">
         <RequestState :resource="resource" empty-text="目前尚無介紹內容。" @retry="$emit('retry')" />
-        <p v-if="resource.status === 'success'" v-html="formattedMeichuHistory"></p>
+        <p v-if="resource.status === 'success'">{{ options['meichu-history'] }}</p>
       </div>
     </div>
 
@@ -173,15 +173,8 @@ export default {
   },
 
   computed: {
-    options() { return this.resource.data || {} },
-    formattedAboutMeichu() {
-      return this.options['about-meichu'] ? this.options['about-meichu'].replace(/\n/g, '<br>') : '';
-    },
-    formattedMeichuHistory() {
-      return this.options['meichu-history'] ? this.options['meichu-history'].replace(/\n/g, '<br>') : '';
-    }
-  },
-
+    options() { return this.resource.data || {} }
+  }
 }
 </script>
 
@@ -230,7 +223,7 @@ export default {
   }
 
   .break-line {
-    white-space: normal;
+    white-space: pre-line;
     word-wrap: break-word;
     word-break: break-all;
   }
