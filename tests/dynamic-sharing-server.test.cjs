@@ -138,6 +138,13 @@ test('HTTP missing and unavailable resources preserve SPA fallback without cache
   assert.equal((await fetch(origin+'/healthz')).status,200)
 })
 
+test('missing API resource fields are temporary errors while explicit null means not found', async t => {
+  const loadResource=api.createApiClient({fetchImpl:async url=>new Response(JSON.stringify(url.endsWith('/1')?{news:null}:{}),{headers:{'content-type':'application/json'}})})
+  const server=http.createSharingServer(options({loadResource}));const origin=await listen(t,server)
+  const missing=await fetch(origin+'/2026/news/1');assert.equal(missing.status,404);assert.equal(missing.headers.get('x-robots-tag'),'noindex')
+  const malformed=await fetch(origin+'/2026/news/2');assert.equal(malformed.status,503);assert.equal(malformed.headers.get('x-robots-tag'),null);assert.equal(malformed.headers.get('cache-control'),'no-store');assert.match(await malformed.text(),/id="app"/)
+})
+
 test('HTTP last-good metadata and PNG recover after an outage without mixing revisions', async t => {
   let time=0,fail=false,title='第一版公告',calls=0
   const server=http.createSharingServer(options({now:()=>time,cacheOptions:{ttlMs:10,failureTtlMs:5,staleMs:30},

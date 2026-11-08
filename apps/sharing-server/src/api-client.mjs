@@ -63,6 +63,7 @@ export function createApiClient({ origin = DEFAULT_ORIGIN, fetchImpl = fetch,
       }
       const data = JSON.parse(Buffer.concat(chunks, size).toString('utf8'))
       if (!data || typeof data !== 'object' || Array.isArray(data)) throw new UpstreamError('UPSTREAM_SHAPE')
+      if (!Object.prototype.hasOwnProperty.call(data, route.type)) throw new UpstreamError('UPSTREAM_SHAPE')
       const resource = data[route.type]
       if (resource == null) return null
       if (typeof resource !== 'object' || Array.isArray(resource)) throw new UpstreamError('UPSTREAM_SHAPE')
