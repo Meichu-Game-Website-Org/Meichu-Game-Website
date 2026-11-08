@@ -9,7 +9,7 @@ let browser, server, origin
 before(async () => {
   server = createServer(async (request, response) => {
     try {
-      const pathname = new URL(request.url, 'http://localhost').pathname
+      const pathname = decodeURIComponent(new URL(request.url, 'http://localhost').pathname)
       const current = pathname.startsWith('/2026/')
       const directory = path.resolve(`apps/${current ? 'site-2026' : 'old-site'}/dist`)
       let relative = current ? pathname.slice('/2026/'.length) : pathname.slice(1)
@@ -72,7 +72,7 @@ test('2026 metadata follows async API text and SPA navigation without HTML injec
   const page = await context.newPage()
   const errors = []
   page.on('pageerror', error => errors.push(error.message))
-  await page.goto(`${origin}/2026/news/42?tracking=ignored`)
+  await page.goto(`${origin}/2026/news/%34%32?tracking=ignored`)
   await page.waitForFunction(expected => document.title === expected, `${title} | 丙午梅竹`)
   assert.equal(await page.locator('meta[property="og:title"]').getAttribute('content'), `${title} | 丙午梅竹`)
   assert.equal(await page.locator('link[rel="canonical"]').getAttribute('href'), 'https://meichu.games/2026/news/42')
@@ -83,5 +83,8 @@ test('2026 metadata follows async API text and SPA navigation without HTML injec
   assert.equal(await page.locator('meta[property="og:url"]').getAttribute('content'), 'https://meichu.games/2026/game')
   assert.equal(await page.locator('meta[name="twitter:title"]').getAttribute('content'), '賽事列表 | 丙午梅竹')
   assert.equal(await page.locator('meta[property="og:title"]').count(), 1)
+  await page.goto(`${origin}/2026/game/missing`)
+  await page.waitForFunction(() => document.title === '賽事資訊 | 丙午梅竹')
+  assert.equal(await page.locator('meta[property="og:title"]').getAttribute('content'), '賽事資訊 | 丙午梅竹', 'Fallback titles do not repeat the parent edition suffix')
   assert.deepEqual(errors, [])
 })

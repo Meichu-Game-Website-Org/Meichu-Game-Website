@@ -32,7 +32,7 @@ export function sharingMetadata(pathname) {
   }
   const siteName = `${edition.name}梅竹 | ${year} Meichu Games`
   return {
-    year, title: pageTitle ? `${pageTitle} | ${edition.name}梅竹` : siteName,
+    year, pageTitle, title: pageTitle ? `${pageTitle} | ${edition.name}梅竹` : siteName,
     titleTemplate: '%s',
     description: `${edition.name}梅竹官方網站，提供賽程、票務、戰況、轉播等梅竹賽之即時資訊。`,
     siteName, url: `${SITE_ORIGIN}/${year}/${route}`,
@@ -92,7 +92,8 @@ export function installMetadata(app, documentRef = document, router = null) {
       pending = false
       const records = [...entries.values()].sort((a, b) => a.depth - b.depth || a.order - b.order)
       const route = sharingMetadata(documentRef.location?.pathname)
-      const metadata = selectMetadata(records.map(entry => entry.value), route || defaults)
+      const routeDefaults = route ? { ...route, title: route.pageTitle || route.title } : defaults
+      const metadata = selectMetadata(records.map(entry => entry.value), routeDefaults)
       documentRef.title = metadata.title
       setMeta('name', 'description', metadata.description)
       if (icon) icon.setAttribute('href', metadata.icon)
