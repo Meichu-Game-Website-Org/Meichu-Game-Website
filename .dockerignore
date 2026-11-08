@@ -1,0 +1,14 @@
+.git
+.gitignore
+.DS_Store
+.agents
+.codex
+.aws
+**/node_modules
+**/dist
+**/.vite
+**/.env*
+**/*.log
+coverage
+playwright-report
+test-results

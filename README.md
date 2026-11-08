@@ -111,3 +111,10 @@ pnpm test:browser
 ```
 
 To use an existing Chromium installation, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to its executable. Screenshots are saved in the system temporary directory under `meichu-p1-screenshots`, or in `P1_SCREENSHOTS` when provided.
+
+## Container deployment
+
+The production image contains both sites and nginx's year-specific routing.
+From the repository root, run `pnpm test:container` to build it and verify its
+HTTP routes and emitted assets. See [deployment instructions](docs/deployment.md)
+for image build/run commands, health checks and release validation.

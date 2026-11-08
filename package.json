@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node --test apps/site-2026/tests/*.test.mjs tests/*.test.cjs",
     "start": "concurrently \"pnpm --filter old-site serve\" \"pnpm --filter \"site-*\" --parallel dev\" \"node dev-proxy.js\"",
-    "test:browser": "pnpm --filter site-2026 build && pnpm --filter old-site build && node --test tests/browser/*.test.cjs"
+    "test:browser": "pnpm --filter site-2026 build && pnpm --filter old-site build && node --test tests/browser/*.test.cjs",
+    "test:container": "node scripts/smoke-container.mjs"
   },
   "keywords": [],
   "author": "",
