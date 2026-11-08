@@ -19,6 +19,11 @@ Vue's runtime build. Vue 2 and this compatibility plugin are end-of-life; this
 build migration removes the Vue CLI/Webpack dependency chain without changing
 the archive's framework or page behavior.
 
+`@vitejs/plugin-legacy` uses the existing `browserslist` targets from package.json
+to emit SystemJS fallback bundles and usage-based polyfills alongside modern
+modules. Tests force the fallback path in Chromium; they do not certify actual
+Internet Explorer behavior.
+
 Run the shared regressions and production browser checks from the root:
 
 ```sh

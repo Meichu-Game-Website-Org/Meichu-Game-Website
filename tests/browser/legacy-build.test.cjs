@@ -50,17 +50,48 @@ test('legacy build: stylesheet images and shared fonts resolve to emitted files'
   assert.ok(references > 10, 'Check real archive image and font references')
 })
 
-for (const year of [2019, 2020, 2021, 2022, 2023, 2024, 2025]) {
-  test(`${year}: archived game deep links load their Vue components and assets`, async t => {
+test('legacy build: entry HTML includes emitted SystemJS entry and polyfills', async () => {
+  const html = await readFile(path.join(directory, 'index.html'), 'utf8')
+  for (const [id, attribute] of [['vite-legacy-polyfill', 'src'], ['vite-legacy-entry', 'data-src']]) {
+    const script = html.match(new RegExp(`<script\\b[^>]*id="${id}"[^>]*>`))?.[0]
+    assert.ok(script, `${id} script must be present`)
+    assert.match(script, /\bnomodule\b/)
+    const source = script.match(new RegExp(`\\s${attribute}="([^"]+)"`))?.[1]
+    assert.ok(source, `${id} must point to an emitted asset`)
+    const code = await readFile(path.join(directory, source), 'utf8')
+    assert.ok(code.length > 1000)
+    if (id === 'vite-legacy-entry') assert.match(code, /System\.register\(/)
+  }
+})
+
+const archiveCases = [2019, 2020, 2021, 2022, 2023, 2024, 2025].map(year => ({ year, legacy: false }))
+// One lazy-loaded archive and the eagerly loaded newest archive exercise both paths.
+archiveCases.push({ year: 2020, legacy: true }, { year: 2025, legacy: true })
+for (const { year, legacy } of archiveCases) {
+  test(`${year}${legacy ? ' legacy fallback' : ''}: archived game deep links load their Vue components and assets`, async t => {
     const context = await browser.newContext()
     t.after(() => context.close())
-    await context.addInitScript(() => {
+    await context.addInitScript(legacy => {
       // Isolate the archive from its external animation CDN during the build smoke test.
       window.skrollr = { init: () => ({ isMobile: () => true, destroy() {} }) }
-    })
+      // The fallback must restore Promise via its generated polyfill, not Chromium.
+      if (legacy) window.Promise = undefined
+    }, legacy)
     await context.route('**/*', async route => {
       const url = new URL(route.request().url())
-      if (url.origin === origin) return route.continue()
+      if (url.origin === origin) {
+        if (legacy && route.request().isNavigationRequest()) {
+          // Chromium supports modules: explicitly load only the generated nomodule path.
+          // This validates fallback behavior without claiming to emulate an IE engine.
+          const response = await route.fetch()
+          const html = (await response.text())
+            .replace(/<script\b(?=[^>]*\btype="module")[^>]*>[\s\S]*?<\/script>/g, '')
+            .replace(/<link\b(?=[^>]*\brel="modulepreload")[^>]*>/g, '')
+            .replace(/\snomodule\b/g, '')
+          return route.fulfill({ response, body: html })
+        }
+        return route.continue()
+      }
       if (url.origin === 'https://meichu.games' && url.pathname.startsWith('/api/')) {
         const game = { id: 1, name: '建置回歸賽事', item: { slug: 'build-test' }, type_of: 'official', status: 'nonstrt', date: `${year}-03-06`, time: '10:00', location: '測試場地', photo: null, score_nctu: 0, score_nthu: 0, team_nctu: null, team_nthu: null, news: [] }
         const body = url.pathname.startsWith('/api/game/slug/') ? { game } : { games: [], options: [], archives: [], items: [] }
@@ -71,9 +102,11 @@ for (const year of [2019, 2020, 2021, 2022, 2023, 2024, 2025]) {
     const page = await context.newPage()
     const errors = []
     const failedAssets = []
+    const scripts = []
     page.on('pageerror', error => errors.push(error.message))
     page.on('response', response => {
       if (new URL(response.url()).origin === origin && response.status() >= 400) failedAssets.push(response.url())
+      if (new URL(response.url()).origin === origin && response.request().resourceType() === 'script') scripts.push(new URL(response.url()).pathname)
     })
     await page.goto(`${origin}/${year}/game/build-test`)
     await page.getByText('建置回歸賽事', { exact: true }).first().waitFor()
@@ -81,5 +114,12 @@ for (const year of [2019, 2020, 2021, 2022, 2023, 2024, 2025]) {
     assert.match(await page.locator('body').getAttribute('class'), new RegExp(`meichu${year}`))
     assert.deepEqual(errors, [], 'No unhandled archive errors')
     assert.deepEqual(failedAssets, [], 'No missing chunks, stylesheet assets, or images')
+    if (legacy) {
+      assert.ok(scripts.some(url => /polyfills-legacy-.*\.js$/.test(url)))
+      assert.ok(scripts.some(url => /index-legacy-.*\.js$/.test(url)))
+      assert.ok(scripts.every(url => /-legacy-.*\.js$/.test(url)), 'Do not execute modern entry or chunks')
+      assert.equal(await page.evaluate(() => typeof window.Promise), 'function')
+      assert.equal(await page.evaluate(() => typeof window.System.import), 'function')
+    }
   })
 }

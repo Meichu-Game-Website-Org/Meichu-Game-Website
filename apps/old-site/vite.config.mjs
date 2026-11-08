@@ -2,13 +2,18 @@ import { fileURLToPath, URL } from 'node:url'
 import { createRequire } from 'node:module'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue2'
+import legacy from '@vitejs/plugin-legacy'
 
 const require = createRequire(import.meta.url)
 
 export default defineConfig({
   // All archived years share one history-mode router and root-relative assets.
   base: '/',
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    // Retain the archive's existing browser targets with a SystemJS fallback.
+    legacy({ targets: require('./package.json').browserslist })
+  ],
   resolve: {
     alias: [
       // Templates are compiled at build time; do not ship Vue's runtime compiler.
@@ -19,6 +24,5 @@ export default defineConfig({
     // Existing archive components omit .vue in their imports.
     extensions: ['.mjs', '.js', '.mts', '.ts', '.jsx', '.tsx', '.json', '.vue']
   },
-  server: { port: 3030 },
-  build: { target: 'es2015' }
+  server: { port: 3030 }
 })
