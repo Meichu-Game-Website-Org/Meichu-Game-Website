@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "node --test apps/site-2026/tests/*.test.mjs tests/*.test.cjs",
-    "start": "concurrently \"pnpm --filter old-site serve\" \"pnpm --filter \"site-*\" --parallel dev\" \"node dev-proxy.js\""
+    "start": "concurrently \"pnpm --filter old-site serve\" \"pnpm --filter \"site-*\" --parallel dev\" \"node dev-proxy.js\"",
+    "test:browser": "pnpm --filter site-2026 build && pnpm --filter old-site build && node --test tests/browser/*.test.cjs"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
   "packageManager": "pnpm@10.28.1",
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "http-proxy": "^1.18.1"
+    "http-proxy": "^1.18.1",
+    "playwright": "1.65.0"
   }
 }

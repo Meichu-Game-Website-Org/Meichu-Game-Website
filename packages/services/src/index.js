@@ -11,3 +11,6 @@ export {
   Option,
   Record
 }
+
+export { createResource, loadResource, invalidateResource, resourceMixin } from './resource'
+export { readGame, readGames, readNews, readArchives, readOptions } from './content'

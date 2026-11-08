@@ -2,8 +2,8 @@
   <div class="history-page">
     <h1>歷史紀錄</h1>
     <div class="title-bar"/>
-    <Loading v-if="isLoading"/>
-    <div class="history-center" v-if="!isLoading">
+    <RequestState :resource="resource" empty-text="目前尚無歷史紀錄。" @retry="fetch" />
+    <div class="history-center" v-if="resource.status === 'success'">
       <table class="record history-table">
         <thead>
           <tr>
@@ -41,26 +41,24 @@
 
 <script>
 
-import { History as HistoryApi } from '@meichu/services'
-import Loading from '@/components/Loading.vue'
+import { History as HistoryApi, resourceMixin, loadResource, readArchives } from '@meichu/services'
+import RequestState from '@/components/RequestState.vue'
 
 export default {
   name: 'history-list',
+  mixins: [resourceMixin],
 
   components: {
-    Loading
+    RequestState
   },
 
   metaInfo: {
     title: '歷史紀錄'
   },
 
-  data: function() {
-    return {
-      archiveList: [],
-      itemList: [],
-      isLoading: true
-    }
+  computed: {
+    archiveList() { return this.resource.data ? this.resource.data.archives : [] },
+    itemList() { return this.resource.data ? this.resource.data.items : [] }
   },
 
   created() {
@@ -69,16 +67,9 @@ export default {
 
   methods: {
     fetch() {
-      HistoryApi.fetchFullArchives()
-        .then((data) => {
-          this.archiveList = data.archives.filter(archive => archive.item_id != 30 && archive.item_id != 31)
-          this.itemList = data.items.filter(item => item.slug != 'opening' && item.slug != 'closing')
-        })
-        .then(() => {
-          this.isLoading = false
-        })
+      return loadResource(this.resource, async () => readArchives(await HistoryApi.fetchFullArchives()), data => data.archives.length === 0)
     },
-    
+
     getOutcome(outcome, year) {
       const d = [
         {

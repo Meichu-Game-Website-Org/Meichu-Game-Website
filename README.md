@@ -83,3 +83,20 @@ We follow a **Convention over Configuration** approach. To add a new year site, 
 *   **Old Site**: Vue 2, Vue CLI, Webpack, BootstrapVue
 *   **New Sites (2026+)**: Vue 3, Vite, Tailwind/Custom CSS
 *   **Package Manager**: pnpm (configured with `shamefully-hoist=true` for legacy compatibility)
+
+## Tests
+
+Run the component and request-state regressions with:
+
+```bash
+pnpm test
+```
+
+The browser suite builds both apps, serves their production output on temporary localhost ports, and substitutes API fixtures. It checks announcement links, attachments, loading/empty/error states, retry, timeout, and out-of-order responses without calling the production API.
+
+```bash
+pnpm exec playwright install chromium
+pnpm test:browser
+```
+
+To use an existing Chromium installation, set `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to its executable. Screenshots are saved in the system temporary directory under `meichu-p1-screenshots`, or in `P1_SCREENSHOTS` when provided.

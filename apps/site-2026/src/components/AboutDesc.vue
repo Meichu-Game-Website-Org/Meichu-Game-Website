@@ -22,53 +22,22 @@
       <div class="title-bar"/>
 
       <div class="content-body">
-        <Loading v-if="isLoading"></Loading>
-        <p v-else class="fade-in-text">{{ options[currentTab] }}</p>
+        <RequestState :resource="resource" empty-text="目前尚無介紹內容。" @retry="$emit('retry')" />
+        <p v-if="resource.status === 'success'" class="fade-in-text">{{ options[currentTab] || '目前尚無介紹內容。' }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Option as OptionApi } from '@meichu/services'
-import Loading from '@/components/Loading.vue'
-import { YEAR_ID } from '@/utils'
+import RequestState from '@/components/RequestState.vue'
 
 export default {
   name: 'AboutDesc',
-
-  components: {
-    Loading
-  },
-
-  data() {
-    return {
-      isLoading: true,
-      currentTab: 'about-meichu',
-      options: {}
-    }
-  },
-
-  created() {
-    this.fetch()
-  },
-
-  methods: {
-    fetch() {
-      const params = {
-        data: ['about-meichu', 'meichu-history'],
-        year_id: YEAR_ID
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
-      .then(() => {
-        this.isLoading = false;
-      })
-    }
-  }
+  components: { RequestState },
+  props: { resource: { type: Object, required: true } },
+  data() { return { currentTab: 'about-meichu' } },
+  computed: { options() { return this.resource.data || {} } }
 }
 </script>
 
