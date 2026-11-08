@@ -81,15 +81,17 @@ the service does not download fonts or images while serving a request.
 Run the repeatable container check with Node 24 and a running Docker daemon:
 
 ```sh
-# Build the image, start it on a temporary loopback port, test it, remove the test container.
+# Build the image, run isolated containers, test them, then remove test containers.
 node scripts/smoke-container.mjs
 
 # Validate an image already built by CI or a release pipeline.
 node scripts/smoke-container.mjs --image meichu-website:local
 ```
 
-The smoke check starts a read-only fixture API on a Docker **internal** network,
-so it cannot request production content. It verifies both entry points, all
+The smoke check starts a read-only fixture API and the application on a Docker
+**internal** network, so neither can request production content. It pipes the
+test-only HTTP checks into Node 24 inside the application container with
+`docker exec`; no test ports are published. It verifies both entry points, all
 archive years, static sharing pages, distinct news/game titles, descriptions and
 PNGs, API credential isolation, cache sharing, errors/timeouts/redirects,
 HEAD/405/ETag handling, emitted assets, cross-year cookies and unknown paths. It
