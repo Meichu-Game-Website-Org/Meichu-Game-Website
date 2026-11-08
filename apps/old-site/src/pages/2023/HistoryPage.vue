@@ -1,5 +1,7 @@
 <template>
   <div>
+    <RequestState :resource="resource" empty-text="目前尚無歷史紀錄。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     <!-- <div class="news_list_page_back_box">
       <img src="@/assets/2022/背景2_素材.svg" class="news_list_page_back" alt="" />
     </div>
@@ -45,38 +47,35 @@
         </table></div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { archiveResourceMixin } from '@/utils/archive-resource'
 
-import { History as HistoryApi } from '@meichu/services'
+import { History as HistoryApi, loadResource, readArchives } from '@meichu/services'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'history-list',
 
   metaInfo: {
     title: '歷史紀錄'
   },
 
-  data: function() {
-    return {
-      archiveList: [],
-      itemList: []
-    }
-  },
-
   created() {
     this.fetch()
   },
 
+  computed: {
+    archiveList() { return this.resource.data ? this.resource.data.archives : [] },
+    itemList() { return this.resource.data ? this.resource.data.items : [] },
+  },
+
   methods: {
     fetch() {
-      HistoryApi.fetchFullArchives()
-        .then((data) => {
-          this.archiveList = data.archives.filter(archive => archive.item_id != 30 && archive.item_id != 31)
-          this.itemList = data.items.filter(item => item.slug != 'opening' && item.slug != 'closing')
-        })
+      return loadResource(this.resource, () => HistoryApi.fetchFullArchives().then(readArchives), data => data.archives.length === 0)
     },
     
     getOutcome(outcome) {

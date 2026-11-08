@@ -1,5 +1,7 @@
 <template>
   <div id="game">
+    <RequestState :resource="resource" empty-text="找不到這場賽事。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     <div class="news_list_page_back_box">
       <img src="@/assets/2024/news_background.svg" class="news_list_page_back" alt="" />
     </div>
@@ -249,16 +251,19 @@
       </router-link>
     </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { archiveResourceMixin } from '@/utils/archive-resource'
 
 import moment from 'moment'
-import { Game as GameApi } from '@meichu/services'
+import { Game as GameApi, loadResource, readGame } from '@meichu/services'
 import {GAME_STATUS} from '@/utils'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'game-show-2024',
   scrollToTop() {
     window.scrollTo(0,0);
@@ -272,19 +277,18 @@ export default {
 
   data: function() {
     return {
-      slug: null,
-      game: {},
       moment,
       GAME_STATUS
     }
   },
 
-  created() {
-    this.slug = this.$route.params.slug
-    this.fetch()
+  watch: {
+    '$route.params.slug': { immediate: true, handler() { this.fetch() } }
   },
 
   computed: {
+    slug() { return this.$route.params.slug },
+    game() { return this.resource.data || {} },
     showScore() {
       return this.game.status == 'running' ||
              this.game.status == 'pause' ||
@@ -303,13 +307,8 @@ export default {
 
   methods: {
     fetch() {
-      const params = {
-        year_id: 56
-      }
-      GameApi.fetchGameBySlug(this.slug, params)
-        .then((game) => {
-          this.game = game
-        })
+      const slug = this.slug
+      return loadResource(this.resource, () => GameApi.fetchGameBySlug(slug, { year_id: 56 }).then(readGame))
     }
   }
 

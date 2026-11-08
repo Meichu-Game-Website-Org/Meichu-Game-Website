@@ -1,7 +1,8 @@
 <template>
   <div class="curr-score">
     <div class="curr-score__title">正式賽當前積點</div>
-    <div class="curr-score__score">
+    <RequestState :resource="resource" empty-text="目前尚無正式賽積點資料。" @retry="fetch" />
+    <div class="curr-score__score" v-if="resource.status === 'success'">
       <div class="score__school">
         <img src="@/assets/2025/panda.png" alt="熊貓"/>
         <div>清華大學</div>
@@ -20,39 +21,33 @@
 </template>
 
 <script>
-import { Game as GameApi } from '@meichu/services'
+import { archiveResourceMixin } from '@/utils/archive-resource'
+import { Game as GameApi, loadResource, readGames } from '@meichu/services'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'curr-score',
 
-  data: function() {
-    return {
-      score: {
-        'nthu': 0,
-        'nctu': 0
-      }
-    }
-  },
 
   created() {
     this.fetch()
   },
 
+  computed: {
+    score() { return this.resource.data || {} },
+  },
+
   methods: {
     fetch() {
-      const params = {
-        year_id: 57
-      }
-      GameApi.fetchAllGames(params)
-        .then((games) => {
-          games = games.filter(game => game.item && game.type_of === 'official');
-
-          // Count the current score
-          var draw = games.filter(game => game.status === 'draw').length;
-          this.score['nthu'] = games.filter(game => game.status === 'nthu').length + 0.5 * draw;
-          this.score['nctu'] = games.filter(game => game.status === 'nctu').length + 0.5 * draw;
-          
-        })
+      return loadResource(this.resource, async () => {
+        const games = readGames(await GameApi.fetchAllGames({ year_id: 57 })).filter(game => game.type_of === 'official')
+        if (!games.length) return null
+        const draw = games.filter(game => game.status === 'draw').length
+        return {
+          nthu: games.filter(game => game.status === 'nthu').length + 0.5 * draw,
+          nctu: games.filter(game => game.status === 'nctu').length + 0.5 * draw
+        }
+      })
     },
   }
 }

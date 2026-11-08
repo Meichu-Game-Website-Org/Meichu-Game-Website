@@ -1,5 +1,7 @@
 <template>
   <div>
+    <RequestState :resource="resource" empty-text="目前尚無賽事。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     <div class="row">
       <div class="col">
         <img src="@/assets/2023/all_games.svg" class="games_title" alt="" />
@@ -39,43 +41,35 @@
         </div>
       </div>
     </div>
+    </template>
   </div>
 </template>
 
 <script>
+import { archiveResourceMixin, readGameMap } from '@/utils/archive-resource'
 
 import GameItem from '@/components/2023/GameItem.vue'
-import { Game as GameApi } from '@meichu/services'
+import { Game as GameApi, loadResource } from '@meichu/services'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'game-list',
 
   components: {
     GameItem
   },
 
-  data: function() {
-    return {
-      games: {},
-    }
-  },
-
   created() {
     this.fetch()
   },
 
+  computed: {
+    games() { return this.resource.data || {} },
+  },
+
   methods: {
     fetch() {
-      const params = {
-        year_id: 55
-      }
-      GameApi.fetchAllGames(params)
-        .then((games) => {
-          this.games = Object.assign({}, ...games.filter(val => val.item).map(game => ({
-            [game.item.slug]: game
-          })))
-
-        })
+      return loadResource(this.resource, () => GameApi.fetchAllGames({ year_id: 55 }).then(readGameMap), games => Object.keys(games).length === 0)
     },
   }
 }

@@ -1,5 +1,6 @@
 <template>
   <div class="about-page" id="about">
+    <RequestState :resource="resource" empty-text="目前尚無簡介資料。" @retry="fetch" />
     <div class="news_list_page_back_box">
       <img src="@/assets/2022/背景2_素材.svg" class="news_list_page_back" alt="" />
     </div>
@@ -99,10 +100,12 @@
 </template>
 
 <script>
+import { archiveResourceMixin } from '@/utils/archive-resource'
 
-import { Option as OptionApi } from '@meichu/services'
+import { Option as OptionApi, loadResource, readOptions } from '@meichu/services'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'about',
 
   metaInfo: {
@@ -110,27 +113,19 @@ export default {
     titleTemplate: '%s | 壬寅梅竹',
   },
 
-  data: function() {
-    return {
-      options: {}
-    }
-  },
-
   created() {
     this.fetch()
   },
 
+  computed: {
+    options() { return this.resource.data || {} },
+  },
+
   methods: {
     fetch() {
-      const params = {
-        data: ['about-meichu', 'meichu-history'],
-        year_id: 54
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
+      return loadResource(this.resource, () => OptionApi.fetchOptions({
+        data: ['about-meichu', 'meichu-history'], year_id: 54
+      }).then(readOptions), options => !Object.values(options).some(value => value.trim()))
     }
   }
 }

@@ -1,5 +1,7 @@
 <template>
   <div class="news">
+    <RequestState :resource="resource" empty-text="找不到這則公告。" @retry="fetch" />
+    <template v-if="resource.status === 'success'">
     <h1 class="news__title">
       <span>{{ news.title }}</span>
     </h1>
@@ -27,15 +29,18 @@
         </div>
       </div>
     </template>
+    </template>
   </div>
 </template>
 
 <script>
+import { archiveResourceMixin } from '@/utils/archive-resource'
 
-import { News as NewsApi } from '@meichu/services'
+import { News as NewsApi, loadResource, readNews } from '@meichu/services'
 import moment from 'moment'
 
 export default {
+  mixins: [archiveResourceMixin],
   name: 'news-show',
 
   metaInfo() {
@@ -47,23 +52,22 @@ export default {
 
   data: function() {
     return {
-      od: null,
-      news: {},
       moment
     }
   },
 
-  created() {
-    this.id = this.$route.params.id
-    this.fetch()
+  watch: {
+    '$route.params.id': { immediate: true, handler() { this.fetch() } }
+  },
+
+  computed: {
+    news() { return this.resource.data || {} },
   },
 
   methods: {
     fetch() {
-      NewsApi.fetchNews(this.id)
-        .then((news) => {
-          this.news = news
-        })
+      const id = this.$route.params.id
+      return loadResource(this.resource, () => NewsApi.fetchNews(id).then(readNews))
     }
   }
 

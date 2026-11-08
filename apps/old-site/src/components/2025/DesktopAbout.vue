@@ -5,14 +5,14 @@
         <img src="@/assets/2025/about-basketball-desktop.png" alt="Basketball Panda">
       </div>
       <div class="about-content" :style="{ '--clip-path': 'polygon(0 0, 100% 0, 100% 85%, 85% 100%, 0 100%)' }">
-        <Loading v-if="isLoading"></Loading>
-        <p v-else>{{options['about-meichu']}}</p>
+        <RequestState :resource="resource" empty-text="目前尚無簡介資料。" @retry="$emit('retry')" />
+        <p v-if="resource.status === 'success'">{{options['about-meichu']}}</p>
       </div>
     </div>
     <div class="about-section">
       <div class="about-content" :style="{ '--clip-path': 'polygon(0 0, 100% 0, 100% 100%, 15% 100%, 0 85%)' }">
-        <Loading v-if="isLoading"></Loading>
-        <p v-else>{{options['meichu-history']}}</p>
+
+        <p v-if="resource.status === 'success'">{{options['meichu-history']}}</p>
       </div>
       <div class="about-title">
         <img src="@/assets/2025/about-badminton-desktop.png" alt="Badminton Fox">
@@ -175,47 +175,14 @@
 </template>
 
 <script>
-import { Option as OptionApi } from '@meichu/services'
-import Loading from '@/components/2025/Loading.vue'
+import RequestState from '@/components/2025/RequestState.vue'
 
 export default {
   name: 'about',
-
-  components: {
-    Loading
-  },
-
-  metaInfo: {
-    title: '關於梅竹',
-    titleTemplate: '%s | 乙巳梅竹',
-  },
-
-  data() {
-    return {
-      isLoading: true,
-    }
-  },
-
-  created() {
-    this.fetch()
-  },
-
-  methods: {
-    fetch() {
-      const params = {
-        data: ['about-meichu', 'meichu-history'],
-        year_id: 57
-      }
-      OptionApi.fetchOptions(params).then((data) => {
-        this.options = Object.assign({}, ...data.options.map(option => ({
-          [option.key]: option.value
-        })))
-      })
-      .then(() => {
-        this.isLoading = false;
-      })
-    }
-  }
+  components: { RequestState },
+  props: { resource: { type: Object, required: true } },
+  emits: ['retry'],
+  computed: { options() { return this.resource.data || {} } }
 }
 </script>
 
