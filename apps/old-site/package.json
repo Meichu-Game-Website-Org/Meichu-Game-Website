@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "serve": "vite --port 3030 --host 0.0.0.0",
-    "build": "vite build",
+    "build": "vite build && node ../../scripts/build-sharing-html.mjs old-site",
     "preview": "vite preview",
     "lint": "eslint src"
   },
