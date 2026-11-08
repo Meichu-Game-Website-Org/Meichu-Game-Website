@@ -8,14 +8,6 @@ overrides:
   eslint@^10.14.0>minimatch: ^11.0.5
   '@eslint/config-array@^0.23.5>minimatch': ^11.0.5
 
-patchedDependencies:
-  '@vue/compiler-sfc@2.7.16':
-    hash: c1d0c34b2371cf42fdaad0a5d7dc2951c42b0a5b9ffd5a9dcce199aa5a4f19ad
-    path: patches/vue-compiler-sfc-2.7.16.patch
-  deepmerge@4.3.1:
-    hash: b9aa9d472bb02d95c576b75710a6da2f069293a1ed7d31a8745c816125703ee2
-    path: patches/deepmerge@4.3.1.patch
-
 importers:
 
   .:
@@ -51,14 +43,11 @@ importers:
         specifier: ^2.31.0
         version: 2.31.0
       vue:
-        specifier: ^2.7.16
-        version: 2.7.16
-      vue-meta:
-        specifier: ^2.4.0
-        version: 2.4.0
+        specifier: ^3.5.45
+        version: 3.5.45
       vue-router:
-        specifier: ^3.6.5
-        version: 3.6.5(vue@2.7.16)
+        specifier: ^4.6.4
+        version: 4.6.4(vue@3.5.45)
     devDependencies:
       '@eslint/js':
         specifier: ^10.0.1
@@ -66,9 +55,9 @@ importers:
       '@vitejs/plugin-legacy':
         specifier: ^6.1.1
         version: 6.1.1(terser@5.51.2)(vite@6.4.5(@types/node@25.0.10)(sass@1.108.1)(terser@5.51.2))
-      '@vitejs/plugin-vue2':
-        specifier: ^2.3.4
-        version: 2.3.4(vite@6.4.5(@types/node@25.0.10)(sass@1.108.1)(terser@5.51.2))(vue@2.7.16)
+      '@vitejs/plugin-vue':
+        specifier: ^5.2.4
+        version: 5.2.4(vite@6.4.5(@types/node@25.0.10)(sass@1.108.1)(terser@5.51.2))(vue@3.5.45)
       autoprefixer:
         specifier: ^10.6.2
         version: 10.6.2(postcss@8.5.32)
@@ -1125,13 +1114,6 @@ packages:
       terser: ^5.16.0
       vite: ^6.0.0
 
-  '@vitejs/plugin-vue2@2.3.4':
-    resolution: {integrity: sha512-LgqtRRedJb1KdmgcllwGX0gtlPvOvtR6pITXmqxGwQhBZaAysg0Hd7wvj3sjCsj4+PENWsqS7O+ceYSOgJ+H9g==}
-    engines: {node: ^14.18.0 || >= 16.0.0}
-    peerDependencies:
-      vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0
-      vue: ^2.7.0-0
-
   '@vitejs/plugin-vue@5.2.4':
     resolution: {integrity: sha512-7Yx/SXSOcQq5HiiV3orevHUFn+pmMB4cgbEkDYgnkUWb0WfeQ/wa2yFv6D5ICiCQOVpjA7vYDXrC7AGO8yjDHA==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -1144,9 +1126,6 @@ packages:
 
   '@vue/compiler-dom@3.5.45':
     resolution: {integrity: sha512-LbP2d19GSOYGPmvMBBCVJVlv7TKtjM1Cfeyu3cYia720pknZP+1cLX7H5MVatvruT6MuJhiPuNbQBW/MDn/EwA==}
-
-  '@vue/compiler-sfc@2.7.16':
-    resolution: {integrity: sha512-KWhJ9k5nXuNtygPU7+t1rX6baZeqOYLEforUPjgNDBnLicfHCoi48H87Q8XyLZOrNNsmhuwKqtpDQWjEFe6Ekg==}
 
   '@vue/compiler-sfc@3.5.45':
     resolution: {integrity: sha512-MKFjb2UX0M/l/jhfzqMLrI8VM4pfvFKG3pqFZkSZFHRLtNld/O4RtUPZFWSwhro/14qP88UQEkWzHxAZAQ0tsw==}
@@ -1337,10 +1316,6 @@ packages:
 
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
-
-  deepmerge@4.3.1:
-    resolution: {integrity: sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==}
-    engines: {node: '>=0.10.0'}
 
   delayed-stream@1.0.0:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
@@ -1747,11 +1722,6 @@ packages:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==}
     engines: {node: '>= 0.8.0'}
 
-  prettier@2.8.8:
-    resolution: {integrity: sha512-tdN8qQGvNjw4CHbY+XXk0JgCXn9QiF21a55rBe5LJAU+kDyC4WQn4+awm2Xfk2lQMk5fKup9XgzTZtGkjBdP9Q==}
-    engines: {node: '>=10.13.0'}
-    hasBin: true
-
   proxy-from-env@2.1.0:
     resolution: {integrity: sha512-cJ+oHTW1VAEa8cJslgmUZrc+sjRKgAKl3Zyse6+PV38hZe/V6Z14TbCuXcan9F9ghlz4QrFr2c92TNF82UkYHA==}
     engines: {node: '>=10'}
@@ -1970,23 +1940,10 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
 
-  vue-meta@2.4.0:
-    resolution: {integrity: sha512-XEeZUmlVeODclAjCNpWDnjgw+t3WA6gdzs6ENoIAgwO1J1d5p1tezDhtteLUFwcaQaTtayRrsx7GL6oXp/m2Jw==}
-    deprecated: vue-meta is no longer maintained. See https://github.com/nuxt/vue-meta/issues/808
-
-  vue-router@3.6.5:
-    resolution: {integrity: sha512-VYXZQLtjuvKxxcshuRAwjHnciqZVoXAjTjcqBTz4rKc8qih9g9pI3hbDjmqXaHdgL3v8pV6P8Z335XvHzESxLQ==}
-    peerDependencies:
-      vue: ^2
-
   vue-router@4.6.4:
     resolution: {integrity: sha512-Hz9q5sa33Yhduglwz6g9skT8OBPii+4bFn88w6J+J4MfEo4KRRpmiNG/hHHkdbRFlLBOqxN8y8gf2Fb0MTUgVg==}
     peerDependencies:
       vue: ^3.5.0
-
-  vue@2.7.16:
-    resolution: {integrity: sha512-4gCtFXaAA3zYZdTp5s4Hl2sozuySsgz4jy1EnpBHNfpMa9dK1ZCG7viqBPCwXtmgc8nHqUsAu3G4gtmXkkY3Sw==}
-    deprecated: Vue 2 has reached EOL and is no longer actively maintained. See https://v2.vuejs.org/eol/ for more details.
 
   vue@3.5.45:
     resolution: {integrity: sha512-3cvsib8m9c0vB24+MDKsgcW4+Da4xaBl9Z/5Tbm2pmSIsRPxcil4cdXjXlVsmJ2g64XJo5h+IRd7rsdGT9pZaw==}
@@ -3032,11 +2989,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue2@2.3.4(vite@6.4.5(@types/node@25.0.10)(sass@1.108.1)(terser@5.51.2))(vue@2.7.16)':
-    dependencies:
-      vite: 6.4.5(@types/node@25.0.10)(sass@1.108.1)(terser@5.51.2)
-      vue: 2.7.16
-
   '@vitejs/plugin-vue@5.2.4(vite@6.4.5(@types/node@25.0.10)(sass@1.108.1)(terser@5.51.2))(vue@3.5.45)':
     dependencies:
       vite: 6.4.5(@types/node@25.0.10)(sass@1.108.1)(terser@5.51.2)
@@ -3054,14 +3006,6 @@ snapshots:
     dependencies:
       '@vue/compiler-core': 3.5.45
       '@vue/shared': 3.5.45
-
-  '@vue/compiler-sfc@2.7.16(patch_hash=c1d0c34b2371cf42fdaad0a5d7dc2951c42b0a5b9ffd5a9dcce199aa5a4f19ad)':
-    dependencies:
-      '@babel/parser': 7.29.13
-      postcss: 8.5.32
-      source-map: 0.6.1
-    optionalDependencies:
-      prettier: 2.8.8
 
   '@vue/compiler-sfc@3.5.45':
     dependencies:
@@ -3280,8 +3224,6 @@ snapshots:
       ms: 2.1.3
 
   deep-is@0.1.4: {}
-
-  deepmerge@4.3.1(patch_hash=b9aa9d472bb02d95c576b75710a6da2f069293a1ed7d31a8745c816125703ee2): {}
 
   delayed-stream@1.0.0: {}
 
@@ -3673,9 +3615,6 @@ snapshots:
 
   prelude-ls@1.2.1: {}
 
-  prettier@2.8.8:
-    optional: true
-
   proxy-from-env@2.1.0: {}
 
   punycode@2.3.1: {}
@@ -3881,23 +3820,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vue-meta@2.4.0:
-    dependencies:
-      deepmerge: 4.3.1(patch_hash=b9aa9d472bb02d95c576b75710a6da2f069293a1ed7d31a8745c816125703ee2)
-
-  vue-router@3.6.5(vue@2.7.16):
-    dependencies:
-      vue: 2.7.16
-
   vue-router@4.6.4(vue@3.5.45):
     dependencies:
       '@vue/devtools-api': 6.6.4
       vue: 3.5.45
-
-  vue@2.7.16:
-    dependencies:
-      '@vue/compiler-sfc': 2.7.16(patch_hash=c1d0c34b2371cf42fdaad0a5d7dc2951c42b0a5b9ffd5a9dcce199aa5a4f19ad)
-      csstype: 3.2.3
 
   vue@3.5.45:
     dependencies:

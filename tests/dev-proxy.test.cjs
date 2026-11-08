@@ -27,9 +27,15 @@ test('legacy navigation works with and without the 2021 scroll wrapper', () => {
     .replace(/^import .*$/gm, '')
     .replace('export default router', 'globalThis.router = router')
   let wrapper = null
-  const dependencies = { VueRouter: function (options) { return options }, axios: { defaults: {} }, document: { getElementById: () => wrapper } }
+  const dependencies = {
+    createRouter: options => options,
+    createWebHistory: base => ({ base }),
+    axios: { defaults: {} },
+    document: { getElementById: () => wrapper }
+  }
   for (const match of readFileSync(require.resolve('../apps/old-site/src/router.js'), 'utf8').matchAll(/^import (\w+) from '@\/pages/gm)) dependencies[match[1]] = {}
   vm.runInNewContext(source, dependencies)
+  assert.equal(dependencies.router.history.base, '/')
   assert.doesNotThrow(() => dependencies.router.scrollBehavior({}, {}, null))
   wrapper = { scrollTop: 500 }
   dependencies.router.scrollBehavior({}, {}, null)

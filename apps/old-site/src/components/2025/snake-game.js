@@ -46,7 +46,7 @@ export function createSnakeGame(canvasElement) {
 
     /**
        * Used to determine the position, type, lifetime and birthtime of Food.
-       * The SnakeController manages expiring food and placing new food. 
+       * The SnakeController manages expiring food and placing new food.
        */
     var FoodModel = function FoodModel() {
       this.init(new game.Position2D(0, 0));
@@ -364,7 +364,7 @@ export function createSnakeGame(canvasElement) {
         }
       }
       for (rc = 0; rc < rwc; rc += 1) {
-        // calculate a position for a random wall, somewhere within the walls of the grid. 
+        // calculate a position for a random wall, somewhere within the walls of the grid.
         rwx = Math.floor(3 + Math.random() * (level.width - 6));
         rwy = Math.floor(3 + Math.random() * (level.height - 6));
         rwl = Math.floor(3 + Math.random() * 5);
@@ -373,7 +373,7 @@ export function createSnakeGame(canvasElement) {
         for (ri = 0; ri < rwl; ri += 1) {
           i = level.index(rwx, rwy);
 
-          // don't try to make a new block when one already exists! 
+          // don't try to make a new block when one already exists!
           if (level.wdata[i] !== 0) {
             break;
           }
@@ -446,7 +446,7 @@ export function createSnakeGame(canvasElement) {
 
     /**
        * Get the size of the canvas element.
-       * @returns {Size2D} returns a Size2D model. 
+       * @returns {Size2D} returns a Size2D model.
        */
     Canvas.prototype.getSize = function () {
       return new game.Size2D(+this.element.width, +this.element.height);
@@ -466,7 +466,7 @@ export function createSnakeGame(canvasElement) {
 
     /**
        * Clear the canvas completely by either removing all color information from its buffer or
-       * by drawing an overlay to create a fade effect. 
+       * by drawing an overlay to create a fade effect.
        * @param {Number} fadeOpacity the opacity for the fade layer. Leave empty for full clear.
        */
     Canvas.prototype.clear = function (fadeOpacity) {
@@ -484,7 +484,7 @@ export function createSnakeGame(canvasElement) {
     'use strict';
 
     /**
-       * A simple wrapper for short Audio playback, used to play 
+       * A simple wrapper for short Audio playback, used to play
        * FX sounds such as the sound played when you hit the wall.
        * @param {String} path   URL / relative path to sound file.
        * @param {Number} volume A volume level between 0 and 1, defaults to 1
@@ -526,8 +526,8 @@ export function createSnakeGame(canvasElement) {
     'use strict';
 
     /**
-       * The KeyboardController class is used to monitor keypresses and make them accesible 
-       * at all times, via the KeyboardModel. 
+       * The KeyboardController class is used to monitor keypresses and make them accesible
+       * at all times, via the KeyboardModel.
        * @param {KeyboardModel} model an instance of KeyboardModel, to store the data.
        */
     var KeyboardController = function KeyboardController(model, element) {
@@ -635,7 +635,7 @@ export function createSnakeGame(canvasElement) {
 
     /**
        * One of the biggest controllers in the application, the one that controls the snake
-       * and the snake food. 
+       * and the snake food.
        * @param {SnakeModel}         snakeModel         a SnakeModel instance
        * @param {LevelModel}         levelModel         a LevelModel instance
        * @param {KeyboardController} keyboardController a KeyboardController instance
@@ -656,7 +656,7 @@ export function createSnakeGame(canvasElement) {
       this.ctrKeyboard = keyboardController;
       this.timePrint = Date.now();
 
-      // find enough space in the level for our snake to start from, it needs at least 3 cells. 
+      // find enough space in the level for our snake to start from, it needs at least 3 cells.
       while (true) {
         rec = this.modLevel.emptyCell();
         if (this.modLevel.getField(rec.x + 1, rec.y) === 0 && this.modLevel.getField(rec.x + 2, rec.y) === 0) {
@@ -674,7 +674,7 @@ export function createSnakeGame(canvasElement) {
 
     /**
        * Move the snake one step, in the set direction.
-       * @returns {Boolean} returns true if the movement is hitting a cell but is harmless, 
+       * @returns {Boolean} returns true if the movement is hitting a cell but is harmless,
        *                    false when snake dies and null if all is well.
        */
     SnakeController.prototype.move = function () {
@@ -719,7 +719,7 @@ export function createSnakeGame(canvasElement) {
           this.modSnake.sounds.thump.play();
           return true;
         case 2:
-          // cell type 2 is the deadly red kind, kill it! 
+          // cell type 2 is the deadly red kind, kill it!
           this.modSnake.sounds.death.play();
           this.modSnake.destroyed = true;
           this.modSnake.cause = "wall";
@@ -791,9 +791,9 @@ export function createSnakeGame(canvasElement) {
       }
     };
 
-    /** 
+    /**
        * Place new food in the level.
-       * @returns {Boolean} true when new food could be placed and false when the player has finished playing. 
+       * @returns {Boolean} true when new food could be placed and false when the player has finished playing.
        */
     SnakeController.prototype.newFood = function () {
       var rpos = this.modLevel.emptyCell(this.modSnake.segments);
@@ -1087,7 +1087,7 @@ export function createSnakeGame(canvasElement) {
 
     /**
        * The main controller for this application.
-       * A.K.A. The Game State Controller! :) 
+       * A.K.A. The Game State Controller! :)
        */
     var Application = function Application(element) {
       var i,
@@ -1176,7 +1176,7 @@ export function createSnakeGame(canvasElement) {
       this.modAudio.loop = true;
       this.modAudio.volume = 1;
 
-      // push all models, views and controllers to the main controller. 
+      // push all models, views and controllers to the main controller.
       this.pushAll(this.modKeyboard, undefined, this.ctrKeyboard);
       this.pushAll(modLevel, disLevel, ctrLevel);
       this.pushAll(modSnake, disSnake, ctrSnake);
@@ -1189,7 +1189,7 @@ export function createSnakeGame(canvasElement) {
       // signal the gameloop to stop
       this.endLoop();
 
-      // wait for a little over 1 frame at 60 FPS before we start the loop 
+      // wait for a little over 1 frame at 60 FPS before we start the loop
       this.startTimer = window.setTimeout(function () {
         that.startTimer = null;
         if (!that.destroyed) that.beginLoop();
@@ -1272,7 +1272,7 @@ export function createSnakeGame(canvasElement) {
             }
           }
 
-          // if we need to wait for a key, we first need to render the notification that tells the player to press one. 
+          // if we need to wait for a key, we first need to render the notification that tells the player to press one.
           if (that.waitKey) {
             if (that.paused) {
               that.pausedMessageView.render();
@@ -1281,7 +1281,7 @@ export function createSnakeGame(canvasElement) {
             }
           }
         } else {
-          // wait for any keypress, debounce at 500ms 
+          // wait for any keypress, debounce at 500ms
           if (that.ctrKeyboard.hasAnyKeyDown() && Date.now() - time > 500) {
             if (that.paused) {
               // resume game logic
@@ -1301,9 +1301,9 @@ export function createSnakeGame(canvasElement) {
         }
         that.ctrKeyboard.flush();
 
-        // request the next frame 
+        // request the next frame
         if (!that.cancel) {
-          // request the next animation frame 
+          // request the next animation frame
           that.frame = requestFrame(gameLoop);
         }
       })();
@@ -1329,7 +1329,7 @@ export function createSnakeGame(canvasElement) {
       this.modAudio.load();
     };
 
-    // export module 
+    // export module
     root.Application = Application;
   })(game);
   return new game.Application(canvasElement);
